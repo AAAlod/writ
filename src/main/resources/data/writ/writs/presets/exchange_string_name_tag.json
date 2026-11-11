@@ -1,0 +1,30 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "stronghold"
+  ],
+  "allowed_professions": [
+    "minecraft:librarian"
+  ],
+  "display_name": "丝线编织命名牌",
+  "display_translation_key": "writ.preset.exchange_string_name_tag",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:name_tag",
+      "count": 1
+    },
+    "max_uses": 4,
+    "villager_xp": 2,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:string",
+      "count": 32
+    }
+  }
+}

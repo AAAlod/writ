@@ -1,0 +1,26 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "nether_bridge",
+    "bastion"
+  ],
+  "allowed_professions": [
+    "minecraft:weaponsmith"
+  ],
+  "display_name": "火焰弹供货",
+  "display_translation_key": "writ.preset.fire_charge_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:fire_charge",
+      "count": 8
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

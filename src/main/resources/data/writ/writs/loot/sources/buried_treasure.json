@@ -1,0 +1,9 @@
+{
+  "loot_table": "minecraft:chests/buried_treasure",
+  "contract_drop_chance": 0.39,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "sr": 60,
+    "ssr": 40
+  }
+}

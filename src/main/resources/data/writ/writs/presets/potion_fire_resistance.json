@@ -1,0 +1,26 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "长效抗火药水",
+  "display_translation_key": "writ.preset.potion_fire_resistance",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:long_fire_resistance\"}"
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

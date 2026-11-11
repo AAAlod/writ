@@ -1,0 +1,11 @@
+{
+  "loot_table": "minecraft:chests/end_city_treasure",
+  "contract_drop_chance": 0.12,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "r": 15,
+    "sr": 35,
+    "ssr": 35,
+    "ur": 15
+  }
+}

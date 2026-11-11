@@ -1,0 +1,30 @@
+{
+  "pool": "ur",
+  "weight": 1,
+  "sources": [
+    "bastion_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:toolsmith"
+  ],
+  "display_name": "矿脉专精·时运",
+  "display_translation_key": "writ.preset.gear_vein_pickaxe",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 64
+    },
+    "cost_b": {
+      "item": "minecraft:netherite_ingot",
+      "count": 2
+    },
+    "result": {
+      "item": "minecraft:netherite_pickaxe",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:efficiency\",lvl:8s},{id:\"minecraft:fortune\",lvl:4s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 20,
+    "price_multiplier": 0.05
+  }
+}

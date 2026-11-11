@@ -1,0 +1,75 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "end_city",
+    "ancient_city",
+    "stronghold"
+  ],
+  "allowed_professions": [
+    "minecraft:armorer"
+  ],
+  "display_name": "盔甲纹饰·秘境",
+  "display_translation_key": "writ.preset.trims_rare",
+  "default_variant_translation_key": "trim_pattern.minecraft.spire",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 20
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 7
+    },
+    "result": {
+      "item": "minecraft:spire_armor_trim_smithing_template",
+      "count": 1
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "eye",
+      "label": "眼眸",
+      "translation_key": "trim_pattern.minecraft.eye",
+      "trade": {
+        "result": {
+          "item": "minecraft:eye_armor_trim_smithing_template",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "ward",
+      "label": "监守",
+      "translation_key": "trim_pattern.minecraft.ward",
+      "trade": {
+        "result": {
+          "item": "minecraft:ward_armor_trim_smithing_template",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "silence",
+      "label": "幽静",
+      "translation_key": "trim_pattern.minecraft.silence",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 40
+        },
+        "cost_b": {
+          "item": "minecraft:diamond",
+          "count": 14
+        },
+        "result": {
+          "item": "minecraft:silence_armor_trim_smithing_template",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

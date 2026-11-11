@@ -1,0 +1,9 @@
+{
+  "loot_table": "minecraft:chests/bastion_treasure",
+  "contract_drop_chance": 0.39,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "ssr": 75,
+    "ur": 25
+  }
+}

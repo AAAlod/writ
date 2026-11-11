@@ -1,0 +1,52 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:fletcher"
+  ],
+  "display_name": "远征物资箱",
+  "display_translation_key": "writ.preset.expedition_kit",
+  "default_variant_translation_key": "writ.variant.expedition_kit.overworld",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:shulker_box",
+      "count": 1,
+      "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:1b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:2b,id:\"minecraft:cooked_beef\",Count:64b},{Slot:3b,id:\"minecraft:torch\",Count:64b},{Slot:4b,id:\"minecraft:ender_pearl\",Count:16b},{Slot:5b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:6b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:7b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:8b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:9b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:night_vision\"}}]}}"
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:shulker_box",
+      "count": 1
+    }
+  },
+  "variants": [
+    {
+      "id": "end",
+      "translation_key": "writ.variant.expedition_kit.end",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 36
+        },
+        "result": {
+          "item": "minecraft:shulker_box",
+          "count": 1,
+          "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:3b}}},{Slot:1b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:3b}}},{Slot:2b,id:\"minecraft:ender_pearl\",Count:16b},{Slot:3b,id:\"minecraft:ender_pearl\",Count:16b},{Slot:4b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:5b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:6b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:7b,id:\"minecraft:cooked_beef\",Count:64b},{Slot:8b,id:\"minecraft:torch\",Count:64b},{Slot:9b,id:\"minecraft:end_stone\",Count:64b}]}}"
+        }
+      }
+    },
+    {
+      "id": "emerald_buy",
+      "enabled": false
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "pillager_outpost"
+  ],
+  "allowed_professions": [
+    "minecraft:farmer"
+  ],
+  "display_name": "金胡萝卜供货",
+  "display_translation_key": "writ.preset.golden_carrot_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 2
+    },
+    "cost_b": {
+      "item": "minecraft:gold_nugget",
+      "count": 64
+    },
+    "result": {
+      "item": "minecraft:golden_carrot",
+      "count": 8
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

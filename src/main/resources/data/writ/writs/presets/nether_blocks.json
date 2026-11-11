@@ -1,0 +1,55 @@
+{
+  "pool": "r",
+  "weight": 2,
+  "sources": [
+    "nether_bridge",
+    "bastion"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "下界石材供货",
+  "display_translation_key": "writ.preset.nether_blocks",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 2
+    },
+    "result": {
+      "item": "minecraft:nether_bricks",
+      "count": 32
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "polished_blackstone_bricks",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 3
+        },
+        "result": {
+          "item": "minecraft:polished_blackstone_bricks",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "quartz_block",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 5
+        },
+        "result": {
+          "item": "minecraft:quartz_block",
+          "count": 16
+        }
+      },
+      "max_uses": 4
+    }
+  ]
+}

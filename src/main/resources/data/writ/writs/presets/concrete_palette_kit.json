@@ -1,0 +1,30 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "desert_pyramid"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "16 色混凝土配色套箱",
+  "display_translation_key": "writ.preset.concrete_palette_kit",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:diamond",
+      "count": 16
+    },
+    "result": {
+      "item": "minecraft:shulker_box",
+      "count": 1,
+      "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:white_concrete\",Count:32b},{Slot:1b,id:\"minecraft:orange_concrete\",Count:32b},{Slot:2b,id:\"minecraft:magenta_concrete\",Count:32b},{Slot:3b,id:\"minecraft:light_blue_concrete\",Count:32b},{Slot:4b,id:\"minecraft:yellow_concrete\",Count:32b},{Slot:5b,id:\"minecraft:lime_concrete\",Count:32b},{Slot:6b,id:\"minecraft:pink_concrete\",Count:32b},{Slot:7b,id:\"minecraft:gray_concrete\",Count:32b},{Slot:8b,id:\"minecraft:light_gray_concrete\",Count:32b},{Slot:9b,id:\"minecraft:cyan_concrete\",Count:32b},{Slot:10b,id:\"minecraft:purple_concrete\",Count:32b},{Slot:11b,id:\"minecraft:blue_concrete\",Count:32b},{Slot:12b,id:\"minecraft:brown_concrete\",Count:32b},{Slot:13b,id:\"minecraft:green_concrete\",Count:32b},{Slot:14b,id:\"minecraft:red_concrete\",Count:32b},{Slot:15b,id:\"minecraft:black_concrete\",Count:32b}]}}"
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:shulker_box",
+      "count": 1
+    }
+  }
+}

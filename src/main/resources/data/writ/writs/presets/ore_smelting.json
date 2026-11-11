@@ -1,0 +1,58 @@
+{
+  "pool": "r",
+  "weight": 2,
+  "sources": [
+    "abandoned_mineshaft",
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:toolsmith"
+  ],
+  "display_name": "矿石熔炼",
+  "display_translation_key": "writ.preset.ore_smelting",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:raw_iron",
+      "count": 64
+    },
+    "result": {
+      "item": "minecraft:iron_ingot",
+      "count": 64
+    },
+    "max_uses": 24,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "copper",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:raw_copper",
+          "count": 64
+        },
+        "result": {
+          "item": "minecraft:copper_ingot",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "gold",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:raw_gold",
+          "count": 64
+        },
+        "result": {
+          "item": "minecraft:gold_ingot",
+          "count": 64
+        }
+      }
+    }
+  ]
+}

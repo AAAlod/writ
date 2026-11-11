@@ -1,0 +1,30 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "abandoned_mineshaft"
+  ],
+  "allowed_professions": [
+    "minecraft:weaponsmith"
+  ],
+  "display_name": "铁砧供货",
+  "display_translation_key": "writ.preset.anvil_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 6
+    },
+    "cost_b": {
+      "item": "minecraft:iron_block",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:anvil",
+      "count": 1
+    },
+    "max_uses": 2,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

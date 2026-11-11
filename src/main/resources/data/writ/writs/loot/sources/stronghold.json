@@ -1,0 +1,15 @@
+{
+  "loot_tables": [
+    "minecraft:chests/stronghold_library",
+    "minecraft:chests/stronghold_corridor",
+    "minecraft:chests/stronghold_crossing"
+  ],
+  "contract_drop_chance": 0.1,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "n": 10,
+    "r": 40,
+    "sr": 40,
+    "ssr": 10
+  }
+}

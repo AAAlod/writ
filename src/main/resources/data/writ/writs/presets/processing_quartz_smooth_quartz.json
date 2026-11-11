@@ -1,0 +1,30 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "nether_bridge",
+    "bastion"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "石英块烧制平滑石英",
+  "display_translation_key": "writ.preset.processing_quartz_smooth_quartz",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:quartz_block",
+      "count": 16
+    },
+    "result": {
+      "item": "minecraft:smooth_quartz",
+      "count": 16
+    },
+    "max_uses": 24,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

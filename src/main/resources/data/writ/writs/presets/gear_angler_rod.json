@@ -1,0 +1,31 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "shipwreck",
+    "buried_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:fisherman"
+  ],
+  "display_name": "海之眷顾钓竿",
+  "display_translation_key": "writ.preset.gear_angler_rod",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 2
+    },
+    "result": {
+      "item": "minecraft:fishing_rod",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:luck_of_the_sea\",lvl:4s},{id:\"minecraft:lure\",lvl:4s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 2,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

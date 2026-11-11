@@ -1,0 +1,29 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:leatherworker"
+  ],
+  "display_name": "丝线换幻翼膜",
+  "display_translation_key": "writ.preset.exchange_string_phantom_membrane",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 2
+    },
+    "result": {
+      "item": "minecraft:phantom_membrane",
+      "count": 2
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:string",
+      "count": 24
+    }
+  }
+}

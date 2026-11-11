@@ -1,0 +1,30 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "bastion_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:weaponsmith"
+  ],
+  "display_name": "裂甲专精·战斧",
+  "display_translation_key": "writ.preset.gear_cleaver_axe",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 40
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:diamond_axe",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:sharpness\",lvl:6s},{id:\"minecraft:efficiency\",lvl:5s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

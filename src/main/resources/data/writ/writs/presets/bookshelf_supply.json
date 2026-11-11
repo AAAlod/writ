@@ -1,0 +1,26 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "stronghold",
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:librarian"
+  ],
+  "display_name": "书架供货",
+  "display_translation_key": "writ.preset.bookshelf_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 6
+    },
+    "result": {
+      "item": "minecraft:bookshelf",
+      "count": 4
+    },
+    "max_uses": 4,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

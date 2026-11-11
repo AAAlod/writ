@@ -1,0 +1,29 @@
+{
+  "pool": "n",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:farmer"
+  ],
+  "display_name": "堆肥",
+  "display_translation_key": "writ.preset.compost_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:wheat_seeds",
+      "count": 64
+    },
+    "result": {
+      "item": "minecraft:bone_meal",
+      "count": 16
+    },
+    "max_uses": 8,
+    "villager_xp": 1,
+    "price_multiplier": 0.05
+  }
+}

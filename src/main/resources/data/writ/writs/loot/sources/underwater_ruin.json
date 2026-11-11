@@ -1,0 +1,12 @@
+{
+  "loot_tables": [
+    "minecraft:chests/underwater_ruin_small",
+    "minecraft:chests/underwater_ruin_big"
+  ],
+  "contract_drop_chance": 0.39,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "r": 50,
+    "sr": 50
+  }
+}

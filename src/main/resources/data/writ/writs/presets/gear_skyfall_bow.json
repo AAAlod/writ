@@ -1,0 +1,30 @@
+{
+  "pool": "ur",
+  "weight": 1,
+  "sources": [
+    "ender_dragon"
+  ],
+  "allowed_professions": [
+    "minecraft:fletcher"
+  ],
+  "display_name": "苍穹专精·永矢",
+  "display_translation_key": "writ.preset.gear_skyfall_bow",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 48
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:bow",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:power\",lvl:7s},{id:\"minecraft:punch\",lvl:2s},{id:\"minecraft:flame\",lvl:1s},{id:\"minecraft:infinity\",lvl:1s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 20,
+    "price_multiplier": 0.05
+  }
+}

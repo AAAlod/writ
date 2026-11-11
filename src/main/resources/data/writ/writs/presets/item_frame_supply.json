@@ -1,0 +1,40 @@
+{
+  "pool": "n",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:leatherworker"
+  ],
+  "display_name": "物品展示框",
+  "display_translation_key": "writ.preset.item_frame_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 2
+    },
+    "result": {
+      "item": "minecraft:item_frame",
+      "count": 8
+    },
+    "max_uses": 6,
+    "villager_xp": 1,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "glow",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:glow_item_frame",
+          "count": 8
+        }
+      }
+    }
+  ]
+}

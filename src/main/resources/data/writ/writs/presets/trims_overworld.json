@@ -1,0 +1,68 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "desert_pyramid",
+    "pillager_outpost",
+    "shipwreck",
+    "woodland_mansion"
+  ],
+  "allowed_professions": [
+    "minecraft:armorer"
+  ],
+  "display_name": "盔甲纹饰·地表",
+  "display_translation_key": "writ.preset.trims_overworld",
+  "default_variant_translation_key": "trim_pattern.minecraft.dune",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 7
+    },
+    "result": {
+      "item": "minecraft:dune_armor_trim_smithing_template",
+      "count": 1
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "sentry",
+      "label": "哨兵",
+      "translation_key": "trim_pattern.minecraft.sentry",
+      "trade": {
+        "result": {
+          "item": "minecraft:sentry_armor_trim_smithing_template",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "coast",
+      "label": "海岸",
+      "translation_key": "trim_pattern.minecraft.coast",
+      "trade": {
+        "result": {
+          "item": "minecraft:coast_armor_trim_smithing_template",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "vex",
+      "label": "恼鬼",
+      "translation_key": "trim_pattern.minecraft.vex",
+      "trade": {
+        "result": {
+          "item": "minecraft:vex_armor_trim_smithing_template",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

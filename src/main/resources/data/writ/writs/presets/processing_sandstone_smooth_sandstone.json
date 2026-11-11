@@ -1,0 +1,29 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "desert_pyramid"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "砂岩烧制平滑砂岩",
+  "display_translation_key": "writ.preset.processing_sandstone_smooth_sandstone",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:sandstone",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:smooth_sandstone",
+      "count": 32
+    },
+    "max_uses": 24,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

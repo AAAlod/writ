@@ -1,0 +1,31 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "abandoned_mineshaft"
+  ],
+  "allowed_professions": [
+    "minecraft:toolsmith"
+  ],
+  "display_name": "工程物资箱",
+  "display_translation_key": "writ.preset.engineer_kit",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 48
+    },
+    "result": {
+      "item": "minecraft:shulker_box",
+      "count": 1,
+      "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:redstone\",Count:64b},{Slot:1b,id:\"minecraft:repeater\",Count:16b},{Slot:2b,id:\"minecraft:comparator\",Count:8b},{Slot:3b,id:\"minecraft:piston\",Count:8b},{Slot:4b,id:\"minecraft:sticky_piston\",Count:8b},{Slot:5b,id:\"minecraft:observer\",Count:8b},{Slot:6b,id:\"minecraft:hopper\",Count:4b},{Slot:7b,id:\"minecraft:redstone_lamp\",Count:16b}]}}"
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:shulker_box",
+      "count": 1
+    }
+  }
+}

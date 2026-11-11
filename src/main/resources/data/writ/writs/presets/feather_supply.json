@@ -1,0 +1,25 @@
+{
+  "pool": "n",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:butcher"
+  ],
+  "display_name": "羽毛供货",
+  "display_translation_key": "writ.preset.feather_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:feather",
+      "count": 16
+    },
+    "max_uses": 8,
+    "villager_xp": 1,
+    "price_multiplier": 0.05
+  }
+}

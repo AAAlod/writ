@@ -1,0 +1,30 @@
+{
+  "pool": "ur",
+  "weight": 1,
+  "sources": [
+    "elder_guardian"
+  ],
+  "allowed_professions": [
+    "minecraft:weaponsmith"
+  ],
+  "display_name": "潮汐三叉戟",
+  "display_translation_key": "writ.preset.gear_tidecaller_trident",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 40
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:trident",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:loyalty\",lvl:3s},{id:\"minecraft:channeling\",lvl:1s},{id:\"minecraft:impaling\",lvl:5s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 20,
+    "price_multiplier": 0.05
+  }
+}

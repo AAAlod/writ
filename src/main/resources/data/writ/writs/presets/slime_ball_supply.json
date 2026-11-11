@@ -1,0 +1,47 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:toolsmith"
+  ],
+  "display_name": "黏液球供货",
+  "display_translation_key": "writ.preset.slime_ball_supply",
+  "default_variant_translation_key": "writ.variant.buy",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:slime_ball",
+      "count": 16
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "spider_eyes",
+      "translation_key": "writ.variant.pay_spider_eyes",
+      "max_uses": 4,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "cost_b": {
+          "item": "minecraft:spider_eye",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:slime_ball",
+          "count": 16
+        }
+      }
+    }
+  ]
+}

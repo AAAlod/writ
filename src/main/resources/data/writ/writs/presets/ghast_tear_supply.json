@@ -1,0 +1,25 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "恶魂之泪供货",
+  "display_translation_key": "writ.preset.ghast_tear_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:ghast_tear",
+      "count": 4
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

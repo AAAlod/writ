@@ -1,0 +1,26 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "buried_treasure",
+    "underwater_ruin"
+  ],
+  "allowed_professions": [
+    "minecraft:butcher"
+  ],
+  "display_name": "海龟蛋",
+  "display_translation_key": "writ.preset.turtle_egg_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:turtle_egg",
+      "count": 2
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

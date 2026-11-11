@@ -1,0 +1,27 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "stronghold",
+    "ancient_city",
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:librarian"
+  ],
+  "display_name": "附魔之瓶补给",
+  "display_translation_key": "writ.preset.experience_bottle_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "result": {
+      "item": "minecraft:experience_bottle",
+      "count": 8
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

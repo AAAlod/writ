@@ -1,0 +1,171 @@
+{
+  "pool": "r",
+  "weight": 3,
+  "sources": [
+    "desert_pyramid"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "陶瓦供货",
+  "display_translation_key": "writ.preset.terracotta",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:terracotta",
+      "count": 32
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "white",
+      "trade": {
+        "result": {
+          "item": "minecraft:white_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "orange",
+      "trade": {
+        "result": {
+          "item": "minecraft:orange_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "magenta",
+      "trade": {
+        "result": {
+          "item": "minecraft:magenta_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "light_blue",
+      "trade": {
+        "result": {
+          "item": "minecraft:light_blue_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "yellow",
+      "trade": {
+        "result": {
+          "item": "minecraft:yellow_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "lime",
+      "trade": {
+        "result": {
+          "item": "minecraft:lime_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "pink",
+      "trade": {
+        "result": {
+          "item": "minecraft:pink_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "gray",
+      "trade": {
+        "result": {
+          "item": "minecraft:gray_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "light_gray",
+      "trade": {
+        "result": {
+          "item": "minecraft:light_gray_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "cyan",
+      "trade": {
+        "result": {
+          "item": "minecraft:cyan_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "purple",
+      "trade": {
+        "result": {
+          "item": "minecraft:purple_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "blue",
+      "trade": {
+        "result": {
+          "item": "minecraft:blue_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "brown",
+      "trade": {
+        "result": {
+          "item": "minecraft:brown_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "green",
+      "trade": {
+        "result": {
+          "item": "minecraft:green_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "red",
+      "trade": {
+        "result": {
+          "item": "minecraft:red_terracotta",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "black",
+      "trade": {
+        "result": {
+          "item": "minecraft:black_terracotta",
+          "count": 32
+        }
+      }
+    }
+  ]
+}

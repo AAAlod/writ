@@ -1,0 +1,26 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:cartographer"
+  ],
+  "display_name": "末影之眼补给",
+  "display_translation_key": "writ.preset.eye_of_ender_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:ender_eye",
+      "count": 2
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

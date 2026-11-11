@@ -1,0 +1,29 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "end_city"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "紫颂果爆裂",
+  "display_translation_key": "writ.preset.processing_chorus_fruit_popped",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:chorus_fruit",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:popped_chorus_fruit",
+      "count": 32
+    },
+    "max_uses": 24,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

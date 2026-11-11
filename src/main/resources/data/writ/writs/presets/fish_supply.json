@@ -1,0 +1,50 @@
+{
+  "pool": "n",
+  "weight": 1,
+  "sources": [
+    "shipwreck",
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:fisherman"
+  ],
+  "display_name": "熟鱼供货",
+  "display_translation_key": "writ.preset.fish_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:cooked_cod",
+      "count": 8
+    },
+    "max_uses": 8,
+    "villager_xp": 1,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "salmon",
+      "trade": {
+        "result": {
+          "item": "minecraft:cooked_salmon",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "pufferfish",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 2
+        },
+        "result": {
+          "item": "minecraft:pufferfish",
+          "count": 4
+        }
+      }
+    }
+  ]
+}

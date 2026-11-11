@@ -1,0 +1,30 @@
+{
+  "pool": "ur",
+  "weight": 1,
+  "sources": [
+    "wither"
+  ],
+  "allowed_professions": [
+    "minecraft:weaponsmith"
+  ],
+  "display_name": "锋刃专精·处刑",
+  "display_translation_key": "writ.preset.gear_edge_sword",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 64
+    },
+    "cost_b": {
+      "item": "minecraft:netherite_ingot",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:netherite_sword",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:sharpness\",lvl:7s},{id:\"minecraft:looting\",lvl:4s},{id:\"minecraft:fire_aspect\",lvl:2s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 20,
+    "price_multiplier": 0.05
+  }
+}

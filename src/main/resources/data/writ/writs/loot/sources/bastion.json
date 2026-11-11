@@ -1,0 +1,14 @@
+{
+  "loot_tables": [
+    "minecraft:chests/bastion_other",
+    "minecraft:chests/bastion_bridge",
+    "minecraft:chests/bastion_hoglin_stable"
+  ],
+  "contract_drop_chance": 0.1,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "r": 50,
+    "sr": 35,
+    "ssr": 15
+  }
+}

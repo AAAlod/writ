@@ -1,0 +1,30 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "特殊材料箱",
+  "display_translation_key": "writ.preset.special_materials_kit",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 48
+    },
+    "result": {
+      "item": "minecraft:shulker_box",
+      "count": 1,
+      "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:gunpowder\",Count:64b},{Slot:1b,id:\"minecraft:slime_ball\",Count:64b},{Slot:2b,id:\"minecraft:blaze_rod\",Count:16b},{Slot:3b,id:\"minecraft:ghast_tear\",Count:8b},{Slot:4b,id:\"minecraft:phantom_membrane\",Count:16b},{Slot:5b,id:\"minecraft:magma_cream\",Count:32b},{Slot:6b,id:\"minecraft:prismarine_shard\",Count:32b}]}}"
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:shulker_box",
+      "count": 1
+    }
+  }
+}

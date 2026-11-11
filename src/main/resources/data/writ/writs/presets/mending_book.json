@@ -1,0 +1,30 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "ancient_city"
+  ],
+  "allowed_professions": [
+    "minecraft:librarian"
+  ],
+  "display_name": "经验修补",
+  "display_translation_key": "writ.preset.mending_book",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "cost_b": {
+      "item": "minecraft:book",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

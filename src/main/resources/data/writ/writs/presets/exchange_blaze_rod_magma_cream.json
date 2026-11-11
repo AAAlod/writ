@@ -1,0 +1,30 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "nether_bridge",
+    "bastion"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "烈焰棒制岩浆膏",
+  "display_translation_key": "writ.preset.exchange_blaze_rod_magma_cream",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:magma_cream",
+      "count": 16
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:blaze_rod",
+      "count": 8
+    }
+  }
+}

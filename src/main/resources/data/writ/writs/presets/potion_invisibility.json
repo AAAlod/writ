@@ -1,0 +1,26 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "woodland_mansion"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "长效隐身药水",
+  "display_translation_key": "writ.preset.potion_invisibility",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:long_invisibility\"}"
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

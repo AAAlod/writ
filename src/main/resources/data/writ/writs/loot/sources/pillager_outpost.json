@@ -1,0 +1,11 @@
+{
+  "loot_table": "minecraft:chests/pillager_outpost",
+  "contract_drop_chance": 0.39,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "n": 10,
+    "r": 40,
+    "sr": 40,
+    "ssr": 10
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "loot_table": "minecraft:chests/ancient_city",
+  "contract_drop_chance": 0.05,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "sr": 45,
+    "ssr": 55
+  }
+}

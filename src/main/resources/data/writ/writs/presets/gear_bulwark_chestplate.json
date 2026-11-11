@@ -1,0 +1,30 @@
+{
+  "pool": "ur",
+  "weight": 1,
+  "sources": [
+    "wither"
+  ],
+  "allowed_professions": [
+    "minecraft:armorer"
+  ],
+  "display_name": "壁垒专精·守护",
+  "display_translation_key": "writ.preset.gear_bulwark_chestplate",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 48
+    },
+    "cost_b": {
+      "item": "minecraft:netherite_ingot",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:netherite_chestplate",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:protection\",lvl:5s},{id:\"minecraft:thorns\",lvl:3s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 20,
+    "price_multiplier": 0.05
+  }
+}

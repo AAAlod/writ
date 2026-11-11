@@ -1,0 +1,424 @@
+{
+  "stone_bricks": {
+    "pool": "n",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "石砖供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:stone_bricks",
+        "count": 32
+      },
+      "max_uses": 8,
+      "villager_xp": 1,
+      "price_multiplier": 0.05
+    }
+  },
+  "smooth_stone": {
+    "pool": "n",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "平滑石供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:smooth_stone",
+        "count": 32
+      },
+      "max_uses": 8,
+      "villager_xp": 1,
+      "price_multiplier": 0.05
+    }
+  },
+  "sandstone": {
+    "pool": "n",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "砂岩供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:sandstone",
+        "count": 32
+      },
+      "max_uses": 8,
+      "villager_xp": 1,
+      "price_multiplier": 0.05
+    }
+  },
+  "mud_bricks": {
+    "pool": "n",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "泥砖供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:mud_bricks",
+        "count": 32
+      },
+      "max_uses": 8,
+      "villager_xp": 1,
+      "price_multiplier": 0.05
+    }
+  },
+  "bricks": {
+    "pool": "r",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "红砖供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:bricks",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "deepslate_bricks": {
+    "pool": "r",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "深板岩砖供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:deepslate_bricks",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "deepslate_tiles": {
+    "pool": "r",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "深板岩瓦供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:deepslate_tiles",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "nether_bricks": {
+    "pool": "nether_building",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "下界砖供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 2
+      },
+      "result": {
+        "item": "minecraft:nether_bricks",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "polished_blackstone_bricks": {
+    "pool": "nether_building",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "磨制黑石砖供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:polished_blackstone_bricks",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "quartz_block": {
+    "pool": "nether_building",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "石英块供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 5
+      },
+      "result": {
+        "item": "minecraft:quartz_block",
+        "count": 16
+      },
+      "max_uses": 4,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "prismarine_bricks": {
+    "pool": "ocean_supply",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "海晶石砖供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:prismarine_bricks",
+        "count": 16
+      },
+      "max_uses": 3,
+      "villager_xp": 3,
+      "price_multiplier": 0.05
+    }
+  },
+  "sea_lantern": {
+    "pool": "ocean_supply",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "海晶灯供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:sea_lantern",
+        "count": 8
+      },
+      "max_uses": 2,
+      "villager_xp": 3,
+      "price_multiplier": 0.05
+    },
+    "variants": [
+      {
+        "id": "shards",
+        "max_uses": 2,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "cost_b": {
+            "item": "minecraft:prismarine_shard",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:sea_lantern",
+            "count": 8
+          }
+        }
+      }
+    ]
+  },
+  "processing_white_concrete": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "白色混凝土固化",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:white_concrete_powder",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:white_concrete",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_gray_concrete": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "灰色混凝土固化",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:gray_concrete_powder",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:gray_concrete",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_light_gray_concrete": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "淡灰色混凝土固化",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:light_gray_concrete_powder",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:light_gray_concrete",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_black_concrete": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "黑色混凝土固化",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:black_concrete_powder",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:black_concrete",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_stone_bricks_cracked": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "石砖烧制裂纹石砖",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:stone_bricks",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:cracked_stone_bricks",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_deepslate_bricks_cracked": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "深板岩砖烧制裂纹深板岩砖",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:deepslate_bricks",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:cracked_deepslate_bricks",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "pool": "r",
+  "weight": 2,
+  "sources": [
+    "desert_pyramid",
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "玻璃供货",
+  "display_translation_key": "writ.preset.glass",
+  "default_variant_translation_key": "writ.variant.buy",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 5
+    },
+    "result": {
+      "item": "minecraft:glass",
+      "count": 16
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "smelt_sand",
+      "label": "沙子烧制",
+      "translation_key": "writ.variant.glass.smelt_sand",
+      "max_uses": 24,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "cost_b": {
+          "item": "minecraft:sand",
+          "count": 16
+        },
+        "result": {
+          "item": "minecraft:glass",
+          "count": 16
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "loot_tables": [
+    "minecraft:chests/shipwreck_supply",
+    "minecraft:chests/shipwreck_map",
+    "minecraft:chests/shipwreck_treasure"
+  ],
+  "contract_drop_chance": 0.22,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "n": 20,
+    "r": 40,
+    "sr": 30,
+    "ssr": 10
+  }
+}

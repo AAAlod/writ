@@ -1,0 +1,2678 @@
+{
+  "a_unlock": {
+    "pool": "unlock",
+    "weight": 1,
+    "loot_modes": [
+      "TRADE"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "writ:chaos_writ",
+        "count": 1
+      },
+      "max_uses": 2,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "bee_products": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:farmer"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:honeycomb",
+        "count": 16
+      },
+      "max_uses": 4,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    },
+    "display_name": "蜂产品供货",
+    "variants": [
+      {
+        "id": "honey_bottles",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 2
+          },
+          "cost_b": {
+            "item": "minecraft:glass_bottle",
+            "count": 16
+          },
+          "result": {
+            "item": "minecraft:honey_bottle",
+            "count": 16
+          }
+        },
+        "max_uses": 4
+      }
+    ]
+  },
+  "blaze_rod_supply": {
+    "pool": "blaze_fortress",
+    "weight": 1,
+    "display_name": "烈焰棒供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:blaze_rod",
+        "count": 8
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    },
+    "allowed_professions": [
+      "minecraft:cleric"
+    ]
+  },
+  "concrete_curing": {
+    "pool": "r",
+    "weight": 2,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:white_concrete",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:white_concrete_powder",
+        "count": 32
+      }
+    },
+    "display_name": "混凝土固化",
+    "variants": [
+      {
+        "id": "orange",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:orange_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:orange_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "magenta",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:magenta_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:magenta_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "light_blue",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:light_blue_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:light_blue_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "yellow",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:yellow_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:yellow_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "lime",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:lime_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:lime_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "pink",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:pink_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:pink_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "gray",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:gray_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:gray_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "light_gray",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:light_gray_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:light_gray_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "cyan",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:cyan_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:cyan_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "purple",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:purple_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:purple_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "blue",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:blue_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:blue_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "brown",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:brown_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:brown_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "green",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:green_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:green_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "red",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:red_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:red_concrete",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "black",
+        "trade": {
+          "cost_b": {
+            "item": "minecraft:black_concrete_powder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:black_concrete",
+            "count": 32
+          }
+        }
+      }
+    ]
+  },
+  "concrete_palette_kit": {
+    "pool": "desert_building",
+    "weight": 1,
+    "display_name": "16 色混凝土配色箱",
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:diamond",
+        "count": 16
+      },
+      "result": {
+        "item": "minecraft:shulker_box",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:white_concrete\",Count:32b},{Slot:1b,id:\"minecraft:orange_concrete\",Count:32b},{Slot:2b,id:\"minecraft:magenta_concrete\",Count:32b},{Slot:3b,id:\"minecraft:light_blue_concrete\",Count:32b},{Slot:4b,id:\"minecraft:yellow_concrete\",Count:32b},{Slot:5b,id:\"minecraft:lime_concrete\",Count:32b},{Slot:6b,id:\"minecraft:pink_concrete\",Count:32b},{Slot:7b,id:\"minecraft:gray_concrete\",Count:32b},{Slot:8b,id:\"minecraft:light_gray_concrete\",Count:32b},{Slot:9b,id:\"minecraft:cyan_concrete\",Count:32b},{Slot:10b,id:\"minecraft:purple_concrete\",Count:32b},{Slot:11b,id:\"minecraft:blue_concrete\",Count:32b},{Slot:12b,id:\"minecraft:brown_concrete\",Count:32b},{Slot:13b,id:\"minecraft:green_concrete\",Count:32b},{Slot:14b,id:\"minecraft:red_concrete\",Count:32b},{Slot:15b,id:\"minecraft:black_concrete\",Count:32b}]}}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:shulker_box",
+        "count": 1
+      }
+    }
+  },
+  "copper_block": {
+    "pool": "r",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "铜块供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 6
+      },
+      "result": {
+        "item": "minecraft:copper_block",
+        "count": 16
+      },
+      "max_uses": 4,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "cracked_bricks": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:cracked_stone_bricks",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:stone_bricks",
+        "count": 32
+      }
+    },
+    "display_name": "裂纹砖烧制",
+    "variants": [
+      {
+        "id": "deepslate",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "cost_b": {
+            "item": "minecraft:deepslate_bricks",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:cracked_deepslate_bricks",
+            "count": 32
+          }
+        }
+      }
+    ]
+  },
+  "dragon_breath_supply": {
+    "pool": "breath_end",
+    "weight": 1,
+    "display_name": "龙息供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 6
+      },
+      "result": {
+        "item": "minecraft:dragon_breath",
+        "count": 3
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:glass_bottle",
+        "count": 3
+      }
+    },
+    "allowed_professions": [
+      "minecraft:cleric"
+    ]
+  },
+  "echo_shard_supply": {
+    "pool": "echo_deep",
+    "weight": 1,
+    "display_name": "回响碎片补给",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 16
+      },
+      "result": {
+        "item": "minecraft:echo_shard",
+        "count": 2
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:amethyst_shard",
+        "count": 4
+      }
+    },
+    "allowed_professions": [
+      "minecraft:cleric"
+    ]
+  },
+  "elytra_upgrade_service": {
+    "pool": "elytra_end",
+    "weight": 1,
+    "display_name": "鞘翅补给",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 48
+      },
+      "result": {
+        "item": "minecraft:elytra",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:elytra",
+        "count": 1
+      }
+    },
+    "allowed_professions": [
+      "minecraft:armorer"
+    ]
+  },
+  "enchanted_golden_apple_supply": {
+    "pool": "enchanted_apple_mansion",
+    "weight": 1,
+    "display_name": "附魔金苹果补给",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:enchanted_golden_apple",
+        "count": 1
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:gold_block",
+        "count": 16
+      }
+    }
+  },
+  "end_crystal_supply": {
+    "pool": "crystal_end",
+    "weight": 0,
+    "display_name": "末地水晶补给",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 12
+      },
+      "result": {
+        "item": "minecraft:end_crystal",
+        "count": 2
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "engineer_kit": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "工程物资箱",
+    "allowed_professions": [
+      "minecraft:toolsmith"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 48
+      },
+      "result": {
+        "item": "minecraft:shulker_box",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:redstone\",Count:64b},{Slot:1b,id:\"minecraft:repeater\",Count:16b},{Slot:2b,id:\"minecraft:comparator\",Count:8b},{Slot:3b,id:\"minecraft:piston\",Count:8b},{Slot:4b,id:\"minecraft:sticky_piston\",Count:8b},{Slot:5b,id:\"minecraft:observer\",Count:8b},{Slot:6b,id:\"minecraft:hopper\",Count:4b},{Slot:7b,id:\"minecraft:redstone_lamp\",Count:16b}]}}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:shulker_box",
+        "count": 1
+      }
+    }
+  },
+  "exchange_blaze_rod_magma_cream": {
+    "pool": "r",
+    "weight": 1,
+    "display_name": "烈焰棒制岩浆膏",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:magma_cream",
+        "count": 16
+      },
+      "max_uses": 6,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:blaze_rod",
+        "count": 8
+      }
+    }
+  },
+  "exchange_ink_sac_glow_ink_sac": {
+    "pool": "r",
+    "weight": 1,
+    "display_name": "墨囊精炼发光墨囊",
+    "allowed_professions": [
+      "minecraft:librarian"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:glow_ink_sac",
+        "count": 8
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:ink_sac",
+        "count": 16
+      }
+    }
+  },
+  "exchange_rotten_flesh_leather": {
+    "pool": "r",
+    "weight": 1,
+    "display_name": "腐肉鞣制皮革",
+    "allowed_professions": [
+      "minecraft:leatherworker"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:leather",
+        "count": 4
+      },
+      "max_uses": 8,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:rotten_flesh",
+        "count": 32
+      }
+    }
+  },
+  "exchange_spider_eye_emerald": {
+    "pool": "n",
+    "weight": 0,
+    "display_name": "蜘蛛眼回收绿宝石",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:spider_eye",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "max_uses": 8,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "exchange_string_name_tag": {
+    "pool": "r",
+    "weight": 1,
+    "display_name": "丝线编织命名牌",
+    "allowed_professions": [
+      "minecraft:librarian"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:name_tag",
+        "count": 1
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:string",
+        "count": 32
+      }
+    }
+  },
+  "exchange_string_phantom_membrane": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "丝线换幻翼膜",
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 2
+      },
+      "result": {
+        "item": "minecraft:phantom_membrane",
+        "count": 2
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:string",
+        "count": 24
+      }
+    }
+  },
+  "expedition_kit": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "远征物资箱",
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:shulker_box",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:1b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:2b,id:\"minecraft:cooked_beef\",Count:64b},{Slot:3b,id:\"minecraft:torch\",Count:64b},{Slot:4b,id:\"minecraft:ender_pearl\",Count:16b},{Slot:5b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:6b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:7b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:8b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:9b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:night_vision\"}}]}}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:shulker_box",
+        "count": 1
+      }
+    },
+    "variants": [
+      {
+        "id": "end",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 36
+          },
+          "result": {
+            "item": "minecraft:shulker_box",
+            "count": 1,
+            "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:3b}}},{Slot:1b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:3b}}},{Slot:2b,id:\"minecraft:ender_pearl\",Count:16b},{Slot:3b,id:\"minecraft:ender_pearl\",Count:16b},{Slot:4b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:5b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:6b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:7b,id:\"minecraft:cooked_beef\",Count:64b},{Slot:8b,id:\"minecraft:torch\",Count:64b},{Slot:9b,id:\"minecraft:end_stone\",Count:64b}]}}"
+          }
+        }
+      },
+      {
+        "id": "emerald_buy",
+        "enabled": false
+      }
+    ]
+  },
+  "explosive_supply": {
+    "pool": "explosive_mineshaft",
+    "weight": 0,
+    "display_name": "TNT·小批爆破补给",
+    "allowed_professions": [
+      "minecraft:toolsmith"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:tnt",
+        "count": 8
+      },
+      "max_uses": 2,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    },
+    "variants": [
+      {
+        "id": "bulk",
+        "max_uses": 1,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 24
+          },
+          "cost_b": {
+            "item": "minecraft:gunpowder",
+            "count": 64
+          },
+          "result": {
+            "item": "minecraft:tnt",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "pack",
+        "enabled": false,
+        "max_uses": 1,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 24
+          },
+          "cost_b": {
+            "item": "minecraft:shulker_box",
+            "count": 1
+          },
+          "result": {
+            "item": "minecraft:shulker_box",
+            "count": 1,
+            "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:tnt\",Count:16b},{Slot:1b,id:\"minecraft:gunpowder\",Count:64b},{Slot:2b,id:\"minecraft:sand\",Count:64b},{Slot:3b,id:\"minecraft:flint_and_steel\",Count:1b}]}}"
+          }
+        }
+      },
+      {
+        "id": "gunpowder",
+        "max_uses": 2,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "cost_b": {
+            "item": "minecraft:gunpowder",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:tnt",
+            "count": 8
+          }
+        },
+        "enabled": false
+      }
+    ]
+  },
+  "flight_fireworks_supply": {
+    "pool": "r",
+    "weight": 1,
+    "display_name": "烟花火箭·鞘翅补给（Flight 1）",
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:firework_rocket",
+        "count": 64,
+        "nbt": "{Fireworks:{Flight:1b}}"
+      },
+      "max_uses": 8,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    },
+    "variants": [
+      {
+        "id": "flight3",
+        "max_uses": 6,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 6
+          },
+          "result": {
+            "item": "minecraft:firework_rocket",
+            "count": 64,
+            "nbt": "{Fireworks:{Flight:3b}}"
+          }
+        }
+      },
+      {
+        "id": "pack",
+        "max_uses": 1,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 12
+          },
+          "cost_b": {
+            "item": "minecraft:shulker_box",
+            "count": 1
+          },
+          "result": {
+            "item": "minecraft:shulker_box",
+            "count": 1,
+            "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:1b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:2b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:3b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}}]}}"
+          }
+        }
+      }
+    ]
+  },
+  "gear_angler_rod": {
+    "pool": "gear_shipwreck",
+    "weight": 0,
+    "display_name": "海之眷顾钓竿",
+    "allowed_professions": [
+      "minecraft:fisherman"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 12
+      },
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 2
+      },
+      "result": {
+        "item": "minecraft:fishing_rod",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:luck_of_the_sea\",lvl:4s},{id:\"minecraft:lure\",lvl:4s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 2,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_bulwark_chestplate": {
+    "pool": "gear_wither",
+    "weight": 1,
+    "display_name": "壁垒专精·守护胸甲",
+    "allowed_professions": [
+      "minecraft:armorer"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 48
+      },
+      "cost_b": {
+        "item": "minecraft:netherite_ingot",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:netherite_chestplate",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:protection\",lvl:5s},{id:\"minecraft:thorns\",lvl:3s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_edge_sword": {
+    "pool": "gear_wither",
+    "weight": 1,
+    "display_name": "锋刃专精·处刑剑",
+    "allowed_professions": [
+      "minecraft:weaponsmith"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 64
+      },
+      "cost_b": {
+        "item": "minecraft:netherite_ingot",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:netherite_sword",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:sharpness\",lvl:7s},{id:\"minecraft:looting\",lvl:4s},{id:\"minecraft:fire_aspect\",lvl:2s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_skyfall_bow": {
+    "pool": "gear_dragon",
+    "weight": 1,
+    "display_name": "苍穹专精·永矢弓",
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 48
+      },
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:bow",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:power\",lvl:7s},{id:\"minecraft:punch\",lvl:2s},{id:\"minecraft:flame\",lvl:1s},{id:\"minecraft:infinity\",lvl:1s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_stride_boots": {
+    "pool": "gear_bastion",
+    "weight": 1,
+    "display_name": "疾行专精·踏魂靴",
+    "allowed_professions": [
+      "minecraft:armorer"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 32
+      },
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:diamond_boots",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:soul_speed\",lvl:4s},{id:\"minecraft:feather_falling\",lvl:5s},{id:\"minecraft:depth_strider\",lvl:3s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_swift_leggings": {
+    "pool": "gear_deep",
+    "weight": 0,
+    "display_name": "幽影专精·潜行护腿",
+    "allowed_professions": [
+      "minecraft:armorer"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 32
+      },
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:diamond_leggings",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:swift_sneak\",lvl:4s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_tidecaller_trident": {
+    "pool": "trident_guardian",
+    "weight": 1,
+    "display_name": "潮汐三叉戟",
+    "allowed_professions": [
+      "minecraft:weaponsmith"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 40
+      },
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:trident",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:loyalty\",lvl:3s},{id:\"minecraft:channeling\",lvl:1s},{id:\"minecraft:impaling\",lvl:5s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_tri_bolt_crossbow": {
+    "pool": "gear_mansion",
+    "weight": 0,
+    "display_name": "三矢连弩",
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 48
+      },
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:crossbow",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:multishot\",lvl:1s},{id:\"minecraft:piercing\",lvl:4s},{id:\"minecraft:quick_charge\",lvl:3s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "gear_vein_pickaxe": {
+    "pool": "gear_bastion",
+    "weight": 1,
+    "display_name": "矿脉专精·时运镐",
+    "allowed_professions": [
+      "minecraft:toolsmith"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 64
+      },
+      "cost_b": {
+        "item": "minecraft:netherite_ingot",
+        "count": 2
+      },
+      "result": {
+        "item": "minecraft:netherite_pickaxe",
+        "count": 1,
+        "nbt": "{Enchantments:[{id:\"minecraft:efficiency\",lvl:8s},{id:\"minecraft:fortune\",lvl:4s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "ghast_tear_supply": {
+    "pool": "nether_special",
+    "weight": 1,
+    "display_name": "恶魂之泪供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:ghast_tear",
+        "count": 4
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    },
+    "allowed_professions": [
+      "minecraft:cleric"
+    ]
+  },
+  "glass": {
+    "pool": "r",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "玻璃供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 2
+      },
+      "result": {
+        "item": "minecraft:glass",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "golden_apple_supply": {
+    "pool": "r",
+    "weight": 0,
+    "display_name": "金苹果补给",
+    "allowed_professions": [
+      "minecraft:farmer"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:golden_apple",
+        "count": 4
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:gold_ingot",
+        "count": 16
+      }
+    }
+  },
+  "gunpowder_supply": {
+    "pool": "r",
+    "weight": 1,
+    "display_name": "火药供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:gunpowder",
+        "count": 16
+      },
+      "max_uses": 6,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    },
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "variants": [
+      {
+        "id": "rotten_flesh",
+        "max_uses": 6,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "cost_b": {
+            "item": "minecraft:rotten_flesh",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:gunpowder",
+            "count": 12
+          }
+        }
+      }
+    ]
+  },
+  "heart_of_the_sea_supply": {
+    "pool": "heart_of_the_sea",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:cartographer"
+    ],
+    "display_name": "海洋之心补给",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:netherite_ingot",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:emerald",
+        "count": 64
+      },
+      "result": {
+        "item": "minecraft:heart_of_the_sea",
+        "count": 1
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "masonry_blocks": {
+    "pool": "r",
+    "weight": 6,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:bricks",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    },
+    "display_name": "砖块供货",
+    "variants": [
+      {
+        "id": "deepslate_bricks",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 3
+          },
+          "result": {
+            "item": "minecraft:deepslate_bricks",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "deepslate_tiles",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 3
+          },
+          "result": {
+            "item": "minecraft:deepslate_tiles",
+            "count": 32
+          }
+        }
+      }
+    ]
+  },
+  "nether_blocks": {
+    "pool": "nether_building",
+    "weight": 6,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 2
+      },
+      "result": {
+        "item": "minecraft:nether_bricks",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    },
+    "display_name": "下界石材供货",
+    "variants": [
+      {
+        "id": "polished_blackstone_bricks",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 3
+          },
+          "result": {
+            "item": "minecraft:polished_blackstone_bricks",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "quartz_block",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 5
+          },
+          "result": {
+            "item": "minecraft:quartz_block",
+            "count": 16
+          }
+        },
+        "max_uses": 4
+      }
+    ]
+  },
+  "nether_star_supply": {
+    "pool": "star_wither",
+    "weight": 0,
+    "display_name": "下界之星",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 48
+      },
+      "result": {
+        "item": "minecraft:nether_star",
+        "count": 1
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 24
+      }
+    }
+  },
+  "netherite_upgrade_template_supply": {
+    "pool": "template_bastion",
+    "weight": 0,
+    "display_name": "下界合金升级模板补给",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:netherite_upgrade_smithing_template",
+        "count": 1
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 7
+      }
+    },
+    "allowed_professions": [
+      "minecraft:toolsmith"
+    ]
+  },
+  "ocean_blocks": {
+    "pool": "ocean_supply",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:prismarine_bricks",
+        "count": 16
+      },
+      "max_uses": 3,
+      "villager_xp": 3,
+      "price_multiplier": 0.05
+    },
+    "display_name": "海洋建筑材料供货",
+    "variants": [
+      {
+        "id": "sea_lantern",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 8
+          },
+          "result": {
+            "item": "minecraft:sea_lantern",
+            "count": 8
+          }
+        },
+        "max_uses": 2
+      },
+      {
+        "id": "shards",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "cost_b": {
+            "item": "minecraft:prismarine_shard",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:sea_lantern",
+            "count": 8
+          }
+        },
+        "max_uses": 2
+      }
+    ]
+  },
+  "potion_fire_resistance": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "长效抗火药水",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:long_fire_resistance\"}"
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "potion_invisibility": {
+    "pool": "sr",
+    "weight": 0,
+    "display_name": "长效隐身药水",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:long_invisibility\"}"
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "potion_kit": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "药水应急箱",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 36
+      },
+      "result": {
+        "item": "minecraft:shulker_box",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:splash_potion\",Count:1b,tag:{Potion:\"minecraft:strong_healing\"}},{Slot:1b,id:\"minecraft:splash_potion\",Count:1b,tag:{Potion:\"minecraft:strong_healing\"}},{Slot:2b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:3b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:4b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:5b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:6b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_regeneration\"}},{Slot:7b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_regeneration\"}},{Slot:8b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:night_vision\"}},{Slot:9b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:night_vision\"}},{Slot:10b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:water_breathing\"}},{Slot:11b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:water_breathing\"}}]}}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:shulker_box",
+        "count": 1
+      }
+    }
+  },
+  "potion_regeneration_long": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "长效再生药水",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:long_regeneration\"}"
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "potion_slow_falling": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "长效缓降药水",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:long_slow_falling\"}"
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "potion_turtle_master": {
+    "pool": "ssr",
+    "weight": 0,
+    "display_name": "长效神龟药水",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 16
+      },
+      "result": {
+        "item": "minecraft:potion",
+        "count": 1,
+        "nbt": "{Potion:\"minecraft:long_turtle_master\"}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_cactus_green_dye": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:shepherd"
+    ],
+    "display_name": "仙人掌烧制绿色染料",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:cactus",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:green_dye",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_chorus_fruit_popped": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "display_name": "紫颂果爆裂",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:chorus_fruit",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:popped_chorus_fruit",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_copper_oxidized": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "铜块完全氧化",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:copper_block",
+        "count": 16
+      },
+      "result": {
+        "item": "minecraft:oxidized_copper",
+        "count": 16
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_quartz_smooth_quartz": {
+    "pool": "nether_building",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "石英块烧制平滑石英",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:quartz_block",
+        "count": 16
+      },
+      "result": {
+        "item": "minecraft:smooth_quartz",
+        "count": 16
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_raw_copper_copper_ingot": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:toolsmith"
+    ],
+    "display_name": "生铜熔炼",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:raw_copper",
+        "count": 64
+      },
+      "result": {
+        "item": "minecraft:copper_ingot",
+        "count": 64
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_raw_gold_gold_ingot": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "display_name": "生金熔炼",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:raw_gold",
+        "count": 64
+      },
+      "result": {
+        "item": "minecraft:gold_ingot",
+        "count": 64
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_raw_iron_iron_ingot": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:toolsmith"
+    ],
+    "display_name": "生铁熔炼",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:raw_iron",
+        "count": 64
+      },
+      "result": {
+        "item": "minecraft:iron_ingot",
+        "count": 64
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_sand_glass": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "沙子烧制玻璃",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:sand",
+        "count": 16
+      },
+      "result": {
+        "item": "minecraft:glass",
+        "count": 16
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_sandstone_smooth_sandstone": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "砂岩烧制平滑砂岩",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:sandstone",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:smooth_sandstone",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_sea_pickle_lime_dye": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:shepherd"
+    ],
+    "display_name": "海泡菜烧制黄绿色染料",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:sea_pickle",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:lime_dye",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_strip_oak_log": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "display_name": "橡木原木去皮",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:oak_log",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:stripped_oak_log",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_strip_spruce_log": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "display_name": "云杉原木去皮",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:spruce_log",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:stripped_spruce_log",
+        "count": 32
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "processing_wet_sponge_dry": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:fisherman"
+    ],
+    "display_name": "湿海绵烘干",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "cost_b": {
+        "item": "minecraft:wet_sponge",
+        "count": 8
+      },
+      "result": {
+        "item": "minecraft:sponge",
+        "count": 8
+      },
+      "max_uses": 24,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    }
+  },
+  "rabbit_foot_supply": {
+    "pool": "r",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:butcher"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 6
+      },
+      "result": {
+        "item": "minecraft:rabbit_foot",
+        "count": 1
+      },
+      "max_uses": 4,
+      "villager_xp": 2,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:rabbit_hide",
+        "count": 4
+      }
+    },
+    "display_name": "兔脚供货"
+  },
+  "shulker_shell_supply": {
+    "pool": "shell_end",
+    "weight": 1,
+    "display_name": "潜影壳供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 12
+      },
+      "result": {
+        "item": "minecraft:shulker_shell",
+        "count": 2
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 4
+      }
+    },
+    "allowed_professions": [
+      "minecraft:cartographer"
+    ],
+    "variants": [
+      {
+        "id": "spider_eyes",
+        "max_uses": 1,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 8
+          },
+          "cost_b": {
+            "item": "minecraft:spider_eye",
+            "count": 64
+          },
+          "result": {
+            "item": "minecraft:shulker_shell",
+            "count": 1
+          }
+        },
+        "enabled": false
+      }
+    ]
+  },
+  "slime_ball_supply": {
+    "pool": "r",
+    "weight": 1,
+    "display_name": "粘液球供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:slime_ball",
+        "count": 16
+      },
+      "max_uses": 6,
+      "villager_xp": 0,
+      "price_multiplier": 0.05
+    },
+    "allowed_professions": [
+      "minecraft:toolsmith"
+    ],
+    "variants": [
+      {
+        "id": "spider_eyes",
+        "max_uses": 4,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "cost_b": {
+            "item": "minecraft:spider_eye",
+            "count": 32
+          },
+          "result": {
+            "item": "minecraft:slime_ball",
+            "count": 16
+          }
+        }
+      }
+    ]
+  },
+  "special_materials_kit": {
+    "pool": "sr",
+    "weight": 1,
+    "display_name": "特殊材料箱",
+    "allowed_professions": [
+      "minecraft:cleric"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 48
+      },
+      "result": {
+        "item": "minecraft:shulker_box",
+        "count": 1,
+        "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:gunpowder\",Count:64b},{Slot:1b,id:\"minecraft:slime_ball\",Count:64b},{Slot:2b,id:\"minecraft:blaze_rod\",Count:16b},{Slot:3b,id:\"minecraft:ghast_tear\",Count:8b},{Slot:4b,id:\"minecraft:phantom_membrane\",Count:16b},{Slot:5b,id:\"minecraft:magma_cream\",Count:32b},{Slot:6b,id:\"minecraft:prismarine_shard\",Count:32b}]}}"
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:shulker_box",
+        "count": 1
+      }
+    }
+  },
+  "sponge_supply": {
+    "pool": "sponge_ocean",
+    "weight": 1,
+    "display_name": "海绵补给",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 16
+      },
+      "result": {
+        "item": "minecraft:sponge",
+        "count": 4
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:prismarine_shard",
+        "count": 8
+      }
+    },
+    "allowed_professions": [
+      "minecraft:fisherman"
+    ]
+  },
+  "stone_basics": {
+    "pool": "n",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:stone_bricks",
+        "count": 32
+      },
+      "max_uses": 8,
+      "villager_xp": 1,
+      "price_multiplier": 0.05
+    },
+    "display_name": "基础石材供货",
+    "variants": [
+      {
+        "id": "smooth_stone",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "result": {
+            "item": "minecraft:smooth_stone",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "sandstone",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "result": {
+            "item": "minecraft:sandstone",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "mud_bricks",
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:emerald",
+            "count": 1
+          },
+          "result": {
+            "item": "minecraft:mud_bricks",
+            "count": 32
+          }
+        }
+      }
+    ]
+  },
+  "terracotta": {
+    "pool": "desert_building",
+    "weight": 3,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "陶瓦供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:terracotta",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    },
+    "variants": [
+      {
+        "id": "white",
+        "label": "白色",
+        "trade": {
+          "result": {
+            "item": "minecraft:white_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "orange",
+        "label": "橙色",
+        "trade": {
+          "result": {
+            "item": "minecraft:orange_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "magenta",
+        "label": "品红色",
+        "trade": {
+          "result": {
+            "item": "minecraft:magenta_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "light_blue",
+        "label": "淡蓝色",
+        "trade": {
+          "result": {
+            "item": "minecraft:light_blue_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "yellow",
+        "label": "黄色",
+        "trade": {
+          "result": {
+            "item": "minecraft:yellow_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "lime",
+        "label": "黄绿色",
+        "trade": {
+          "result": {
+            "item": "minecraft:lime_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "pink",
+        "label": "粉红色",
+        "trade": {
+          "result": {
+            "item": "minecraft:pink_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "gray",
+        "label": "灰色",
+        "trade": {
+          "result": {
+            "item": "minecraft:gray_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "light_gray",
+        "label": "淡灰色",
+        "trade": {
+          "result": {
+            "item": "minecraft:light_gray_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "cyan",
+        "label": "青色",
+        "trade": {
+          "result": {
+            "item": "minecraft:cyan_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "purple",
+        "label": "紫色",
+        "trade": {
+          "result": {
+            "item": "minecraft:purple_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "blue",
+        "label": "蓝色",
+        "trade": {
+          "result": {
+            "item": "minecraft:blue_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "brown",
+        "label": "棕色",
+        "trade": {
+          "result": {
+            "item": "minecraft:brown_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "green",
+        "label": "绿色",
+        "trade": {
+          "result": {
+            "item": "minecraft:green_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "red",
+        "label": "红色",
+        "trade": {
+          "result": {
+            "item": "minecraft:red_terracotta",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "black",
+        "label": "黑色",
+        "trade": {
+          "result": {
+            "item": "minecraft:black_terracotta",
+            "count": 32
+          }
+        }
+      }
+    ]
+  },
+  "terracotta_kit": {
+    "pool": "desert_building",
+    "weight": 1,
+    "allowed_professions": [
+      "minecraft:mason"
+    ],
+    "display_name": "16 色陶瓦建筑套装",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:diamond",
+        "count": 16
+      },
+      "cost_b": {
+        "item": "minecraft:shulker_box",
+        "count": 1
+      },
+      "result": {
+        "item": "minecraft:shulker_box",
+        "count": 1,
+        "nbt": {
+          "BlockEntityTag": {
+            "Items": [
+              {
+                "Slot": 0,
+                "id": "minecraft:white_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 1,
+                "id": "minecraft:orange_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 2,
+                "id": "minecraft:magenta_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 3,
+                "id": "minecraft:light_blue_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 4,
+                "id": "minecraft:yellow_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 5,
+                "id": "minecraft:lime_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 6,
+                "id": "minecraft:pink_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 7,
+                "id": "minecraft:gray_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 8,
+                "id": "minecraft:light_gray_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 9,
+                "id": "minecraft:cyan_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 10,
+                "id": "minecraft:purple_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 11,
+                "id": "minecraft:blue_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 12,
+                "id": "minecraft:brown_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 13,
+                "id": "minecraft:green_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 14,
+                "id": "minecraft:red_terracotta",
+                "Count": 64
+              },
+              {
+                "Slot": 15,
+                "id": "minecraft:black_terracotta",
+                "Count": 64
+              }
+            ]
+          },
+          "display": {
+            "Name": "{\"text\":\"16 色陶瓦建筑套装\"}"
+          }
+        }
+      },
+      "max_uses": 1,
+      "villager_xp": 5,
+      "price_multiplier": 0.05
+    },
+    "variants": [
+      {
+        "id": "glazed",
+        "enabled": true,
+        "trade": {
+          "cost_a": {
+            "item": "minecraft:diamond",
+            "count": 24
+          },
+          "cost_b": {
+            "item": "minecraft:shulker_box",
+            "count": 1
+          },
+          "result": {
+            "item": "minecraft:shulker_box",
+            "count": 1,
+            "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:white_glazed_terracotta\",Count:32b},{Slot:1b,id:\"minecraft:orange_glazed_terracotta\",Count:32b},{Slot:2b,id:\"minecraft:magenta_glazed_terracotta\",Count:32b},{Slot:3b,id:\"minecraft:light_blue_glazed_terracotta\",Count:32b},{Slot:4b,id:\"minecraft:yellow_glazed_terracotta\",Count:32b},{Slot:5b,id:\"minecraft:lime_glazed_terracotta\",Count:32b},{Slot:6b,id:\"minecraft:pink_glazed_terracotta\",Count:32b},{Slot:7b,id:\"minecraft:gray_glazed_terracotta\",Count:32b},{Slot:8b,id:\"minecraft:light_gray_glazed_terracotta\",Count:32b},{Slot:9b,id:\"minecraft:cyan_glazed_terracotta\",Count:32b},{Slot:10b,id:\"minecraft:purple_glazed_terracotta\",Count:32b},{Slot:11b,id:\"minecraft:blue_glazed_terracotta\",Count:32b},{Slot:12b,id:\"minecraft:brown_glazed_terracotta\",Count:32b},{Slot:13b,id:\"minecraft:green_glazed_terracotta\",Count:32b},{Slot:14b,id:\"minecraft:red_glazed_terracotta\",Count:32b},{Slot:15b,id:\"minecraft:black_glazed_terracotta\",Count:32b}]}}"
+          }
+        }
+      }
+    ]
+  },
+  "tipped_arrow_poison": {
+    "pool": "arrows_end",
+    "weight": 1,
+    "display_name": "药箭·长效中毒",
+    "allowed_professions": [
+      "minecraft:fletcher"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 3
+      },
+      "result": {
+        "item": "minecraft:tipped_arrow",
+        "count": 16,
+        "nbt": "{Potion:\"minecraft:long_poison\"}"
+      },
+      "max_uses": 4,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:arrow",
+        "count": 16
+      }
+    }
+  },
+  "totem_supply": {
+    "pool": "totem_mansion",
+    "weight": 1,
+    "display_name": "不死图腾",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:totem_of_undying",
+        "count": 1
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 8
+      }
+    }
+  },
+  "wither_skull_supply": {
+    "pool": "skull_fortress",
+    "weight": 1,
+    "display_name": "凋灵骷髅头颅供货",
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 32
+      },
+      "result": {
+        "item": "minecraft:wither_skeleton_skull",
+        "count": 1
+      },
+      "max_uses": 1,
+      "villager_xp": 0,
+      "price_multiplier": 0.05,
+      "cost_b": {
+        "item": "minecraft:diamond",
+        "count": 8
+      }
+    },
+    "allowed_professions": [
+      "minecraft:cleric"
+    ]
+  },
+  "wool_supply": {
+    "pool": "r",
+    "weight": 2,
+    "allowed_professions": [
+      "minecraft:shepherd"
+    ],
+    "trade": {
+      "cost_a": {
+        "item": "minecraft:emerald",
+        "count": 4
+      },
+      "result": {
+        "item": "minecraft:white_wool",
+        "count": 32
+      },
+      "max_uses": 6,
+      "villager_xp": 2,
+      "price_multiplier": 0.05
+    },
+    "display_name": "16 色羊毛供货",
+    "variants": [
+      {
+        "id": "orange",
+        "trade": {
+          "result": {
+            "item": "minecraft:orange_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "magenta",
+        "trade": {
+          "result": {
+            "item": "minecraft:magenta_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "light_blue",
+        "trade": {
+          "result": {
+            "item": "minecraft:light_blue_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "yellow",
+        "trade": {
+          "result": {
+            "item": "minecraft:yellow_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "lime",
+        "trade": {
+          "result": {
+            "item": "minecraft:lime_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "pink",
+        "trade": {
+          "result": {
+            "item": "minecraft:pink_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "gray",
+        "trade": {
+          "result": {
+            "item": "minecraft:gray_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "light_gray",
+        "trade": {
+          "result": {
+            "item": "minecraft:light_gray_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "cyan",
+        "trade": {
+          "result": {
+            "item": "minecraft:cyan_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "purple",
+        "trade": {
+          "result": {
+            "item": "minecraft:purple_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "blue",
+        "trade": {
+          "result": {
+            "item": "minecraft:blue_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "brown",
+        "trade": {
+          "result": {
+            "item": "minecraft:brown_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "green",
+        "trade": {
+          "result": {
+            "item": "minecraft:green_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "red",
+        "trade": {
+          "result": {
+            "item": "minecraft:red_wool",
+            "count": 32
+          }
+        }
+      },
+      {
+        "id": "black",
+        "trade": {
+          "result": {
+            "item": "minecraft:black_wool",
+            "count": 32
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "shipwreck"
+  ],
+  "allowed_professions": [
+    "minecraft:fisherman"
+  ],
+  "display_name": "冰道材料",
+  "display_translation_key": "writ.preset.boat_road_ice",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 6
+    },
+    "result": {
+      "item": "minecraft:packed_ice",
+      "count": 16
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "blue_ice",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 12
+        },
+        "result": {
+          "item": "minecraft:blue_ice",
+          "count": 8
+        }
+      }
+    }
+  ]
+}

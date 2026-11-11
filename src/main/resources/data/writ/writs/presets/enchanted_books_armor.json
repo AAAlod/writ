@@ -1,0 +1,110 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "stronghold",
+    "woodland_mansion"
+  ],
+  "allowed_professions": [
+    "minecraft:librarian"
+  ],
+  "display_name": "附魔·护甲",
+  "display_translation_key": "writ.preset.enchanted_books_armor",
+  "default_variant_translation_key": "writ.variant.enchanted_book.protection",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 16
+    },
+    "cost_b": {
+      "item": "minecraft:book",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{id:\"minecraft:protection\",lvl:4s}]}"
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "feather_falling",
+      "label": "摔落缓冲 IV",
+      "translation_key": "writ.variant.enchanted_book.feather_falling",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 12
+        },
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:feather_falling\",lvl:4s}]}"
+        }
+      }
+    },
+    {
+      "id": "respiration",
+      "label": "水下呼吸 III",
+      "translation_key": "writ.variant.enchanted_book.respiration",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 12
+        },
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:respiration\",lvl:3s}]}"
+        }
+      }
+    },
+    {
+      "id": "depth_strider",
+      "label": "深海探索者 III",
+      "translation_key": "writ.variant.enchanted_book.depth_strider",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 12
+        },
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:depth_strider\",lvl:3s}]}"
+        }
+      }
+    },
+    {
+      "id": "aqua_affinity",
+      "label": "水下速掘",
+      "translation_key": "writ.variant.enchanted_book.aqua_affinity",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:aqua_affinity\",lvl:1s}]}"
+        }
+      }
+    },
+    {
+      "id": "thorns",
+      "label": "荆棘 III",
+      "translation_key": "writ.variant.enchanted_book.thorns",
+      "trade": {
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:thorns\",lvl:3s}]}"
+        }
+      }
+    }
+  ]
+}

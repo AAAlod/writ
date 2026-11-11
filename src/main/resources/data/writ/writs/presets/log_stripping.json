@@ -1,0 +1,148 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:fletcher"
+  ],
+  "display_name": "原木去皮",
+  "display_translation_key": "writ.preset.log_stripping",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:oak_log",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:stripped_oak_log",
+      "count": 32
+    },
+    "max_uses": 24,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "spruce",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:spruce_log",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_spruce_log",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "birch",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:birch_log",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_birch_log",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "jungle",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:jungle_log",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_jungle_log",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "acacia",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:acacia_log",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_acacia_log",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "dark_oak",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:dark_oak_log",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_dark_oak_log",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "mangrove",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:mangrove_log",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_mangrove_log",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "cherry",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:cherry_log",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_cherry_log",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "crimson",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:crimson_stem",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_crimson_stem",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "warped",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:warped_stem",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:stripped_warped_stem",
+          "count": 32
+        }
+      }
+    }
+  ]
+}

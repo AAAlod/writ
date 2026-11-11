@@ -1,0 +1,30 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:leatherworker"
+  ],
+  "display_name": "鞍",
+  "display_translation_key": "writ.preset.saddle_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "cost_b": {
+      "item": "minecraft:leather",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:saddle",
+      "count": 1
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

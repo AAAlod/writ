@@ -1,0 +1,93 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "pillager_outpost",
+    "woodland_mansion"
+  ],
+  "allowed_professions": [
+    "minecraft:shepherd"
+  ],
+  "display_name": "旗帜图案",
+  "display_translation_key": "writ.preset.banner_patterns",
+  "default_variant_translation_key": "item.minecraft.creeper_banner_pattern.desc",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "cost_b": {
+      "item": "minecraft:paper",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:creeper_banner_pattern",
+      "count": 1
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "skull",
+      "label": "头颅盾徽",
+      "translation_key": "item.minecraft.skull_banner_pattern.desc",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 16
+        },
+        "result": {
+          "item": "minecraft:skull_banner_pattern",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "globe",
+      "label": "地球",
+      "translation_key": "item.minecraft.globe_banner_pattern.desc",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:globe_banner_pattern",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "piglin",
+      "label": "猪鼻",
+      "translation_key": "item.minecraft.piglin_banner_pattern.desc",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:piglin_banner_pattern",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "mojang",
+      "label": "Mojang 徽标",
+      "translation_key": "item.minecraft.mojang_banner_pattern.desc",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 48
+        },
+        "result": {
+          "item": "minecraft:mojang_banner_pattern",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

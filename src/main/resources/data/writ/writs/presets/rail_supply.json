@@ -1,0 +1,70 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "abandoned_mineshaft"
+  ],
+  "allowed_professions": [
+    "minecraft:toolsmith"
+  ],
+  "display_name": "铁轨供货",
+  "display_translation_key": "writ.preset.rail_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:rail",
+      "count": 32
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "powered",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 6
+        },
+        "cost_b": {
+          "item": "minecraft:gold_ingot",
+          "count": 6
+        },
+        "result": {
+          "item": "minecraft:powered_rail",
+          "count": 16
+        }
+      }
+    },
+    {
+      "id": "detector",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:detector_rail",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "activator",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:activator_rail",
+          "count": 8
+        }
+      }
+    }
+  ]
+}

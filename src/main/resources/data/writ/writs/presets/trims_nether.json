@@ -1,0 +1,44 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "nether_bridge",
+    "bastion"
+  ],
+  "allowed_professions": [
+    "minecraft:armorer"
+  ],
+  "display_name": "盔甲纹饰·下界",
+  "display_translation_key": "writ.preset.trims_nether",
+  "default_variant_translation_key": "trim_pattern.minecraft.rib",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 7
+    },
+    "result": {
+      "item": "minecraft:rib_armor_trim_smithing_template",
+      "count": 1
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "snout",
+      "label": "猪鼻",
+      "translation_key": "trim_pattern.minecraft.snout",
+      "trade": {
+        "result": {
+          "item": "minecraft:snout_armor_trim_smithing_template",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

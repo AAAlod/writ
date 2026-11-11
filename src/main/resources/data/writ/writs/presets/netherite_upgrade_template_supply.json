@@ -1,0 +1,30 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "bastion",
+    "bastion_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:weaponsmith"
+  ],
+  "display_name": "下界合金升级模板补给",
+  "display_translation_key": "writ.preset.netherite_upgrade_template_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:netherite_upgrade_smithing_template",
+      "count": 1
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 7
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "pool": "r",
+  "weight": 2,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "砖块供货",
+  "display_translation_key": "writ.preset.masonry_blocks",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:bricks",
+      "count": 32
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "deepslate_bricks",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 3
+        },
+        "result": {
+          "item": "minecraft:deepslate_bricks",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "deepslate_tiles",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 3
+        },
+        "result": {
+          "item": "minecraft:deepslate_tiles",
+          "count": 32
+        }
+      }
+    }
+  ]
+}

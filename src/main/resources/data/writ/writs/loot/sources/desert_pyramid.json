@@ -1,0 +1,9 @@
+{
+  "loot_table": "minecraft:chests/desert_pyramid",
+  "contract_drop_chance": 0.12,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "r": 55,
+    "sr": 45
+  }
+}

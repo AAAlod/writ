@@ -1,0 +1,25 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "wither"
+  ],
+  "allowed_professions": [
+    "minecraft:shepherd"
+  ],
+  "display_name": "凋零玫瑰",
+  "display_translation_key": "writ.preset.wither_rose_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "result": {
+      "item": "minecraft:wither_rose",
+      "count": 4
+    },
+    "max_uses": 2,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

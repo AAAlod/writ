@@ -1,0 +1,88 @@
+{
+  "pool": "r",
+  "weight": 2,
+  "sources": [
+    "abandoned_mineshaft"
+  ],
+  "allowed_professions": [
+    "minecraft:toolsmith"
+  ],
+  "display_name": "爆破补给",
+  "display_translation_key": "writ.preset.explosive_supply",
+  "default_variant_translation_key": "writ.variant.explosive_supply.small",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:tnt",
+      "count": 8
+    },
+    "max_uses": 2,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "bulk",
+      "translation_key": "writ.variant.explosive_supply.bulk",
+      "max_uses": 1,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 24
+        },
+        "cost_b": {
+          "item": "minecraft:gunpowder",
+          "count": 64
+        },
+        "result": {
+          "item": "minecraft:tnt",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "pack",
+      "translation_key": "writ.variant.explosive_supply.pack",
+      "enabled": false,
+      "max_uses": 1,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 24
+        },
+        "cost_b": {
+          "item": "minecraft:shulker_box",
+          "count": 1
+        },
+        "result": {
+          "item": "minecraft:shulker_box",
+          "count": 1,
+          "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:tnt\",Count:16b},{Slot:1b,id:\"minecraft:gunpowder\",Count:64b},{Slot:2b,id:\"minecraft:sand\",Count:64b},{Slot:3b,id:\"minecraft:flint_and_steel\",Count:1b}]}}"
+        }
+      }
+    },
+    {
+      "id": "gunpowder",
+      "translation_key": "writ.variant.explosive_supply.gunpowder",
+      "max_uses": 2,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "cost_b": {
+          "item": "minecraft:gunpowder",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:tnt",
+          "count": 8
+        }
+      },
+      "enabled": false
+    }
+  ]
+}

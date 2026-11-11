@@ -1,0 +1,178 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:shepherd"
+  ],
+  "display_name": "花卉供货",
+  "display_translation_key": "writ.preset.flower_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:dandelion",
+      "count": 8
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "poppy",
+      "trade": {
+        "result": {
+          "item": "minecraft:poppy",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "blue_orchid",
+      "trade": {
+        "result": {
+          "item": "minecraft:blue_orchid",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "allium",
+      "trade": {
+        "result": {
+          "item": "minecraft:allium",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "azure_bluet",
+      "trade": {
+        "result": {
+          "item": "minecraft:azure_bluet",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "red_tulip",
+      "trade": {
+        "result": {
+          "item": "minecraft:red_tulip",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "orange_tulip",
+      "trade": {
+        "result": {
+          "item": "minecraft:orange_tulip",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "white_tulip",
+      "trade": {
+        "result": {
+          "item": "minecraft:white_tulip",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "pink_tulip",
+      "trade": {
+        "result": {
+          "item": "minecraft:pink_tulip",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "oxeye_daisy",
+      "trade": {
+        "result": {
+          "item": "minecraft:oxeye_daisy",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "cornflower",
+      "trade": {
+        "result": {
+          "item": "minecraft:cornflower",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "lily_of_the_valley",
+      "trade": {
+        "result": {
+          "item": "minecraft:lily_of_the_valley",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "sunflower",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 2
+        },
+        "result": {
+          "item": "minecraft:sunflower",
+          "count": 4
+        }
+      }
+    },
+    {
+      "id": "lilac",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 2
+        },
+        "result": {
+          "item": "minecraft:lilac",
+          "count": 4
+        }
+      }
+    },
+    {
+      "id": "rose_bush",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 2
+        },
+        "result": {
+          "item": "minecraft:rose_bush",
+          "count": 4
+        }
+      }
+    },
+    {
+      "id": "peony",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 2
+        },
+        "result": {
+          "item": "minecraft:peony",
+          "count": 4
+        }
+      }
+    }
+  ]
+}

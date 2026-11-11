@@ -1,0 +1,67 @@
+{
+  "pool": "n",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "abandoned_mineshaft"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "基础石材供货",
+  "display_translation_key": "writ.preset.stone_basics",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:stone_bricks",
+      "count": 32
+    },
+    "max_uses": 8,
+    "villager_xp": 1,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "smooth_stone",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "result": {
+          "item": "minecraft:smooth_stone",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "sandstone",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "result": {
+          "item": "minecraft:sandstone",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "mud_bricks",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "result": {
+          "item": "minecraft:mud_bricks",
+          "count": 32
+        }
+      }
+    }
+  ]
+}

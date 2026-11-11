@@ -1,0 +1,22 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+issueTrackerURL="https://github.com/AAAlod/writ/issues"
+[[mods]]
+modId="writ"
+version="${file.jarVersion}"
+displayName="Writ"
+authors="kaster12321"
+description='''Writ / 商契: find trade writs in structure chests and on bosses, then have villagers sign them to learn new trades. Chaos writs add a random trade. Trades, tiers, drop sources and chaos rules are defined by datapacks.'''
+[[dependencies.writ]]
+modId="forge"
+mandatory=true
+versionRange="[47.4.10,48)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.writ]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"

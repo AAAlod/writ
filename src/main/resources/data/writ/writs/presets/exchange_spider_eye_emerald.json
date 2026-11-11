@@ -1,0 +1,25 @@
+{
+  "pool": "n",
+  "weight": 0,
+  "display_name": "蜘蛛眼回收绿宝石",
+  "display_translation_key": "writ.preset.exchange_spider_eye_emerald",
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:spider_eye",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "max_uses": 8,
+    "villager_xp": 0,
+    "price_multiplier": 0.05
+  },
+  "sources": [
+    "simple_dungeon"
+  ]
+}

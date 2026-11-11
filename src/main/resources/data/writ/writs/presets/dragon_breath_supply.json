@@ -1,0 +1,29 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "ender_dragon"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "龙息供货",
+  "display_translation_key": "writ.preset.dragon_breath_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 6
+    },
+    "result": {
+      "item": "minecraft:dragon_breath",
+      "count": 3
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:glass_bottle",
+      "count": 3
+    }
+  }
+}

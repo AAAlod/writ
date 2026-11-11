@@ -1,0 +1,31 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "pillager_outpost",
+    "woodland_mansion"
+  ],
+  "allowed_professions": [
+    "minecraft:fletcher"
+  ],
+  "display_name": "三矢连弩",
+  "display_translation_key": "writ.preset.gear_tri_bolt_crossbow",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 48
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:crossbow",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:multishot\",lvl:1s},{id:\"minecraft:piercing\",lvl:4s},{id:\"minecraft:quick_charge\",lvl:3s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

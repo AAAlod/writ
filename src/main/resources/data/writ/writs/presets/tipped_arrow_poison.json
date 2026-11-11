@@ -1,0 +1,31 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "pillager_outpost",
+    "end_city"
+  ],
+  "allowed_professions": [
+    "minecraft:fletcher"
+  ],
+  "display_name": "药箭·长效中毒",
+  "display_translation_key": "writ.preset.tipped_arrow_poison",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:tipped_arrow",
+      "count": 16,
+      "nbt": "{Potion:\"minecraft:long_poison\"}"
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:arrow",
+      "count": 16
+    }
+  }
+}

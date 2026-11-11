@@ -1,0 +1,27 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "underwater_ruin",
+    "buried_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "长效神龟药水",
+  "display_translation_key": "writ.preset.potion_turtle_master",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 16
+    },
+    "result": {
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:long_turtle_master\"}"
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

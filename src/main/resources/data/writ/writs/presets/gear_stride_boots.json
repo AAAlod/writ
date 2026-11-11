@@ -1,0 +1,30 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "bastion_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:armorer"
+  ],
+  "display_name": "疾行专精·踏魂",
+  "display_translation_key": "writ.preset.gear_stride_boots",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:diamond_boots",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:soul_speed\",lvl:4s},{id:\"minecraft:feather_falling\",lvl:5s},{id:\"minecraft:depth_strider\",lvl:3s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

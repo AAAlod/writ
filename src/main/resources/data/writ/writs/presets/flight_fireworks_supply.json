@@ -1,0 +1,65 @@
+{
+  "pool": "r",
+  "weight": 2,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:fletcher"
+  ],
+  "display_name": "鞘翅烟花补给",
+  "display_translation_key": "writ.preset.flight_fireworks_supply",
+  "default_variant_translation_key": "writ.variant.flight_fireworks_supply.flight_1",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:firework_rocket",
+      "count": 64,
+      "nbt": "{Fireworks:{Flight:1b}}"
+    },
+    "max_uses": 8,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "flight3",
+      "translation_key": "writ.variant.flight_fireworks_supply.flight_3",
+      "max_uses": 6,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 6
+        },
+        "result": {
+          "item": "minecraft:firework_rocket",
+          "count": 64,
+          "nbt": "{Fireworks:{Flight:3b}}"
+        }
+      }
+    },
+    {
+      "id": "pack",
+      "translation_key": "writ.variant.flight_fireworks_supply.pack",
+      "max_uses": 1,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 12
+        },
+        "cost_b": {
+          "item": "minecraft:shulker_box",
+          "count": 1
+        },
+        "result": {
+          "item": "minecraft:shulker_box",
+          "count": 1,
+          "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:1b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:2b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}},{Slot:3b,id:\"minecraft:firework_rocket\",Count:64b,tag:{Fireworks:{Flight:1b}}}]}}"
+        }
+      }
+    }
+  ]
+}

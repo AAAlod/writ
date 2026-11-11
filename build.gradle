@@ -1,0 +1,48 @@
+plugins { id 'net.minecraftforge.gradle' version '6.0.54' }
+group = 'ke.writ'
+version = '1.0.0'
+base { archivesName = 'writ' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+sourceSets {
+    gametest {
+        java.srcDirs = ['src/gametest/java']
+        resources.srcDirs = ['src/gametest/resources']
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    runs {
+        client { workingDirectory project.file('run'); mods { writ { source sourceSets.main } } }
+        server { workingDirectory project.file('run'); args '--nogui'; mods { writ { source sourceSets.main } } }
+        gameTestServer { workingDirectory project.file('run-gametest'); property 'forge.enabledGameTestNamespaces', 'writ'; mods { writ { source sourceSets.main; source sourceSets.gametest } } }
+    }
+}
+repositories { mavenCentral() }
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.10'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.3'
+}
+test { useJUnitPlatform() }
+// A profession-restricted preset is installed only into the disposable GameTest world.
+// Sync (not Copy) so files removed from src/gametest/datapack do not linger in the reused world.
+tasks.register('installGameTestData', Sync) {
+    from 'src/gametest/datapack'
+    into 'run-gametest/world/datapacks/baseline-tests'
+}
+tasks.matching { it.name == 'runGameTestServer' }.configureEach { dependsOn 'installGameTestData', 'gametestClasses' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = 17 }
+jar.finalizedBy('reobfJar')
+
+// Reproducible archives: fixed entry timestamps and deterministic entry order.
+tasks.withType(org.gradle.api.tasks.bundling.AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+jar {
+    manifest { attributes('Implementation-Version': project.version) }
+    exclude '**/*GameTests*.class'
+}

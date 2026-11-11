@@ -1,0 +1,29 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:shepherd"
+  ],
+  "display_name": "拆羊毛取线",
+  "display_translation_key": "writ.preset.string_from_wool",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:white_wool",
+      "count": 16
+    },
+    "result": {
+      "item": "minecraft:string",
+      "count": 32
+    },
+    "max_uses": 8,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

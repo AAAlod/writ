@@ -1,0 +1,31 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "shipwreck",
+    "underwater_ruin"
+  ],
+  "allowed_professions": [
+    "minecraft:leatherworker"
+  ],
+  "display_name": "霜行皮靴",
+  "display_translation_key": "writ.preset.gear_frost_walker_boots",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "cost_b": {
+      "item": "minecraft:leather",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:leather_boots",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:frost_walker\",lvl:2s},{id:\"minecraft:feather_falling\",lvl:4s},{id:\"minecraft:unbreaking\",lvl:3s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

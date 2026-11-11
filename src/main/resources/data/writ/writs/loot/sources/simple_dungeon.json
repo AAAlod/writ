@@ -1,0 +1,11 @@
+{
+  "loot_table": "minecraft:chests/simple_dungeon",
+  "contract_drop_chance": 0.6,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "n": 45,
+    "r": 35,
+    "sr": 14,
+    "unlock": 6
+  }
+}

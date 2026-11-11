@@ -1,0 +1,29 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "buried_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:cartographer"
+  ],
+  "display_name": "海洋之心补给",
+  "display_translation_key": "writ.preset.heart_of_the_sea_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:heart_of_the_sea",
+      "count": 1
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

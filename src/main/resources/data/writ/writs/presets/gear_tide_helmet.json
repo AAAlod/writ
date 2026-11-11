@@ -1,0 +1,30 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "elder_guardian"
+  ],
+  "allowed_professions": [
+    "minecraft:armorer"
+  ],
+  "display_name": "潮息专精·深潜",
+  "display_translation_key": "writ.preset.gear_tide_helmet",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:diamond_helmet",
+      "count": 1,
+      "nbt": "{Enchantments:[{id:\"minecraft:respiration\",lvl:3s},{id:\"minecraft:aqua_affinity\",lvl:1s},{id:\"minecraft:protection\",lvl:5s},{id:\"minecraft:unbreaking\",lvl:4s},{id:\"minecraft:mending\",lvl:1s}]}"
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

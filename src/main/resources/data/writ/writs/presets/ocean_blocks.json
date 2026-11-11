@@ -1,0 +1,61 @@
+{
+  "pool": "r",
+  "weight": 2,
+  "sources": [
+    "shipwreck",
+    "underwater_ruin"
+  ],
+  "allowed_professions": [
+    "minecraft:mason"
+  ],
+  "display_name": "海洋建筑材料供货",
+  "display_translation_key": "writ.preset.ocean_blocks",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:prismarine_bricks",
+      "count": 16
+    },
+    "max_uses": 3,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "sea_lantern",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:sea_lantern",
+          "count": 8
+        }
+      },
+      "max_uses": 2
+    },
+    {
+      "id": "shards",
+      "translation_key": "writ.variant.ocean_blocks.shards",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "cost_b": {
+          "item": "minecraft:prismarine_shard",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:sea_lantern",
+          "count": 8
+        }
+      },
+      "max_uses": 2
+    }
+  ]
+}

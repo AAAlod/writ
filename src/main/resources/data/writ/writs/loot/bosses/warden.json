@@ -1,0 +1,10 @@
+{
+  "entity": "minecraft:warden",
+  "contract_drop_chance": 0.3,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "sr": 40,
+    "ssr": 40,
+    "ur": 20
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "pool": "n",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:shepherd"
+  ],
+  "display_name": "床",
+  "display_translation_key": "writ.preset.bed_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:white_bed",
+      "count": 1
+    },
+    "max_uses": 8,
+    "villager_xp": 1,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "orange",
+      "trade": {
+        "result": {
+          "item": "minecraft:orange_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "magenta",
+      "trade": {
+        "result": {
+          "item": "minecraft:magenta_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "light_blue",
+      "trade": {
+        "result": {
+          "item": "minecraft:light_blue_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "yellow",
+      "trade": {
+        "result": {
+          "item": "minecraft:yellow_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "lime",
+      "trade": {
+        "result": {
+          "item": "minecraft:lime_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "pink",
+      "trade": {
+        "result": {
+          "item": "minecraft:pink_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "gray",
+      "trade": {
+        "result": {
+          "item": "minecraft:gray_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "light_gray",
+      "trade": {
+        "result": {
+          "item": "minecraft:light_gray_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "cyan",
+      "trade": {
+        "result": {
+          "item": "minecraft:cyan_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "purple",
+      "trade": {
+        "result": {
+          "item": "minecraft:purple_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "blue",
+      "trade": {
+        "result": {
+          "item": "minecraft:blue_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "brown",
+      "trade": {
+        "result": {
+          "item": "minecraft:brown_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "green",
+      "trade": {
+        "result": {
+          "item": "minecraft:green_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "red",
+      "trade": {
+        "result": {
+          "item": "minecraft:red_bed",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "black",
+      "trade": {
+        "result": {
+          "item": "minecraft:black_bed",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

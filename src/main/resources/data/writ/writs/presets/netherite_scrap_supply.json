@@ -1,0 +1,29 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "bastion_treasure"
+  ],
+  "allowed_professions": [
+    "minecraft:weaponsmith"
+  ],
+  "display_name": "下界合金碎片补给",
+  "display_translation_key": "writ.preset.netherite_scrap_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:netherite_scrap",
+      "count": 1
+    },
+    "max_uses": 2,
+    "villager_xp": 10,
+    "price_multiplier": 0.05
+  }
+}

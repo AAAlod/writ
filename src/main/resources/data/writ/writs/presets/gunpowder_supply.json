@@ -1,0 +1,47 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:fletcher"
+  ],
+  "display_name": "火药供货",
+  "display_translation_key": "writ.preset.gunpowder_supply",
+  "default_variant_translation_key": "writ.variant.buy",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:gunpowder",
+      "count": 16
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "rotten_flesh",
+      "translation_key": "writ.variant.gunpowder_supply.rotten_flesh",
+      "max_uses": 6,
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 1
+        },
+        "cost_b": {
+          "item": "minecraft:rotten_flesh",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:gunpowder",
+          "count": 12
+        }
+      }
+    }
+  ]
+}

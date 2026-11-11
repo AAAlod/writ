@@ -1,0 +1,179 @@
+package ke.writ;
+
+import com.mojang.logging.LogUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.trading.Merchant;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import org.slf4j.Logger;
+import com.mojang.serialization.Codec;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
+
+@Mod(Writ.ID)
+public final class Writ {
+    public static final String ID = "writ";
+    static final Logger LOG = LogUtils.getLogger();
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ID);
+    private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, ID);
+    private static final RegistryObject<Codec<? extends IGlobalLootModifier>> CHEST_LOOT = LOOT_MODIFIERS.register("chest_loot", () -> ChestLoot.CODEC);
+    private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, ID);
+    public static final RegistryObject<Item> NORMAL = ITEMS.register("trade_writ", () -> new WritItem(new Item.Properties()));
+    public static final RegistryObject<Item> CHAOS = ITEMS.register("chaos_writ", () -> new WritItem(new Item.Properties()));
+    private static final RegistryObject<CreativeModeTab> TAB = TABS.register("writs", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.writ")).withTabsBefore(CreativeModeTabs.SPAWN_EGGS).icon(() -> new ItemStack(NORMAL.get())).displayItems((p, out) -> { out.accept(NORMAL.get()); out.accept(CHAOS.get()); }).build());
+    private static final ForgeConfigSpec CONFIG;
+    private static final ForgeConfigSpec.IntValue NORMAL_LIMIT, CHAOS_LIMIT, TOTAL_LIMIT;
+    private static final ForgeConfigSpec.ConfigValue<String> OBTAIN_MODE;
+    private static final ForgeConfigSpec.IntValue CHAOS_USES, CHAOS_XP;
+    private static final ForgeConfigSpec.DoubleValue CHAOS_MULTIPLIER;
+    record ChaosParams(int uses, int xp, float multiplier) { }
+    private static volatile ChaosParams chaosParameters = new ChaosParams(12, 0, 0.05f);
+    static ChaosParams chaosParameters() { return chaosParameters; }
+    static {
+        ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
+        NORMAL_LIMIT = b.comment("Maximum trade writs one villager can accept. 0 disables trade writs.",
+                        "Checked each time a writ is used; lowering it never removes trades already added.")
+                .defineInRange("max_normal_added_per_villager", 8, 0, 1000000);
+        CHAOS_LIMIT = b.comment("Maximum chaos writs one villager can accept. 0 disables chaos writs.",
+                        "Checked each time a writ is used; lowering it never removes trades already added.")
+                .defineInRange("max_chaos_added_per_villager", 3, 0, 1000000);
+        TOTAL_LIMIT = b.comment("Maximum writs of both kinds combined that one villager can accept; applies on top of the two limits above.")
+                .defineInRange("max_total_added_per_villager", 10, 0, 2000000);
+        b.push("chaos_writ");
+        OBTAIN_MODE = b.comment("How chaos writs are obtained:",
+                        "  TRADE   - Chaos Writ Unlock writs drop naturally; villagers that sign one sell chaos writs. The crafting recipe is removed.",
+                        "  CRAFT_9 - Nine trade writs craft one chaos writ. Writs that sell chaos writs no longer drop naturally.",
+                        "Any other value falls back to TRADE. Read once at server start: restart the server and have players reconnect after changing it.")
+                .define("obtain_mode", "TRADE", value -> true);
+        CHAOS_USES = b.comment("Uses of each new chaos trade before the villager must restock. Read at server start; existing trades keep their values.")
+                .defineInRange("max_uses", 12, 1, Integer.MAX_VALUE);
+        CHAOS_XP = b.comment("Villager experience granted per chaos trade. Read at server start; existing trades keep their values.")
+                .defineInRange("villager_xp", 0, 0, Integer.MAX_VALUE);
+        CHAOS_MULTIPLIER = b.comment("Vanilla price multiplier of new chaos trades: how strongly demand and reputation change the price.",
+                        "Read at server start; existing trades keep their values.")
+                .defineInRange("price_multiplier", 0.05, 0.0, (double) Float.MAX_VALUE);
+        b.pop();
+        CONFIG = b.build();
+    }
+    public Writ() {
+        VariantNet.register();
+        var bus = FMLJavaModLoadingContext.get().getModEventBus();
+        ITEMS.register(bus); TABS.register(bus); LOOT_MODIFIERS.register(bus);
+        bus.addListener(this::configLoaded);
+        bus.addListener(this::configUnloaded);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG);
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new BossDrops());
+        MinecraftForge.EVENT_BUS.register(new ContainerPayments());
+    }
+    private void configLoaded(ModConfigEvent.Loading event) {
+        if (event.getConfig().getSpec() != CONFIG) return;
+        float multiplier = CHAOS_MULTIPLIER.get().floatValue();
+        PresetChecks.trade(CHAOS_USES.get(), CHAOS_XP.get(), multiplier);
+        chaosParameters = new ChaosParams(CHAOS_USES.get(), CHAOS_XP.get(), multiplier);
+        Object raw = OBTAIN_MODE.get();
+        ObtainMode mode = ObtainMode.parse(raw);
+        if (!(raw instanceof String text) || !text.equals(mode.name())) LOG.error("Invalid chaos_writ.obtain_mode {}; using TRADE until restart", raw);
+        Presets.INSTANCE.startMode(mode);
+        RecipeFilter.modeLocked(mode);
+    }
+    private void configUnloaded(ModConfigEvent.Unloading event) {
+        if (event.getConfig().getSpec() == CONFIG) { Presets.INSTANCE.stopMode(); RecipeFilter.clear(); }
+    }
+    static ObtainMode recipeMode() {
+        if (Presets.INSTANCE.modeReady()) return Presets.INSTANCE.activeMode();
+        try { return ObtainMode.parse(OBTAIN_MODE.get()); }
+        catch (IllegalStateException ignored) { return ObtainMode.TRADE; }
+    }
+    @SubscribeEvent public void reload(AddReloadListenerEvent event) {
+        event.addListener(Presets.INSTANCE.reloadListener(event.getConditionContext()));
+        event.addListener(new RecipeFilter(event.getServerResources().getRecipeManager()));
+    }
+    @SubscribeEvent public void syncRecipeBook(OnDatapackSyncEvent event) {
+        // Vanilla sends the recipe definitions and then the initial known-recipe book after this event.
+        if (Presets.INSTANCE.activeMode() != ObtainMode.CRAFT_9) return;
+        var manager = event.getPlayerList().getServer().getRecipeManager();
+        manager.byKey(new net.minecraft.resources.ResourceLocation(RecipeRules.CHAOS_RECIPE))
+                .ifPresent(recipe -> event.getPlayers().forEach(player -> player.getRecipeBook().add(recipe)));
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void interact(PlayerInteractEvent.EntityInteract event) {
+        ItemStack stack = event.getItemStack();
+        boolean normal = stack.is(NORMAL.get()), chaos = stack.is(CHAOS.get());
+        if (!normal && !chaos) return;
+        if (event.getTarget().getType() != EntityType.VILLAGER) {
+            if (!event.getLevel().isClientSide && isOtherMerchant(event.getTarget()))
+                event.getEntity().displayClientMessage(Component.translatable("writ.message.other_merchant"), true);
+            return;
+        }
+        // Provisional Forge event path: client/server behavior must be verified in a real client.
+        event.setCancellationResult(InteractionResult.SUCCESS);
+        event.setCanceled(true);
+        if (event.getLevel().isClientSide) return;
+        Villager v = (Villager) event.getTarget();
+        // Same eligibility rule as before; each cause gets its own wording so the player knows what to fix.
+        VillagerProfession profession = v.getVillagerData().getProfession();
+        String ineligible = v.isBaby() ? "villager.baby" : profession == VillagerProfession.NONE ? "villager.unemployed" : profession == VillagerProfession.NITWIT ? "villager.nitwit" : v.getVillagerXp() <= 0 ? "villager.novice" : null;
+        if (ineligible != null) { refuse(event, v, Component.translatable("writ.message." + ineligible)); return; }
+        if (v.isTrading()) { message(event, "busy"); return; }
+        CompoundTag root = v.getPersistentData();
+        if (root.contains(ID) && !root.contains(ID, Tag.TAG_COMPOUND)) { message(event, "invalid_data"); return; }
+        CompoundTag data = root.getCompound(ID);
+        if (root.contains(ID) && (!data.contains("version", Tag.TAG_INT) || !data.contains("normalAppliedCount", Tag.TAG_INT) || !data.contains("chaosAppliedCount", Tag.TAG_INT))) { LOG.error("Incomplete contract data on villager {}", v.getUUID()); message(event, "invalid_data"); return; }
+        if (!validCounter(data, "normalAppliedCount") || !validCounter(data, "chaosAppliedCount") || (data.contains("version") && (!data.contains("version", Tag.TAG_INT) || data.getInt("version") != 1))) { LOG.error("Invalid contract data on villager {}", v.getUUID()); message(event, "invalid_data"); return; }
+        int n = data.getInt("normalAppliedCount"), c = data.getInt("chaosAppliedCount");
+        if (!Limits.allows(n, c, NORMAL_LIMIT.get(), CHAOS_LIMIT.get(), TOTAL_LIMIT.get(), normal)) { refuse(event, v, Component.translatable("writ.message.limit." + ((long) n + c >= TOTAL_LIMIT.get() ? "total" : normal ? "trade" : "chaos"))); return; }
+        Presets.OfferResult resolution = normal ? Presets.INSTANCE.resolveOffer(stack, v) : null;
+        MerchantOffer offer = normal ? resolution.offer() : Chaos.offer(event.getLevel().getRandom());
+        if (offer == null) {
+            if (normal && resolution.failure().equals("profession_mismatch")) refuse(event, v, Component.translatable("writ.message.profession_mismatch", Texts.professions(Presets.INSTANCE.professionsOf(stack))));
+            else message(event, !normal ? "empty_pool" : resolution.failure().equals("preset_missing") && (!stack.hasTag() || stack.getTag().getString("preset_id").isEmpty()) ? "blank" : resolution.failure());
+            return;
+        }
+        v.getOffers().add(offer);
+        data.putInt("version", 1);
+        data.putInt("normalAppliedCount", n);
+        data.putInt("chaosAppliedCount", c);
+        data.putInt(normal ? "normalAppliedCount" : "chaosAppliedCount", normal ? n + 1 : c + 1);
+        root.put(ID, data);
+        if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+        // Mirror vanilla's own cues: the villager agrees aloud and sparkles as it does when it gains trades.
+        v.playSound(SoundEvents.VILLAGER_YES, 1.0F, v.getVoicePitch());
+        event.getLevel().broadcastEntityEvent(v, (byte) 14);
+        event.getEntity().displayClientMessage(Component.translatable("writ.message.success", Texts.trade(offer)), true);
+    }
+    /** The villager itself turns the writ down: it shakes its head, as it does when it has nothing to trade. */
+    private static void refuse(PlayerInteractEvent.EntityInteract e, Villager v, Component reason) {
+        v.setUnhappyCounter(40);
+        v.playSound(SoundEvents.VILLAGER_NO, 1.0F, v.getVoicePitch());
+        e.getEntity().displayClientMessage(reason, true);
+    }
+    private static boolean validCounter(CompoundTag tag, String key) { return !tag.contains(key) || (tag.contains(key, Tag.TAG_INT) && tag.getInt(key) >= 0); }
+    static boolean isOtherMerchant(net.minecraft.world.entity.Entity entity) { return entity.getType() != EntityType.VILLAGER && entity instanceof Merchant; }
+    private static void message(PlayerInteractEvent.EntityInteract e, String key) { e.getEntity().displayClientMessage(Component.translatable("writ.message." + key), true); }
+}

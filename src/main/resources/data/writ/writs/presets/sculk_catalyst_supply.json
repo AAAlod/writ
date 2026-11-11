@@ -1,0 +1,29 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "warden"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "幽匿催发体",
+  "display_translation_key": "writ.preset.sculk_catalyst_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 12
+    },
+    "cost_b": {
+      "item": "minecraft:bone_block",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:sculk_catalyst",
+      "count": 2
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  }
+}

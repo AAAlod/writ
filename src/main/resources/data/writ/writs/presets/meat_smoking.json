@@ -1,0 +1,85 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "pillager_outpost",
+    "bastion"
+  ],
+  "allowed_professions": [
+    "minecraft:butcher"
+  ],
+  "display_name": "肉类熏制",
+  "display_translation_key": "writ.preset.meat_smoking",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 1
+    },
+    "cost_b": {
+      "item": "minecraft:beef",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:cooked_beef",
+      "count": 32
+    },
+    "max_uses": 12,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "porkchop",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:porkchop",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:cooked_porkchop",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "mutton",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:mutton",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:cooked_mutton",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "chicken",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:chicken",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:cooked_chicken",
+          "count": 32
+        }
+      }
+    },
+    {
+      "id": "rabbit",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:rabbit",
+          "count": 32
+        },
+        "result": {
+          "item": "minecraft:cooked_rabbit",
+          "count": 32
+        }
+      }
+    }
+  ]
+}

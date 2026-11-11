@@ -1,0 +1,46 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "bastion",
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:butcher"
+  ],
+  "display_name": "蛙明灯",
+  "display_translation_key": "writ.preset.froglight_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:ochre_froglight",
+      "count": 4
+    },
+    "max_uses": 4,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "verdant",
+      "trade": {
+        "result": {
+          "item": "minecraft:verdant_froglight",
+          "count": 4
+        }
+      }
+    },
+    {
+      "id": "pearlescent",
+      "trade": {
+        "result": {
+          "item": "minecraft:pearlescent_froglight",
+          "count": 4
+        }
+      }
+    }
+  ]
+}

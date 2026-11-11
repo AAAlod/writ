@@ -1,0 +1,11 @@
+{
+  "loot_table": "minecraft:chests/woodland_mansion",
+  "contract_drop_chance": 0.1,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "n": 10,
+    "sr": 45,
+    "ssr": 30,
+    "ur": 15
+  }
+}

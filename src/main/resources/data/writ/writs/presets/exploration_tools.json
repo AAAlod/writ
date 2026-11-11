@@ -1,0 +1,50 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "shipwreck"
+  ],
+  "allowed_professions": [
+    "minecraft:cartographer"
+  ],
+  "display_name": "探险工具",
+  "display_translation_key": "writ.preset.exploration_tools",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 4
+    },
+    "result": {
+      "item": "minecraft:compass",
+      "count": 1
+    },
+    "max_uses": 4,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "clock",
+      "trade": {
+        "result": {
+          "item": "minecraft:clock",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "spyglass",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 6
+        },
+        "result": {
+          "item": "minecraft:spyglass",
+          "count": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "underwater_ruin",
+    "shipwreck"
+  ],
+  "allowed_professions": [
+    "minecraft:fisherman"
+  ],
+  "display_name": "海洋植物",
+  "display_translation_key": "writ.preset.ocean_plants",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 2
+    },
+    "result": {
+      "item": "minecraft:kelp",
+      "count": 16
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "seagrass",
+      "trade": {
+        "result": {
+          "item": "minecraft:seagrass",
+          "count": 16
+        }
+      }
+    },
+    {
+      "id": "sea_pickle",
+      "trade": {
+        "result": {
+          "item": "minecraft:sea_pickle",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "tube",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:tube_coral_block",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "brain",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:brain_coral_block",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "bubble",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:bubble_coral_block",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "fire",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:fire_coral_block",
+          "count": 8
+        }
+      }
+    },
+    {
+      "id": "horn",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 4
+        },
+        "result": {
+          "item": "minecraft:horn_coral_block",
+          "count": 8
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "药水应急箱",
+  "display_translation_key": "writ.preset.potion_kit",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 36
+    },
+    "result": {
+      "item": "minecraft:shulker_box",
+      "count": 1,
+      "nbt": "{BlockEntityTag:{Items:[{Slot:0b,id:\"minecraft:splash_potion\",Count:1b,tag:{Potion:\"minecraft:strong_healing\"}},{Slot:1b,id:\"minecraft:splash_potion\",Count:1b,tag:{Potion:\"minecraft:strong_healing\"}},{Slot:2b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:3b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_fire_resistance\"}},{Slot:4b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:5b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_slow_falling\"}},{Slot:6b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_regeneration\"}},{Slot:7b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:long_regeneration\"}},{Slot:8b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:night_vision\"}},{Slot:9b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:night_vision\"}},{Slot:10b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:water_breathing\"}},{Slot:11b,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:water_breathing\"}}]}}"
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:shulker_box",
+      "count": 1
+    }
+  }
+}

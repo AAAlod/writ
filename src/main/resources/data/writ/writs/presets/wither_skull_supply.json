@@ -1,0 +1,29 @@
+{
+  "pool": "ssr",
+  "weight": 1,
+  "sources": [
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "凋灵骷髅头颅供货",
+  "display_translation_key": "writ.preset.wither_skull_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 32
+    },
+    "result": {
+      "item": "minecraft:wither_skeleton_skull",
+      "count": 1
+    },
+    "max_uses": 1,
+    "villager_xp": 10,
+    "price_multiplier": 0.05,
+    "cost_b": {
+      "item": "minecraft:diamond",
+      "count": 8
+    }
+  }
+}

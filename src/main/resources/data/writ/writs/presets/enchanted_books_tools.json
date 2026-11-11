@@ -1,0 +1,129 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "stronghold"
+  ],
+  "allowed_professions": [
+    "minecraft:librarian"
+  ],
+  "display_name": "附魔·工具与武器",
+  "display_translation_key": "writ.preset.enchanted_books_tools",
+  "default_variant_translation_key": "writ.variant.enchanted_book.efficiency",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 24
+    },
+    "cost_b": {
+      "item": "minecraft:book",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{id:\"minecraft:efficiency\",lvl:5s}]}"
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "unbreaking",
+      "label": "耐久 III",
+      "translation_key": "writ.variant.enchanted_book.unbreaking",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 12
+        },
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:3s}]}"
+        }
+      }
+    },
+    {
+      "id": "fortune",
+      "label": "时运 III",
+      "translation_key": "writ.variant.enchanted_book.fortune",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 20
+        },
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:fortune\",lvl:3s}]}"
+        }
+      }
+    },
+    {
+      "id": "silk_touch",
+      "label": "精准采集",
+      "translation_key": "writ.variant.enchanted_book.silk_touch",
+      "trade": {
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:silk_touch\",lvl:1s}]}"
+        },
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 16
+        }
+      }
+    },
+    {
+      "id": "sharpness",
+      "label": "锋利 V",
+      "translation_key": "writ.variant.enchanted_book.sharpness",
+      "trade": {
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:sharpness\",lvl:5s}]}"
+        },
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 24
+        }
+      }
+    },
+    {
+      "id": "power",
+      "label": "力量 V",
+      "translation_key": "writ.variant.enchanted_book.power",
+      "trade": {
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:power\",lvl:5s}]}"
+        },
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 24
+        }
+      }
+    },
+    {
+      "id": "looting",
+      "label": "抢夺 III",
+      "translation_key": "writ.variant.enchanted_book.looting",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 20
+        },
+        "result": {
+          "item": "minecraft:enchanted_book",
+          "count": 1,
+          "nbt": "{StoredEnchantments:[{id:\"minecraft:looting\",lvl:3s}]}"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "underwater_ruin"
+  ],
+  "allowed_professions": [
+    "minecraft:fisherman"
+  ],
+  "display_name": "美西螈桶",
+  "display_translation_key": "writ.preset.axolotl_supply",
+  "default_variant_translation_key": "writ.variant.axolotl_supply.leucistic",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 6
+    },
+    "cost_b": {
+      "item": "minecraft:water_bucket",
+      "count": 1
+    },
+    "result": {
+      "item": "minecraft:axolotl_bucket",
+      "count": 1,
+      "nbt": "{Variant:0}"
+    },
+    "max_uses": 1,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "wild",
+      "label": "野生色",
+      "translation_key": "writ.variant.axolotl_supply.wild",
+      "trade": {
+        "result": {
+          "item": "minecraft:axolotl_bucket",
+          "count": 1,
+          "nbt": "{Variant:1}"
+        }
+      }
+    },
+    {
+      "id": "gold",
+      "label": "金色",
+      "translation_key": "writ.variant.axolotl_supply.gold",
+      "trade": {
+        "result": {
+          "item": "minecraft:axolotl_bucket",
+          "count": 1,
+          "nbt": "{Variant:2}"
+        }
+      }
+    },
+    {
+      "id": "cyan",
+      "label": "青色",
+      "translation_key": "writ.variant.axolotl_supply.cyan",
+      "trade": {
+        "result": {
+          "item": "minecraft:axolotl_bucket",
+          "count": 1,
+          "nbt": "{Variant:3}"
+        }
+      }
+    },
+    {
+      "id": "blue",
+      "label": "蓝色",
+      "translation_key": "writ.variant.axolotl_supply.blue",
+      "trade": {
+        "cost_a": {
+          "item": "minecraft:emerald",
+          "count": 24
+        },
+        "result": {
+          "item": "minecraft:axolotl_bucket",
+          "count": 1,
+          "nbt": "{Variant:4}"
+        }
+      }
+    }
+  ]
+}

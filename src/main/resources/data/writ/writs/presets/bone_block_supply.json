@@ -1,0 +1,27 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "simple_dungeon",
+    "desert_pyramid",
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:butcher"
+  ],
+  "display_name": "骨块供货",
+  "display_translation_key": "writ.preset.bone_block_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 6
+    },
+    "result": {
+      "item": "minecraft:bone_block",
+      "count": 4
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

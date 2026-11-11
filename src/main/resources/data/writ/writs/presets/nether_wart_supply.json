@@ -1,0 +1,25 @@
+{
+  "pool": "r",
+  "weight": 1,
+  "sources": [
+    "nether_bridge"
+  ],
+  "allowed_professions": [
+    "minecraft:cleric"
+  ],
+  "display_name": "下界疣供货",
+  "display_translation_key": "writ.preset.nether_wart_supply",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 2
+    },
+    "result": {
+      "item": "minecraft:nether_wart",
+      "count": 16
+    },
+    "max_uses": 6,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  }
+}

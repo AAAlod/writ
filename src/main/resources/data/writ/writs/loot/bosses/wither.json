@@ -1,0 +1,9 @@
+{
+  "entity": "minecraft:wither",
+  "contract_drop_chance": 0.3,
+  "inherit_global_weights": false,
+  "pool_weights": {
+    "ssr": 50,
+    "ur": 50
+  }
+}

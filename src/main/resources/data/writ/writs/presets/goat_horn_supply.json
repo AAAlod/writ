@@ -1,0 +1,113 @@
+{
+  "pool": "sr",
+  "weight": 1,
+  "sources": [
+    "pillager_outpost"
+  ],
+  "allowed_professions": [
+    "minecraft:butcher"
+  ],
+  "display_name": "山羊角",
+  "display_translation_key": "writ.preset.goat_horn_supply",
+  "default_variant_translation_key": "instrument.minecraft.ponder_goat_horn",
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 6
+    },
+    "result": {
+      "item": "minecraft:goat_horn",
+      "count": 1,
+      "nbt": "{instrument:\"minecraft:ponder_goat_horn\"}"
+    },
+    "max_uses": 2,
+    "villager_xp": 5,
+    "price_multiplier": 0.05
+  },
+  "variants": [
+    {
+      "id": "sing",
+      "label": "歌唱",
+      "translation_key": "instrument.minecraft.sing_goat_horn",
+      "trade": {
+        "result": {
+          "item": "minecraft:goat_horn",
+          "count": 1,
+          "nbt": "{instrument:\"minecraft:sing_goat_horn\"}"
+        }
+      }
+    },
+    {
+      "id": "seek",
+      "label": "寻觅",
+      "translation_key": "instrument.minecraft.seek_goat_horn",
+      "trade": {
+        "result": {
+          "item": "minecraft:goat_horn",
+          "count": 1,
+          "nbt": "{instrument:\"minecraft:seek_goat_horn\"}"
+        }
+      }
+    },
+    {
+      "id": "feel",
+      "label": "感知",
+      "translation_key": "instrument.minecraft.feel_goat_horn",
+      "trade": {
+        "result": {
+          "item": "minecraft:goat_horn",
+          "count": 1,
+          "nbt": "{instrument:\"minecraft:feel_goat_horn\"}"
+        }
+      }
+    },
+    {
+      "id": "admire",
+      "label": "敬畏",
+      "translation_key": "instrument.minecraft.admire_goat_horn",
+      "trade": {
+        "result": {
+          "item": "minecraft:goat_horn",
+          "count": 1,
+          "nbt": "{instrument:\"minecraft:admire_goat_horn\"}"
+        }
+      }
+    },
+    {
+      "id": "call",
+      "label": "呼唤",
+      "translation_key": "instrument.minecraft.call_goat_horn",
+      "trade": {
+        "result": {
+          "item": "minecraft:goat_horn",
+          "count": 1,
+          "nbt": "{instrument:\"minecraft:call_goat_horn\"}"
+        }
+      }
+    },
+    {
+      "id": "yearn",
+      "label": "向往",
+      "translation_key": "instrument.minecraft.yearn_goat_horn",
+      "trade": {
+        "result": {
+          "item": "minecraft:goat_horn",
+          "count": 1,
+          "nbt": "{instrument:\"minecraft:yearn_goat_horn\"}"
+        }
+      }
+    },
+    {
+      "id": "dream",
+      "label": "梦想",
+      "translation_key": "instrument.minecraft.dream_goat_horn",
+      "trade": {
+        "result": {
+          "item": "minecraft:goat_horn",
+          "count": 1,
+          "nbt": "{instrument:\"minecraft:dream_goat_horn\"}"
+        }
+      }
+    }
+  ]
+}
