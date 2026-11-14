@@ -44,6 +44,7 @@ public final class Writ {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ID);
     private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, ID);
     private static final RegistryObject<Codec<? extends IGlobalLootModifier>> CHEST_LOOT = LOOT_MODIFIERS.register("chest_loot", () -> ChestLoot.CODEC);
+    private static final RegistryObject<Codec<? extends IGlobalLootModifier>> HERO_GIFTS = LOOT_MODIFIERS.register("hero_gifts", () -> HeroGifts.CODEC);
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, ID);
     public static final RegistryObject<Item> NORMAL = ITEMS.register("trade_writ", () -> new WritItem(new Item.Properties()));
     public static final RegistryObject<Item> RANDOM = ITEMS.register("random_writ", () -> new WritItem(new Item.Properties()));
@@ -54,9 +55,21 @@ public final class Writ {
     private static final ForgeConfigSpec.ConfigValue<String> OBTAIN_MODE;
     private static final ForgeConfigSpec.IntValue CHAOS_USES, CHAOS_XP;
     private static final ForgeConfigSpec.DoubleValue CHAOS_MULTIPLIER;
+    private static final ForgeConfigSpec.BooleanValue HERO_GIFTS_ENABLED;
+    private static final ForgeConfigSpec.IntValue HERO_GIFTS_RANDOM, HERO_GIFTS_CHAOS;
     record ChaosParams(int uses, int xp, float multiplier) { }
     private static volatile ChaosParams chaosParameters = new ChaosParams(12, 0, 0.05f);
     static ChaosParams chaosParameters() { return chaosParameters; }
+    record HeroGiftParams(boolean enabled, int randomPercent, int chaosPercent, boolean valid) { }
+    private static volatile HeroGiftParams heroGiftParams = new HeroGiftParams(false, 0, 0, false);
+    static HeroGiftParams heroGiftParameters() { return heroGiftParams; }
+    static void refreshHeroGiftParameters() {
+        boolean enabled = HERO_GIFTS_ENABLED.get();
+        int random = HERO_GIFTS_RANDOM.get(), chaos = HERO_GIFTS_CHAOS.get();
+        boolean valid = random >= 0 && chaos >= 0 && (long) random + chaos <= 100;
+        if (!valid) LOG.error("Invalid hero_gifts percentages: random_percent={}, chaos_percent={}; hero gift replacement disabled", random, chaos);
+        heroGiftParams = new HeroGiftParams(enabled, random, chaos, valid);
+    }
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
         NORMAL_LIMIT = b.comment("Maximum trade and random writs one villager can accept together. 0 disables both.",
@@ -82,6 +95,20 @@ public final class Writ {
                         "Read at server start; existing trades keep their values.")
                 .defineInRange("price_multiplier", 0.05, 0.0, (double) Float.MAX_VALUE);
         b.pop();
+        b.push("hero_gifts");
+        HERO_GIFTS_ENABLED = b.comment(
+                "Whether village hero gifts can be replaced by writs.",
+                "Read at server start; existing worlds keep their behaviour until restart.")
+            .define("enabled", true);
+        HERO_GIFTS_RANDOM = b.comment(
+                "Chance (0-100) that a hero gift becomes one random writ.",
+                "random_percent + chaos_percent must not exceed 100; otherwise hero gift replacement is disabled.")
+            .defineInRange("random_percent", 8, 0, 100);
+        HERO_GIFTS_CHAOS = b.comment(
+                "Chance (0-100) that a hero gift becomes one chaos writ.",
+                "The remaining chance keeps the vanilla gift.")
+            .defineInRange("chaos_percent", 2, 0, 100);
+        b.pop();
         CONFIG = b.build();
     }
     public Writ() {
@@ -100,6 +127,7 @@ public final class Writ {
         float multiplier = CHAOS_MULTIPLIER.get().floatValue();
         PresetChecks.trade(CHAOS_USES.get(), CHAOS_XP.get(), multiplier);
         chaosParameters = new ChaosParams(CHAOS_USES.get(), CHAOS_XP.get(), multiplier);
+        refreshHeroGiftParameters();
         Object raw = OBTAIN_MODE.get();
         ObtainMode mode = ObtainMode.parse(raw);
         if (!(raw instanceof String text) || !text.equals(mode.name())) LOG.error("Invalid chaos_writ.obtain_mode {}; using TRADE until restart", raw);
@@ -107,7 +135,7 @@ public final class Writ {
         RecipeFilter.modeLocked(mode);
     }
     private void configUnloaded(ModConfigEvent.Unloading event) {
-        if (event.getConfig().getSpec() == CONFIG) { Presets.INSTANCE.stopMode(); RecipeFilter.clear(); }
+        if (event.getConfig().getSpec() == CONFIG) { Presets.INSTANCE.stopMode(); RecipeFilter.clear(); heroGiftParams = new HeroGiftParams(false, 0, 0, false); }
     }
     static ObtainMode recipeMode() {
         if (Presets.INSTANCE.modeReady()) return Presets.INSTANCE.activeMode();
