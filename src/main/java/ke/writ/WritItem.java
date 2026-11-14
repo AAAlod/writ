@@ -30,9 +30,21 @@ final class WritItem extends Item {
     }
 
     @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
+        boolean shift = Texts.detailsHeld.getAsBoolean();
         if (stack.is(Writ.CHAOS.get())) {
-            lines.add(Component.translatable("writ.tooltip.chaos.use").withStyle(ChatFormatting.GRAY));
-            lines.add(Component.translatable("writ.tooltip.chaos.notice").withStyle(ChatFormatting.DARK_GRAY));
+            lines.add(Component.translatable("writ.tooltip.chaos.summary").withStyle(ChatFormatting.GRAY));
+            if (shift) {
+                lines.add(Component.translatable("writ.tooltip.chaos.use").withStyle(ChatFormatting.GRAY));
+                lines.add(Component.translatable("writ.tooltip.chaos.notice").withStyle(ChatFormatting.DARK_GRAY));
+            } else lines.add(Component.translatable("writ.tooltip.expand_hint").withStyle(ChatFormatting.DARK_GRAY));
+            return;
+        }
+        if (stack.is(Writ.RANDOM.get())) {
+            lines.add(Component.translatable("writ.tooltip.random.summary").withStyle(ChatFormatting.GRAY));
+            if (shift) {
+                lines.add(Component.translatable("writ.tooltip.random.use").withStyle(ChatFormatting.GRAY));
+                lines.add(Component.translatable("writ.tooltip.random.notice").withStyle(ChatFormatting.DARK_GRAY));
+            } else lines.add(Component.translatable("writ.tooltip.expand_hint").withStyle(ChatFormatting.DARK_GRAY));
             return;
         }
         if (!stack.is(Writ.NORMAL.get())) return;
@@ -44,14 +56,17 @@ final class WritItem extends Item {
         }
         // An anvil name hides the trade's name from the title, so repeat it here.
         if (stack.hasCustomHoverName()) lines.add(getName(stack));
-        if (previewable(view)) preview(view, lines);
+        boolean hasDetails = false;
+        if (previewable(view)) hasDetails = preview(view, lines, shift);
         else if (view.kind() == SnapshotView.Kind.LEGACY) for (String value : view.legacy()) lines.add(Component.literal(value).withStyle(ChatFormatting.GRAY));
         else lines.add(Component.translatable(view.kind() == SnapshotView.Kind.UNSUPPORTED ? "writ.tooltip.unsupported" : "writ.tooltip.no_preview").withStyle(ChatFormatting.GRAY));
-        lines.add(Component.translatable("writ.tooltip.use").withStyle(ChatFormatting.DARK_GRAY));
-        lines.add(Component.translatable("writ.tooltip.notice").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+        if (shift) {
+            lines.add(Component.translatable("writ.tooltip.use").withStyle(ChatFormatting.DARK_GRAY));
+            lines.add(Component.translatable("writ.tooltip.notice").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+        } else if (!hasDetails) lines.add(Component.translatable("writ.tooltip.expand_hint").withStyle(ChatFormatting.DARK_GRAY));
     }
 
-    private static void preview(SnapshotView.View view, List<Component> lines) {
+    private static boolean preview(SnapshotView.View view, List<Component> lines, boolean shift) {
         Component tier = !view.poolTranslationKey().isEmpty() ? Component.translatableWithFallback(view.poolTranslationKey(), view.poolLabel().isEmpty() ? view.rarity() : view.poolLabel())
                 : !view.poolLabel().isEmpty() ? Component.literal(view.poolLabel())
                 : Component.translatableWithFallback("writ.rarity." + view.rarity(), view.rarity());
@@ -62,33 +77,36 @@ final class WritItem extends Item {
         for (String value : view.professions()) { ResourceLocation id = ResourceLocation.tryParse(value); if (id != null) professions.add(id); }
         lines.add(Component.translatable("writ.tooltip.professions", Texts.professions(professions).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
         lines.add(Texts.trade(item(view.costA()), view.costB() == null ? null : item(view.costB()), item(view.result())).withStyle(ChatFormatting.WHITE));
-        details(view.result(), lines);
+        boolean hasDetails = details(view.result(), lines, shift);
         if (view.variantTotal() >= 2 && view.variantIndex() >= 1 && view.variantIndex() <= view.variantTotal()) {
             String fallback = !view.variantLabel().isEmpty() ? view.variantLabel() : view.variantId();
             Component choice = !view.variantKey().isEmpty() ? Component.translatableWithFallback(view.variantKey(), fallback.isEmpty() ? view.variantKey() : fallback)
                     : !view.variantLabel().isEmpty() ? Component.literal(view.variantLabel())
                     : name(view.result());
             lines.add(Component.translatable("writ.tooltip.choice", choice.copy().withStyle(ChatFormatting.WHITE), view.variantIndex(), view.variantTotal()).withStyle(ChatFormatting.GRAY));
-            lines.add(Component.translatable("writ.tooltip.choice_hint", Component.keybind("key.use"), Component.keybind("key.sneak")).withStyle(ChatFormatting.DARK_GRAY));
+            if (shift) lines.add(Component.translatable("writ.tooltip.choice_hint", Component.keybind("key.use"), Component.keybind("key.sneak")).withStyle(ChatFormatting.DARK_GRAY));
         }
+        return hasDetails;
     }
 
     /** Enchantments, potion effects or box contents of the offered item: shown on demand, because the item's bare name hides them. */
-    private static void details(SnapshotView.Stack value, List<Component> lines) {
-        if (value.serialized() == null || !value.serialized().contains("tag", 10)) return;
+    private static boolean details(SnapshotView.Stack value, List<Component> lines, boolean shift) {
+        if (value.serialized() == null || !value.serialized().contains("tag", 10)) return false;
         try {
             ItemStack stack = ItemStack.of(value.serialized().copy());
-            if (stack.isEmpty()) return;
+            if (stack.isEmpty()) return false;
             List<Component> detail = stack.getTooltipLines(Texts.viewer.get(), TooltipFlag.NORMAL);
             // Some tags (an axolotl's colour, say) add nothing to read; only offer details that exist.
-            if (detail.size() <= 1) return;
-            if (!Texts.detailsHeld.getAsBoolean()) {
+            if (detail.size() <= 1) return false;
+            if (!shift) {
                 lines.add(Component.translatable("writ.tooltip.details_hint").withStyle(ChatFormatting.DARK_GRAY));
-                return;
+                return true;
             }
             for (int i = 1; i < detail.size() && i <= MAX_DETAIL_LINES; i++) lines.add(Component.literal("  ").append(detail.get(i)));
             if (detail.size() > MAX_DETAIL_LINES + 1) lines.add(Component.literal("  …").withStyle(ChatFormatting.DARK_GRAY));
+            return true;
         } catch (RuntimeException ignored) { }
+        return false;
     }
 
     @Override public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level level, net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand) {
