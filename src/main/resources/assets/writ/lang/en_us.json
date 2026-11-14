@@ -2,6 +2,7 @@
   "item.writ.trade_writ": "Trade Writ",
   "item.writ.trade_writ.named": "Trade Writ: %s",
   "item.writ.chaos_writ": "Chaos Writ",
+  "item.writ.random_writ": "Random Writ",
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Use on a villager to add this trade",
   "writ.tooltip.notice": "A trade lost in the cracks of history",

@@ -43,8 +43,9 @@ public final class Writ {
     private static final RegistryObject<Codec<? extends IGlobalLootModifier>> CHEST_LOOT = LOOT_MODIFIERS.register("chest_loot", () -> ChestLoot.CODEC);
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, ID);
     public static final RegistryObject<Item> NORMAL = ITEMS.register("trade_writ", () -> new WritItem(new Item.Properties()));
+    public static final RegistryObject<Item> RANDOM = ITEMS.register("random_writ", () -> new WritItem(new Item.Properties()));
     public static final RegistryObject<Item> CHAOS = ITEMS.register("chaos_writ", () -> new WritItem(new Item.Properties()));
-    private static final RegistryObject<CreativeModeTab> TAB = TABS.register("writs", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.writ")).withTabsBefore(CreativeModeTabs.SPAWN_EGGS).icon(() -> new ItemStack(NORMAL.get())).displayItems((p, out) -> { out.accept(NORMAL.get()); out.accept(CHAOS.get()); }).build());
+    private static final RegistryObject<CreativeModeTab> TAB = TABS.register("writs", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.writ")).withTabsBefore(CreativeModeTabs.SPAWN_EGGS).icon(() -> new ItemStack(NORMAL.get())).displayItems((p, out) -> { out.accept(NORMAL.get()); out.accept(RANDOM.get()); out.accept(CHAOS.get()); }).build());
     private static final ForgeConfigSpec CONFIG;
     private static final ForgeConfigSpec.IntValue NORMAL_LIMIT, CHAOS_LIMIT, TOTAL_LIMIT;
     private static final ForgeConfigSpec.ConfigValue<String> OBTAIN_MODE;

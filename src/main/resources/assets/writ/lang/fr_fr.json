@@ -2,6 +2,7 @@
   "item.writ.trade_writ": "Contrat d'échange",
   "item.writ.trade_writ.named": "Contrat d'échange : %s",
   "item.writ.chaos_writ": "Contrat du chaos",
+  "item.writ.random_writ": "Contrat aléatoire",
   "itemGroup.writ": "Contrats",
   "writ.tooltip.use": "À utiliser sur un villageois pour lui ajouter cet échange",
   "writ.tooltip.notice": "Un échange perdu dans les failles de l'histoire",

@@ -2,6 +2,7 @@
   "item.writ.trade_writ": "交易契约",
   "item.writ.trade_writ.named": "交易契约：%s",
   "item.writ.chaos_writ": "混沌契约",
+  "item.writ.random_writ": "随机契约",
   "itemGroup.writ": "商契",
   "writ.tooltip.use": "对村民使用，为其追加此交易",
   "writ.tooltip.notice": "一桩遗落在历史缝隙里的交易",
