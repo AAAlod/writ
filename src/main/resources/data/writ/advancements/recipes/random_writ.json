@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_trade_writ": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["writ:trade_writ"] }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": ["writ:random_writ"]
+  }
+}
