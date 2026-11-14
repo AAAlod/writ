@@ -6,6 +6,7 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.storage.LevelResource;
@@ -196,6 +197,7 @@ public final class LootGameTests {
         var preset = snapshot.presets().get(new ResourceLocation("writ", "a_unlock"));
         var source = snapshot.sources().get("minecraft:chests/simple_dungeon");
         helper.assertTrue(preset != null && preset.result().is(Writ.CHAOS.get()) && preset.modes().contains("TRADE") && source != null, "built-in chain missing");
+        helper.assertTrue(preset.costA().is(Items.EMERALD) && preset.costA().getCount() == 32, "unlock must cost 32 emeralds");
         var unlock = new LootRules.Candidate("writ:a_unlock", preset.rarity(), preset.weight());
         helper.assertTrue(ObtainMode.diagnostics(ObtainMode.TRADE, java.util.List.of(unlock), snapshot.rarities(), java.util.List.of(source)).isEmpty(), "default chain must be reachable");
         var whitelist = new LootRules.Source("test:whitelist", "test:table", 1, java.util.Map.of("writ:n", 1, "writ:r", 1), false);

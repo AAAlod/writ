@@ -11,7 +11,7 @@
   "trade": {
     "cost_a": {
       "item": "minecraft:emerald",
-      "count": 8
+      "count": 32
     },
     "result": {
       "item": "writ:chaos_writ",

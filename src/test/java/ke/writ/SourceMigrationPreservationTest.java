@@ -35,7 +35,13 @@ class SourceMigrationPreservationTest {
                 }
                 assertTrue(Files.exists(Path.of("src/main/resources/data/writ/writs/presets",id+".json")),"preset silently removed "+id);
                 var now=readPreset(id);
-                if (!REPRICED.contains(id)) assertEquals(effective(old,null),effective(now,null),"default trade changed "+id);
+                if (id.equals("a_unlock")) {
+                    var expectedTrade = old.getAsJsonObject("trade").deepCopy();
+                    assertEquals(8, expectedTrade.getAsJsonObject("cost_a").get("count").getAsInt(), "a_unlock original price changed");
+                    expectedTrade.getAsJsonObject("cost_a").addProperty("count", 32);
+                    assertEquals(expectedTrade, now.getAsJsonObject("trade"), "a_unlock only permits cost_a.count to change from 8 to 32");
+                    assertEquals(old.get("variants"), now.get("variants"), "a_unlock variants changed");
+                } else if (!REPRICED.contains(id)) assertEquals(effective(old,null),effective(now,null),"default trade changed "+id);
                 if (old.has("variants")) for (var raw:old.getAsJsonArray("variants")) {
                     var variant=raw.getAsJsonObject(); String vid=variant.get("id").getAsString();
                     if (!REPRICED.contains(id)) assertEquals(effective(old,vid),effective(now,vid),"variant changed "+id+"/"+vid);
