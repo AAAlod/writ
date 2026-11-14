@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.function.IntUnaryOperator;
 
 final class ChaosSampler {
-    static final Set<String> HARD_DENY = Set.of("minecraft:air", "minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:command_block_minecart", "writ:trade_writ", "writ:chaos_writ");
+    static final Set<String> HARD_DENY = Set.of("minecraft:air", "minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:command_block_minecart", "minecraft:structure_block", "minecraft:structure_void", "minecraft:jigsaw", "writ:trade_writ", "writ:random_writ", "writ:chaos_writ");
     record Pair(String payment, String result) { }
     private final List<String> payment, result;
     ChaosSampler(Collection<String> ids) { this(ids, ids); }

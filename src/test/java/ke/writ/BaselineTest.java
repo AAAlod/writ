@@ -10,10 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BaselineTest {
     @Test void chaosExcludesEveryHardDeniedIdAndDeduplicates() {
-        var required = List.of("minecraft:air", "minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:command_block_minecart", "writ:trade_writ", "writ:chaos_writ");
+        var required = List.of("minecraft:air", "minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:command_block_minecart", "minecraft:structure_block", "minecraft:structure_void", "minecraft:jigsaw", "writ:trade_writ", "writ:random_writ", "writ:chaos_writ");
         assertEquals(Set.copyOf(required), ChaosSampler.HARD_DENY);
         var ids = new ArrayList<>(required);
         ids.addAll(List.of("test:a", "test:a", "test:b"));
+        var pools = ChaosPools.build(ids, List.of(), null, null, key -> null);
+        assertEquals(List.of("test:a", "test:b"), pools.payment());
+        assertEquals(List.of("test:a", "test:b"), pools.result());
         var sampler = new ChaosSampler(ids);
         assertEquals(2, sampler.size());
         Random random = new Random(911);
