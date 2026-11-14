@@ -102,7 +102,7 @@ Writ rebuilds all of its data at world load and on every `/reload`. A reload has
 - The tooltip of an existing writ does **not** change. It shows the trade as it was when the writ was generated.
 - Trades already added to villagers are never changed.
 - Chests whose loot has already been generated are not affected.
-- The obtain mode is **not** re-read. It changes only when the server restarts.
+- The obtain mode is **not** re-read on `/reload` or when switching worlds. Restart the game or dedicated server process to change it.
 
 ## Pools
 
@@ -117,7 +117,13 @@ A pool groups presets for natural drops. Writ defines the five tiers and one pur
 | `writ:ur` | 1 | `rarity` | Tier UR |
 | `writ:unlock` | 0 | `purpose` | Holds the Chaos Writ Unlock preset |
 
-Every built-in source sets its own pool weights and does not inherit these global weights. The global weights only matter for sources that inherit them (see [Pool weights at a source](#pool-weights-at-a-source)).
+Every built-in source sets its own pool weights and does not inherit these global weights (see [Pool weights at a source](#pool-weights-at-a-source)). Random writs also use the global weights, independently of source-specific weights.
+
+### Random writ candidates
+
+Random writs use the existing preset fields; no new preset JSON fields are required. They start from naturally eligible candidates, then require a positive-weight, enabled `rarity` pool and an unrestricted or matching villager profession. A preset is excluded if its default result or any enabled variant result is a trade, random or chaos writ. If `sources` is omitted (represented internally as an empty set), there is no source restriction; otherwise at least one referenced structure source must be reachable, with positive drop chance and effective pool weight. Boss sources alone do not qualify.
+
+The draw uses global pool weights (built-in N 45 / R 35 / SR 14 / SSR 5 / UR 1), renormalized across eligible nonempty pools, followed by preset weight within the pool. Source chances and `pool_weights` establish reachability but do not multiply the draw weight or simulate structure drop rates. After choosing a preset, its default and enabled variants have equal chances; variants do not multiply its weight.
 
 ### Pool fields
 
@@ -125,7 +131,7 @@ File: `data/<namespace>/writs/loot/pools/<name>.json`
 
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `weight` | integer ≥ 0 | yes | — | Global weight. Used by sources that inherit global weights. It must be written as a plain integer: `5` is valid, `5.0` is not. |
+| `weight` | integer ≥ 0 | yes | — | Global weight, used by random writs and sources that inherit global weights. It must be written as a plain integer: `5` is valid, `5.0` is not. |
 | `kind` | `"rarity"` or `"purpose"` | yes | — | Controls the tooltip. `rarity` shows the pool as a tier line. `purpose` shows "Purpose: *label*". |
 | `label` | non-empty string | yes | — | Display text. It is also the fallback when `translation_key` is missing on the client. |
 | `translation_key` | string | no | none | Language key for the display text. |
@@ -448,7 +454,7 @@ Each entry is a string: an item ID such as `"minecraft:bedrock"`, or an item tag
 The payment and result lists are each built in three steps:
 
 1. Start from the allow list if one is given. Otherwise start from every registered item, including items from other mods.
-2. Remove the fixed **hard-deny** items. These are always removed and cannot be re-allowed: `minecraft:air`, `minecraft:command_block`, `minecraft:chain_command_block`, `minecraft:repeating_command_block`, `minecraft:command_block_minecart`, `writ:trade_writ` and `writ:chaos_writ`.
+2. Remove the fixed **hard-deny** items. These are always removed and cannot be re-allowed: `minecraft:air`, `minecraft:command_block`, `minecraft:chain_command_block`, `minecraft:repeating_command_block`, `minecraft:command_block_minecart`, `minecraft:structure_block`, `minecraft:structure_void`, `minecraft:jigsaw`, `writ:trade_writ`, `writ:random_writ` and `writ:chaos_writ`.
 3. Remove everything in `exclude`.
 
 Each chaos trade then draws one payment and one result, uniformly and independently.
@@ -466,9 +472,6 @@ Each chaos trade then draws one payment and one result, uniformly and independen
   "exclude": [
     "minecraft:bedrock",
     "minecraft:barrier",
-    "minecraft:structure_block",
-    "minecraft:structure_void",
-    "minecraft:jigsaw",
     "minecraft:light",
     "minecraft:debug_stick",
     "minecraft:knowledge_book",
@@ -485,13 +488,14 @@ In this example, payments are always logs, wool or an emerald. Results can be an
 
 ## Server configuration
 
-Server settings live in `serverconfig/writ-server.toml` inside each world folder. Forge creates this file the first time the world loads. Forge also copies a `defaultconfigs/writ-server.toml` from the game directory into new worlds.
+Writ creates `config/writ-common.toml` under the game or server root on first startup. All worlds share it. The old per-world `serverconfig/writ-server.toml` and `defaultconfigs/writ-server.toml` are ignored; copy desired settings manually. Restart the game or dedicated server process after editing: `/reload` and switching worlds do not reread this file. Normal starts do not rewrite it; schema upgrades create a `.bak`, interrupted backup promotion uses `.bak.tmp`, and comment-only edits are not written. If the active config is corrupt or missing and no usable recovery file exists, startup fails; restore a `.bak` or remove the unusable config and recovery files to regenerate defaults. Unverified staging is preserved as `.bak.tmp.orphan` (or with a numbered suffix) without overwriting a valid `.bak`; inspect or remove it manually. A file whose `schema_version` is newer than this Writ version is always rejected; use a matching version or restore an older backup manually.
 
 The file controls behavior that datapacks cannot:
 
 - the three per-villager writ limits;
 - the chaos writ obtain mode (`TRADE` or `CRAFT_9`);
 - the uses, villager experience and price multiplier of chaos trades.
+- hero gift replacement through `[hero_gifts]`: `enabled` (default true), `random_percent` (8) and `chaos_percent` (2). These settings are read at game or dedicated server process startup; a sum above 100 disables replacement. Gift replacement is independent of `obtain_mode` and is controlled by server config, not new preset fields.
 
 The comments in that file are the authoritative reference for each option, its default, its valid range and when a change takes effect. The obtain mode interacts with datapack data in two ways:
 
@@ -631,4 +635,4 @@ A writ created this way has no stored preview. Its tooltip says "No preview avai
 | Writs are refused as "doesn't know the trade" | No preset with that ID is loaded. Check the path and namespace, and that the pack is enabled. |
 | The tooltip shows old values | Tooltips are stored when a writ is generated. The villager still receives the current definition. |
 | Chaos writs are refused | Check `Chaos config diagnostics`. Malformed config or an empty allow list empties the lists. |
-| A change to the obtain mode does nothing | The mode is read only at server start. Restart the server. |
+| A change to the obtain mode does nothing | Restart the game or dedicated server process; switching worlds does not reread it. |

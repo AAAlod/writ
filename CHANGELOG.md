@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.1.0
+
+### Writs and acquisition
+
+- Added random writs: craft one from four trade writs in any 2×2 or 3×3 arrangement. On signing, an eligible preset is drawn for the villager's profession using global pool weights; enabled variants are chosen uniformly after the preset.
+- Profession-based Hero of the Village gifts can be replaced by one random writ (8%) or chaos writ (2%); the remaining 90% keeps the original gift by default. This is independent of the chaos obtain mode.
+- Trade and random writs share the normal per-villager limit; chaos and total limits remain separate.
+- Tooltips show core information by default and expand usage, notices and item details with Shift.
+- Newly signed Chaos Writ Unlock trades have a base price of 32 emeralds; existing villager offers are unchanged.
+
+### Customization
+
+- Moved settings to the shared `config/writ-common.toml`; old per-world `serverconfig/writ-server.toml` files are ignored and settings must be copied manually.
+- Chaos trades hard-deny structure blocks, structure voids and jigsaws; barriers, light blocks and debug sticks remain eligible.
+- Unverified staging is isolated as `.bak.tmp.orphan` (with numbered suffixes when needed) without replacing a valid backup.
+- Configuration backups rotate only on schema upgrades; comment-only edits are not written, and a newer `schema_version` is rejected instead of silently using an older backup.
+- If the active config is missing and existing `.bak` / `.bak.tmp` files are unusable, startup now fails instead of silently creating defaults.
+- Added `[hero_gifts]` server settings: `enabled`, `random_percent` and `chaos_percent`, read at game or dedicated server process startup; `/reload` and switching worlds do not reread them. Invalid percentage totals disable replacement.
+
 ## 1.0.0
 
 First public release of Writ (商契) for Minecraft 1.20.1 and Forge 47.4.10+.

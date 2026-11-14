@@ -18,6 +18,7 @@ Writ is a Minecraft Forge mod that turns villager trading into something you dis
 - **Five tiers.** Writs range from Common bulk supplies to Legendary end-game trades. Each tier has its own name color, so you can judge a find at a glance.
 - **Every profession covered.** All 13 vanilla professions have their own writ trades: processing services, filled supply kits, enchanted books and gear, and rare materials.
 - **Choices on one writ.** Some writs offer several versions of a trade, such as every terracotta color. Cycle the choice in your hand before you apply the writ.
+- **Random writs.** Craft four trade writs into one random writ, or receive one as a village hero gift. It draws a suitable preset trade when signed.
 - **Chaos writs.** These teach a villager a random trade drawn from every item in the game, including items from other mods.
 - **Fair limits.** Each villager accepts a limited number of writs, and the server owner can configure the limits.
 - **Fully data-driven.** Trades, tiers, drop sources and chaos rules are defined by datapacks, so modpacks and servers can reshape the content.
@@ -36,7 +37,9 @@ Writ is a Minecraft Forge mod that turns villager trading into something you dis
 
 1. Install Minecraft Forge for 1.20.1 (47.4.10 or newer).
 2. Put the Writ `.jar` into the `mods` folder of your game, and of your server if you play multiplayer.
-3. Start the game. Writ adds the **Writ** creative tab with both items.
+3. Start the game. Writ adds the **Writ** creative tab with all three items.
+
+Server settings are in `config/writ-common.toml` under the game or server root and are shared by all worlds. Restart the game or dedicated server process after editing; `/reload` and switching worlds do not reread this file. The old per-world `serverconfig/writ-server.toml` is ignored; copy any settings you want to keep into the new file manually. Normal starts do not rewrite it; schema upgrades create a `.bak` backup and comment-only edits are not written. If the active config is corrupt or missing and no usable recovery file exists, startup fails: restore a `.bak` or remove the unusable config and recovery files to regenerate defaults. Unverified staging is preserved as `.bak.tmp.orphan` (or with a numbered suffix) without overwriting a valid `.bak`; inspect or remove it manually. A file whose `schema_version` is newer than this Writ version is always rejected; use a matching Writ version or restore an older backup manually instead of silently downgrading.
 
 ## Quick start
 
@@ -46,7 +49,7 @@ Writ is a Minecraft Forge mod that turns villager trading into something you dis
 4. **Find a villager.** It must be an adult with the right profession, and you must have traded with it at least once.
 5. **Apply it.** Use the writ on the villager. The new trade appears at the end of its trade list, and one writ is used up.
 
-Chaos writs are obtained either from a Chaos Writ Unlock trade found in dungeons or by crafting nine trade writs together. Which one applies depends on the server's settings.
+Depending on the server's settings, chaos writs can be obtained from a Chaos Writ Unlock trade found in dungeons or by crafting nine trade writs together. Village hero gifts can also yield random or chaos writs independently of that setting.
 
 ## Documentation
 
@@ -56,7 +59,7 @@ Chaos writs are obtained either from a Chaos Writ Unlock trade found in dungeons
 
 ## Status
 
-Writ 1.0.0 is the first public release. Drop chances, prices and limits are starting values that may be tuned in later versions. Feedback on balance and compatibility is welcome.
+Writ is under active development. Drop chances, prices and limits are starting values that may be tuned in later versions. Feedback on balance and compatibility is welcome.
 
 ## Feedback and license
 

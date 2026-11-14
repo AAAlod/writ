@@ -102,7 +102,7 @@ Minecraft 1.20.1 使用数据包格式 `15`：
 - 已有契约的提示框 **不会** 变化，它显示的是契约生成时的交易。
 - 已经追加到村民身上的交易永远不会改变。
 - 已经生成过战利品的箱子不受影响。
-- 获取模式 **不会** 重新读取，只有重启服务器时才会改变。
+- 获取模式在 `/reload` 或切换存档时 **不会** 重新读取；修改后须重启游戏或专用服务器进程。
 
 ## 池
 
@@ -117,7 +117,13 @@ Minecraft 1.20.1 使用数据包格式 `15`：
 | `writ:ur` | 1 | `rarity` | UR 档 |
 | `writ:unlock` | 0 | `purpose` | 存放混沌契约解锁预设 |
 
-所有内置来源都自行设置池权重，不继承这些全局权重。全局权重只对继承它们的来源起作用（见[来源中的池权重](#来源中的池权重)）。
+所有内置来源都自行设置池权重，不继承这些全局权重（见[来源中的池权重](#来源中的池权重)）。随机契约也使用全局权重，不使用来源专属权重抽取。
+
+### 随机契约候选
+
+随机契约使用现有预置字段，不新增预置 JSON 字段。它从符合自然掉落条件的候选开始，要求池为已启用且正权重的 `rarity` 池，职业不限或匹配目标村民。默认结果或任一已启用变体结果为交易、随机或混沌契约的预置会被排除。省略 `sources`（内部表示为空集合）表示不限制来源；非空时至少要有一个所列结构来源可达，即掉率及有效池权重均为正。仅有首领来源不能满足这一条件。
+
+抽取使用全局池权重（内置 N 45 / R 35 / SR 14 / SSR 5 / UR 1），对有候选的池重新归一化，再按池内预置权重选择。来源掉率和 `pool_weights` 只用于判断可达性，不参与抽取乘权，也不模拟结构掉率。选定预置后，默认交易与已启用变体等概率选择；变体不放大预置权重。
 
 ### 池字段
 
@@ -125,7 +131,7 @@ Minecraft 1.20.1 使用数据包格式 `15`：
 
 | 字段 | 类型 | 必需 | 默认值 | 说明 |
 |---|---|---|---|---|
-| `weight` | 整数 ≥ 0 | 是 | — | 全局权重，供继承全局权重的来源使用。必须写成普通整数：`5` 有效，`5.0` 无效。 |
+| `weight` | 整数 ≥ 0 | 是 | — | 全局权重，供随机契约及继承全局权重的来源使用。必须写成普通整数：`5` 有效，`5.0` 无效。 |
 | `kind` | `"rarity"` 或 `"purpose"` | 是 | — | 决定提示框的显示方式。`rarity` 显示为档位行；`purpose` 显示为“用途：*label*”。 |
 | `label` | 非空字符串 | 是 | — | 显示文本；客户端缺少 `translation_key` 时也用它作为后备。 |
 | `translation_key` | 字符串 | 否 | 无 | 显示文本的语言键。 |
@@ -448,7 +454,7 @@ Minecraft 1.20.1 使用数据包格式 `15`：
 支付物列表和产出列表分别按以下三步构建：
 
 1. 有允许列表时从允许列表开始；否则从所有已注册物品开始，包括其他模组的物品。
-2. 移除固定的 **硬性禁止** 物品。这些物品总是被移除，无法重新允许：`minecraft:air`、`minecraft:command_block`、`minecraft:chain_command_block`、`minecraft:repeating_command_block`、`minecraft:command_block_minecart`、`writ:trade_writ` 和 `writ:chaos_writ`。
+2. 移除固定的 **硬性禁止** 物品。这些物品总是被移除，无法重新允许：`minecraft:air`、`minecraft:command_block`、`minecraft:chain_command_block`、`minecraft:repeating_command_block`、`minecraft:command_block_minecart`、`minecraft:structure_block`、`minecraft:structure_void`、`minecraft:jigsaw`、`writ:trade_writ`、`writ:random_writ` 和 `writ:chaos_writ`。
 3. 移除 `exclude` 中的所有条目。
 
 之后，每项混沌交易独立、均匀地抽取一个支付物和一个产出。
@@ -466,9 +472,6 @@ Minecraft 1.20.1 使用数据包格式 `15`：
   "exclude": [
     "minecraft:bedrock",
     "minecraft:barrier",
-    "minecraft:structure_block",
-    "minecraft:structure_void",
-    "minecraft:jigsaw",
     "minecraft:light",
     "minecraft:debug_stick",
     "minecraft:knowledge_book",
@@ -485,13 +488,14 @@ Minecraft 1.20.1 使用数据包格式 `15`：
 
 ## 服务器配置
 
-服务器设置位于每个存档文件夹内的 `serverconfig/writ-server.toml`。Forge 在存档首次加载时创建此文件，也会把游戏目录中的 `defaultconfigs/writ-server.toml` 复制到新存档中。
+商契首次启动时在游戏或服务器根目录创建 `config/writ-common.toml`，所有存档共用。旧的每存档 `serverconfig/writ-server.toml` 和 `defaultconfigs/writ-server.toml` 均被忽略，需要保留的设置请手动复制。修改后须重启游戏或专用服务器进程；`/reload` 和切换存档都不会重新读取。正常启动不会重写配置；升级时生成 `.bak`，中断的备份提升使用 `.bak.tmp`，仅修改注释不会写盘。当前配置损坏或缺失且没有可用恢复文件时启动会失败；请恢复 `.bak`，或删除不可用的配置与恢复文件以重新生成默认配置。无法确认归属的暂存文件会保留为 `.bak.tmp.orphan`（或附带编号后缀），不会覆盖有效的 `.bak`；可手动检查或清理。`schema_version` 高于当前 Writ 版本时一律拒绝启动；请使用匹配的版本，或手动恢复较旧的备份。
 
 该文件控制数据包无法控制的行为：
 
 - 三项每位村民的契约上限；
 - 混沌契约的获取模式（`TRADE` 或 `CRAFT_9`）；
 - 混沌交易的可用次数、村民经验和价格乘数。
+- 村庄英雄赠礼替换的 `[hero_gifts]` 配置：`enabled`（默认 true）、`random_percent`（8）和 `chaos_percent`（2）。配置在游戏或专用服务器进程启动时读取，两项概率之和超过 100 时禁用替换。赠礼独立于 `obtain_mode`，由服务器配置控制，不新增预置字段。
 
 该文件中的注释是各选项、默认值、取值范围和生效时机的权威说明。获取模式通过两种方式与数据包数据相互作用：
 
@@ -631,4 +635,4 @@ Contract reload: pools=6 (disabled=0), presets=… (natural=…, manual-only=…
 | 契约被拒绝，提示“没有此契约记载的交易” | 没有加载该 ID 的预设。检查路径、命名空间以及数据包是否已启用。 |
 | 提示框显示旧数值 | 提示框内容在契约生成时保存。村民得到的仍是当前定义。 |
 | 混沌契约被拒绝 | 查看 `Chaos config diagnostics`。格式错误的配置或空的允许列表会使列表为空。 |
-| 修改获取模式没有效果 | 模式只在服务器启动时读取，请重启服务器。 |
+| 修改获取模式没有效果 | 请重启游戏或专用服务器进程；切换存档不会重新读取。 |

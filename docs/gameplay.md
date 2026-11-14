@@ -6,31 +6,33 @@ This guide explains how to find, read and use writs in survival play. It also co
 
 ## Contents
 
-- [The two writs](#the-two-writs)
+- [The three writs](#the-three-writs)
 - [Getting writs](#getting-writs)
 - [Obtain modes](#obtain-modes)
 - [Using a writ on a villager](#using-a-writ-on-a-villager)
 - [Reading a trade writ](#reading-a-trade-writ)
 - [Tiers](#tiers)
 - [Choices (variants)](#choices-variants)
+- [Random writs](#random-writs)
 - [Chaos writs](#chaos-writs)
 - [Content overview](#content-overview)
 - [Server settings that affect players](#server-settings-that-affect-players)
 - [Common problems](#common-problems)
 - [Compatibility and limitations](#compatibility-and-limitations)
 
-## The two writs
+## The three writs
 
-Writ adds two items.
+Writ adds three items.
 
 | Item | What it does |
 |---|---|
 | **Trade Writ** | Carries one specific, predefined trade. Using it on a villager adds that trade to the villager's trade list. |
+| **Random Writ** | Draws an eligible predefined trade when the villager signs. |
 | **Chaos Writ** | Carries no trade. Using it on a villager adds a trade that is drawn at random at that moment: one random item as payment for one random item. |
 
 A trade writ shows you exactly what you will get before you use it. A chaos writ is a gamble: you only learn what the villager will trade after it signs.
 
-Both items appear in the **Writ** creative tab. The trade writ in the creative tab is *blank*: it carries no trade and cannot be applied. Trade writs that carry trades come from loot, from boss kills, or from server commands.
+All three items appear in the **Writ** creative tab. The trade writ in the creative tab is *blank*: it carries no trade and cannot be applied. Trade writs that carry trades come from loot, from boss kills, or from server commands.
 
 ## Getting writs
 
@@ -53,14 +55,20 @@ Each boss has its own exclusive set of trades that cannot be found in chests. Se
 
 ### Obtaining chaos writs
 
-How chaos writs are obtained depends on the server's [obtain mode](#obtain-modes):
+Two ways to obtain chaos writs depend on the server's [obtain mode](#obtain-modes):
 
 - **`TRADE` mode (default):** dungeon chests can contain a **Chaos Writ Unlock** trade writ. Any employed villager can sign it. The villager then sells chaos writs for emeralds.
 - **`CRAFT_9` mode:** craft one chaos writ from nine trade writs in a full 3×3 crafting grid. Any trade writs can be used.
 
+Four trade writs craft one random writ in any arrangement in a 2×2 or 3×3 grid. They may have different presets or NBT, including blank writs; the output does not inherit their data.
+
+Profession-based Hero of the Village gifts have default chances of 90% original gift, 8% random writ and 2% chaos writ. If a writ branch is unavailable, its chance keeps the original gift. These gifts are independent of `obtain_mode`; the chances and replacement can be configured in `[hero_gifts]`.
+
+New Chaos Writ Unlock trades have a base price of 32 emeralds. Existing villager offers are not repriced; vanilla demand, reputation and Hero of the Village effects can change the actual price.
+
 ## Obtain modes
 
-The server owner chooses one obtain mode for chaos writs. The mode is read when the server starts and cannot change while it runs.
+The server owner chooses one obtain mode for chaos writs. The mode is read at game or dedicated server process startup; `/reload` and switching worlds do not reread it.
 
 | | `TRADE` (default) | `CRAFT_9` |
 |---|---|---|
@@ -106,11 +114,13 @@ Each villager can accept only a limited number of writs. Three limits apply:
 
 | Limit | Default |
 |---|---|
-| Trade writs per villager | 8 |
+| Trade and random writs combined per villager | 8 |
 | Chaos writs per villager | 3 |
-| Writs of either kind per villager | 10 |
+| Writs of all three kinds per villager | 10 |
 
 When a limit is reached, the villager refuses with a message that names the limit it reached. The server owner can change these numbers (see [Server settings](#server-settings-that-affect-players)).
+
+Trade and random writs share `max_normal_added_per_villager` and `normalAppliedCount`; chaos writs use `max_chaos_added_per_villager` and `chaosAppliedCount`. The sum is also limited by `max_total_added_per_villager`; there are only these two stored counters.
 
 ### When a villager refuses
 
@@ -127,6 +137,8 @@ A trade writ is named after the trade it carries, for example *Trade Writ: Ore S
 - The **current choice**, if the writ offers [choices](#choices-variants).
 
 The tooltip shows the trade as it was defined when the writ was created. The villager always receives the trade **as the server currently defines it**. If the server's data has changed since the writ was generated, the trade you receive can differ from the tooltip.
+
+The default tooltip shows core information and at most one expansion hint. Hold Shift for usage, notices, choice instructions and available item details. Blank and error states remain visible without Shift. Random and chaos writs show a summary by default and their usage and notice with Shift.
 
 ## Tiers
 
@@ -164,6 +176,10 @@ Choices are ordered. The first choice is the writ's default trade, and cycling w
 
 When you apply the writ, the villager receives the currently selected choice. If a choice no longer exists on the server, the writ is refused with "This writ's choice is no longer offered". Use it in the air once to reset it to the default choice.
 
+## Random writs
+
+At signing, the server filters eligible presets for the villager's profession. The draw uses global rarity-pool relative weights (by default N 45 / R 35 / SR 14 / SSR 5 / UR 1), renormalized over nonempty eligible pools, and then the preset weights within the chosen pool. It does not simulate structure drop rates. Boss-only presets and presets whose default or any enabled variant result is a writ are excluded. After a preset is chosen, its default and enabled variants are equally likely; variants do not increase the preset's weight. If no eligible trade exists, the villager refuses without consuming the writ.
+
 ## Chaos writs
 
 When a villager signs a chaos writ, the server draws a trade:
@@ -173,7 +189,7 @@ When a villager signs a chaos writ, the server draws a trade:
 - The two items are drawn independently from every item in the game, **including items added by other installed mods**.
 - By default a chaos trade can be used 12 times before it needs to restock. It gives the villager no experience. These values are server settings.
 
-These items can never be drawn: air, all command blocks, the command block minecart, and both writ items.
+These items can never be drawn: air, all command blocks, the command block minecart, structure blocks, structure voids, jigsaws, and all three writ items.
 
 Keep these limitations in mind:
 
@@ -252,10 +268,11 @@ With the built-in data each boss kill has a 30% chance to award a writ.
 
 ## Server settings that affect players
 
-Server owners configure Writ in `serverconfig/writ-server.toml` inside the world folder. The comments in that file are the authoritative reference for each option, its default and its valid range. The settings that matter most to players are:
+Server owners configure Writ in `config/writ-common.toml` under the game or server root. All worlds share it; restart the game or dedicated server process after editing; `/reload` and switching worlds do not reread it. The old per-world `serverconfig/writ-server.toml` is ignored: copy desired settings manually. Normal starts do not rewrite the file; schema upgrades create a `.bak`, with `.bak.tmp` used for interrupted backup promotion, and comment-only edits are not written. If the active config is corrupt or missing and no usable recovery file exists, startup fails; restore a `.bak` or remove the unusable config and recovery files to regenerate defaults. Unverified staging is preserved as `.bak.tmp.orphan` (or with a numbered suffix) without overwriting a valid `.bak`; inspect or remove it manually. A file whose `schema_version` is newer than this Writ version is always rejected; use a matching Writ version or restore an older backup manually. The comments in the file describe each option, default and valid range. The settings that matter most to players are:
 
-- **Obtain mode** (`obtain_mode` in the `[chaos_writ]` section): `TRADE` or `CRAFT_9`, as described in [Obtain modes](#obtain-modes). A change takes effect only after the server restarts, and players should reconnect afterwards.
-- **The three per-villager limits** (`max_normal_added_per_villager`, `max_chaos_added_per_villager`, `max_total_added_per_villager`): how many trade writs, chaos writs and writs in total one villager can accept. A limit of `0` blocks that kind of writ entirely. Lowering a limit never removes trades that were already added. It only stops further writs.
+- **Obtain mode** (`obtain_mode` in the `[chaos_writ]` section): `TRADE` or `CRAFT_9`, as described in [Obtain modes](#obtain-modes). Restart the game or dedicated server process after a change.
+- **The three per-villager limits** (`max_normal_added_per_villager`, `max_chaos_added_per_villager`, `max_total_added_per_villager`): how many trade and random writs combined, chaos writs and writs in total one villager can accept. A limit of `0` blocks that kind of writ entirely. Lowering a limit never removes trades that were already added. It only stops further writs.
+- **Hero gifts** (`[hero_gifts]`): `enabled`, `random_percent` and `chaos_percent` control replacement, read at game or dedicated server process startup. If the percentages sum to more than 100, replacement is disabled.
 - **Chaos trade parameters** (`max_uses`, `villager_xp`, `price_multiplier` in `[chaos_writ]`): the uses, villager experience and price multiplier of new chaos trades.
 
 Which trades exist, where they drop and how often are controlled by datapacks, not by this file. See the [Datapack Reference](datapacks.md).
