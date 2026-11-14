@@ -14,6 +14,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -183,6 +184,46 @@ final class Presets {
                 LootRules.naturallyEligible(mode, e.getValue().modes(), e.getValue().result().is(Writ.CHAOS.get())))
                 .map(e -> new LootRules.Candidate(e.getKey().toString(), e.getValue().rarity(), e.getValue().weight(), e.getValue().sources())).toList();
     }
+    static List<LootRules.Candidate> randomCandidates(Snapshot snapshot, ResourceLocation profession) {
+        return randomCandidates(snapshot, Set.of(profession));
+    }
+    Optional<MerchantOffer> randomOffer(Snapshot snapshot, ResourceLocation profession, RandomSource random) {
+        List<LootRules.Candidate> candidates = randomCandidates(snapshot, profession);
+        if (candidates.isEmpty()) return Optional.empty();
+        String id = LootRules.select(candidates, snapshot.rarities(), Map.of(), bound -> uniform(random, bound)).orElse(null);
+        if (id == null) return Optional.empty();
+        Preset p = snapshot.presets().get(ResourceLocation.tryParse(id));
+        if (p == null) return Optional.empty();
+        int choices = p.variants().size() + 1;
+        int idx = random.nextInt(choices);
+        Variant v = idx == 0 ? null : p.variants().get(idx - 1);
+        return Optional.of(offerFor(p, v));
+    }
+    static boolean hasAnyUsableRandomCandidate(Snapshot snapshot) {
+        return !randomCandidates(snapshot, validProfessions()).isEmpty();
+    }
+    static Set<ResourceLocation> validProfessions() {
+        Set<ResourceLocation> professions = new HashSet<>(BuiltInRegistries.VILLAGER_PROFESSION.keySet());
+        professions.remove(BuiltInRegistries.VILLAGER_PROFESSION.getKey(VillagerProfession.NONE));
+        professions.remove(BuiltInRegistries.VILLAGER_PROFESSION.getKey(VillagerProfession.NITWIT));
+        return Set.copyOf(professions);
+    }
+    private static List<LootRules.Candidate> randomCandidates(Snapshot snapshot, Set<ResourceLocation> professions) {
+        Map<String, Integer> rarities = snapshot.rarities();
+        return snapshot.candidates().stream().filter(candidate -> {
+            ResourceLocation id = ResourceLocation.tryParse(candidate.id());
+            Preset p = id == null ? null : snapshot.presets().get(id);
+            if (p == null) return false;
+            PoolData.Pool pool = snapshot.pools().get(p.rarity());
+            if (pool == null || !"rarity".equals(pool.kind()) || pool.disabled() || pool.weight() <= 0) return false;
+            if (!p.professions().isEmpty() && Collections.disjoint(p.professions(), professions)) return false;
+            if (isWritResult(p.result()) || p.variants().stream().anyMatch(v -> isWritResult(v.result()))) return false;
+            return p.sources().isEmpty() || snapshot.sources().values().stream().anyMatch(source -> LootRules.reachableAt(candidate, rarities, source));
+        }).sorted(Comparator.comparing(LootRules.Candidate::id)).toList();
+    }
+    private static boolean isWritResult(ItemStack result) {
+        return result.is(Writ.NORMAL.get()) || result.is(Writ.RANDOM.get()) || result.is(Writ.CHAOS.get());
+    }
     private void logModeAndReachability(Snapshot current) {
         Writ.LOG.info("Chaos contract obtain mode: {} (locked until server restart)", mode);
         var unlocks = current.candidates().stream().filter(c -> {
@@ -222,7 +263,15 @@ final class Presets {
         int selection = selection(p, tag);
         if (selection < 0) return new OfferResult(null, "variant_invalid");
         Variant v = selection == 0 ? null : p.variants().get(selection - 1);
-        return new OfferResult(new MerchantOffer((v == null ? p.costA() : v.costA()).copy(), (v == null ? p.costB() : v.costB()).copy(), (v == null ? p.result() : v.result()).copy(), v == null ? p.maxUses() : v.maxUses(), p.xp(), p.multiplier()), null);
+        return new OfferResult(offerFor(p, v), null);
+    }
+    static MerchantOffer offerFor(Preset p, Variant v) {
+        return new MerchantOffer(
+            (v == null ? p.costA() : v.costA()).copy(),
+            (v == null ? p.costB() : v.costB()).copy(),
+            (v == null ? p.result() : v.result()).copy(),
+            v == null ? p.maxUses() : v.maxUses(),
+            p.xp(), p.multiplier());
     }
     ItemStack generate(String table, RandomSource random) {
         Snapshot current = snapshot;

@@ -1,7 +1,10 @@
 package ke.writ;
 
 import com.mojang.logging.LogUtils;
+import java.util.Optional;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.Villager;
@@ -56,13 +59,14 @@ public final class Writ {
     static ChaosParams chaosParameters() { return chaosParameters; }
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
-        NORMAL_LIMIT = b.comment("Maximum trade writs one villager can accept. 0 disables trade writs.",
+        NORMAL_LIMIT = b.comment("Maximum trade and random writs one villager can accept together. 0 disables both.",
                         "Checked each time a writ is used; lowering it never removes trades already added.")
                 .defineInRange("max_normal_added_per_villager", 8, 0, 1000000);
         CHAOS_LIMIT = b.comment("Maximum chaos writs one villager can accept. 0 disables chaos writs.",
                         "Checked each time a writ is used; lowering it never removes trades already added.")
                 .defineInRange("max_chaos_added_per_villager", 3, 0, 1000000);
-        TOTAL_LIMIT = b.comment("Maximum writs of both kinds combined that one villager can accept; applies on top of the two limits above.")
+        TOTAL_LIMIT = b.comment("Maximum trade, random and chaos writs combined that one villager can accept; applies on top of the two limits above.",
+                        "Trade and random writs share normalAppliedCount; chaos writs use chaosAppliedCount.")
                 .defineInRange("max_total_added_per_villager", 10, 0, 2000000);
         b.push("chaos_writ");
         OBTAIN_MODE = b.comment("How chaos writs are obtained:",
@@ -125,8 +129,9 @@ public final class Writ {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void interact(PlayerInteractEvent.EntityInteract event) {
         ItemStack stack = event.getItemStack();
-        boolean normal = stack.is(NORMAL.get()), chaos = stack.is(CHAOS.get());
-        if (!normal && !chaos) return;
+        boolean normal = stack.is(NORMAL.get()), random = stack.is(RANDOM.get()), chaos = stack.is(CHAOS.get());
+        if (!normal && !random && !chaos) return;
+        boolean usesNormalQuota = normal || random;
         if (event.getTarget().getType() != EntityType.VILLAGER) {
             if (!event.getLevel().isClientSide && isOtherMerchant(event.getTarget()))
                 event.getEntity().displayClientMessage(Component.translatable("writ.message.other_merchant"), true);
@@ -148,19 +153,28 @@ public final class Writ {
         if (root.contains(ID) && (!data.contains("version", Tag.TAG_INT) || !data.contains("normalAppliedCount", Tag.TAG_INT) || !data.contains("chaosAppliedCount", Tag.TAG_INT))) { LOG.error("Incomplete contract data on villager {}", v.getUUID()); message(event, "invalid_data"); return; }
         if (!validCounter(data, "normalAppliedCount") || !validCounter(data, "chaosAppliedCount") || (data.contains("version") && (!data.contains("version", Tag.TAG_INT) || data.getInt("version") != 1))) { LOG.error("Invalid contract data on villager {}", v.getUUID()); message(event, "invalid_data"); return; }
         int n = data.getInt("normalAppliedCount"), c = data.getInt("chaosAppliedCount");
-        if (!Limits.allows(n, c, NORMAL_LIMIT.get(), CHAOS_LIMIT.get(), TOTAL_LIMIT.get(), normal)) { refuse(event, v, Component.translatable("writ.message.limit." + ((long) n + c >= TOTAL_LIMIT.get() ? "total" : normal ? "trade" : "chaos"))); return; }
-        Presets.OfferResult resolution = normal ? Presets.INSTANCE.resolveOffer(stack, v) : null;
-        MerchantOffer offer = normal ? resolution.offer() : Chaos.offer(event.getLevel().getRandom());
-        if (offer == null) {
-            if (normal && resolution.failure().equals("profession_mismatch")) refuse(event, v, Component.translatable("writ.message.profession_mismatch", Texts.professions(Presets.INSTANCE.professionsOf(stack))));
-            else message(event, !normal ? "empty_pool" : resolution.failure().equals("preset_missing") && (!stack.hasTag() || stack.getTag().getString("preset_id").isEmpty()) ? "blank" : resolution.failure());
-            return;
+        if (!Limits.allows(n, c, NORMAL_LIMIT.get(), CHAOS_LIMIT.get(), TOTAL_LIMIT.get(), usesNormalQuota)) { refuse(event, v, Component.translatable("writ.message.limit." + ((long) n + c >= TOTAL_LIMIT.get() ? "total" : usesNormalQuota ? "trade" : "chaos"))); return; }
+        MerchantOffer offer;
+        if (random) {
+            Presets.Snapshot snapshot = Presets.INSTANCE.currentSnapshot();
+            ResourceLocation professionId = BuiltInRegistries.VILLAGER_PROFESSION.getKey(profession);
+            Optional<MerchantOffer> resolved = Presets.INSTANCE.randomOffer(snapshot, professionId, event.getLevel().getRandom());
+            if (resolved.isEmpty()) { message(event, "random.empty_pool"); return; }
+            offer = resolved.get();
+        } else {
+            Presets.OfferResult resolution = normal ? Presets.INSTANCE.resolveOffer(stack, v) : null;
+            offer = normal ? resolution.offer() : Chaos.offer(event.getLevel().getRandom());
+            if (offer == null) {
+                if (normal && resolution.failure().equals("profession_mismatch")) refuse(event, v, Component.translatable("writ.message.profession_mismatch", Texts.professions(Presets.INSTANCE.professionsOf(stack))));
+                else message(event, !normal ? "empty_pool" : resolution.failure().equals("preset_missing") && (!stack.hasTag() || stack.getTag().getString("preset_id").isEmpty()) ? "blank" : resolution.failure());
+                return;
+            }
         }
         v.getOffers().add(offer);
         data.putInt("version", 1);
         data.putInt("normalAppliedCount", n);
         data.putInt("chaosAppliedCount", c);
-        data.putInt(normal ? "normalAppliedCount" : "chaosAppliedCount", normal ? n + 1 : c + 1);
+        data.putInt(usesNormalQuota ? "normalAppliedCount" : "chaosAppliedCount", usesNormalQuota ? n + 1 : c + 1);
         root.put(ID, data);
         if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
         // Mirror vanilla's own cues: the villager agrees aloud and sparkles as it does when it gains trades.
