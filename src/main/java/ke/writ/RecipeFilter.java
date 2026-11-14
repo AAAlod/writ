@@ -23,9 +23,6 @@ final class RecipeFilter extends SimplePreparableReloadListener<Void> {
             applyMode(Writ.recipeMode());
         }
     }
-    static synchronized void modeLocked(ObtainMode mode) {
-        if (current != null) current.applyMode(mode);
-    }
     static synchronized void clear() { current = null; }
     private void applyMode(ObtainMode mode) {
         manager.replaceRecipes(RecipeRules.filter(original, mode, recipe -> recipe.getId().toString()));

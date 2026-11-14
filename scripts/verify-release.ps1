@@ -2,7 +2,7 @@ param(
     [switch]$SkipGameTest,
     [switch]$SkipBuild,
     # Keep in sync with the current required GameTest count.
-    [int]$MinGameTests = 49
+    [int]$MinGameTests = 75
 )
 
 $ErrorActionPreference = 'Stop'
@@ -54,12 +54,41 @@ try {
     try {
         $bad = @($zip.Entries | Where-Object { $_.FullName -match 'GameTests' -or $_.FullName.StartsWith('data/writ/structures/') -or $_.FullName -eq 'data/writ/writs/presets/example.json' })
         if ($bad.Count -ne 0) { throw "Test assets found in release JAR: $($bad.FullName -join ', ')" }
+        if (@($zip.Entries | Where-Object { $_.Name -eq 'writ-common.toml' }).Count -ne 0) { throw 'Runtime Writ config must not be packaged in the JAR.' }
         $legacyNamespace = 'trade' + 'contracts'
         $legacyData = 'trade' + '_contracts'
         $legacyPaths = @($zip.Entries | Where-Object { $_.FullName.Contains($legacyNamespace) -or $_.FullName.Contains($legacyData) })
         if ($legacyPaths.Count -ne 0) { throw 'Legacy package or resource paths found in release JAR.' }
-        foreach ($required in @('ke/writ/Writ.class', 'assets/writ/models/item/trade_writ.json', 'assets/writ/models/item/chaos_writ.json', 'assets/writ/lang/en_us.json', 'assets/writ/lang/zh_cn.json', 'assets/writ/lang/fr_fr.json', 'data/writ/writs/presets/a_unlock.json')) {
+        foreach ($required in @('ke/writ/Writ.class', 'ke/writ/ConfigFile.class', 'assets/writ/models/item/trade_writ.json', 'assets/writ/models/item/chaos_writ.json', 'assets/writ/lang/en_us.json', 'assets/writ/lang/zh_cn.json', 'assets/writ/lang/fr_fr.json', 'data/writ/writs/presets/a_unlock.json',
+            'ke/writ/HeroGifts.class', 'data/writ/loot_modifiers/hero_gifts.json', 'data/writ/recipes/random_writ.json',
+            'data/writ/advancements/recipes/random_writ.json', 'assets/writ/models/item/random_writ.json',
+            'assets/writ/textures/item/random_writ.png', 'assets/writ/textures/item/random_writ.png.mcmeta')) {
             if ($null -eq $zip.GetEntry($required)) { throw "Missing required JAR entry: $required" }
+        }
+        $languageKeys = @(
+            'item.writ.random_writ', 'writ.tooltip.random.summary', 'writ.tooltip.random.use',
+            'writ.tooltip.random.notice', 'writ.tooltip.chaos.summary', 'writ.tooltip.expand_hint',
+            'writ.message.random.empty_pool'
+        )
+        foreach ($language in @('en_us', 'zh_cn', 'fr_fr')) {
+            $languagePath = "assets/writ/lang/$language.json"
+            $languageEntry = $zip.GetEntry($languagePath)
+            if ($null -eq $languageEntry) { throw "Missing required JAR entry: $languagePath" }
+            $languageReader = [System.IO.StreamReader]::new($languageEntry.Open(), [System.Text.Encoding]::UTF8)
+            try { $languageText = $languageReader.ReadToEnd() } finally { $languageReader.Dispose() }
+            foreach ($key in $languageKeys) {
+                if ($languageText -notmatch ('"' + [regex]::Escape($key) + '"\s*:')) {
+                    throw "Missing language key '$key' in JAR entry $languagePath."
+                }
+            }
+        }
+        $glmPath = 'data/forge/loot_modifiers/global_loot_modifiers.json'
+        $glmEntry = $zip.GetEntry($glmPath)
+        if ($null -eq $glmEntry) { throw "Missing required JAR entry: $glmPath" }
+        $glmReader = [System.IO.StreamReader]::new($glmEntry.Open(), [System.Text.Encoding]::UTF8)
+        try { $glm = $glmReader.ReadToEnd() | ConvertFrom-Json } finally { $glmReader.Dispose() }
+        if ($glm.replace -cne $false -or $glm.entries -notcontains 'writ:chest_loot' -or $glm.entries -notcontains 'writ:hero_gifts') {
+            throw 'Global loot modifiers must retain chest loot and hero gifts with replace=false.'
         }
         $preset = $zip.GetEntry('data/writ/writs/presets/terracotta.json')
         if ($null -eq $preset) { throw 'Missing built-in terracotta preset.' }

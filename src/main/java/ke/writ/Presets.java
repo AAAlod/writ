@@ -137,6 +137,7 @@ final class Presets {
         Writ.LOG.info("Loaded {} trade contract presets, {} loot sources and {} boss sources", loaded.size(), enabled.size(), enabledBosses.size());
     }
     synchronized void startMode(ObtainMode startMode) {
+        if (modeReady && mode == startMode) return;
         mode = startMode;
         modeReady = true;
         if (resourcesReady) {

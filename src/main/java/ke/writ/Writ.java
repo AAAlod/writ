@@ -1,6 +1,7 @@
 package ke.writ;
 
 import com.mojang.logging.LogUtils;
+import java.nio.file.Path;
 import java.util.Optional;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -23,13 +24,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -40,6 +41,7 @@ import net.minecraftforge.common.loot.IGlobalLootModifier;
 @Mod(Writ.ID)
 public final class Writ {
     public static final String ID = "writ";
+    static final int CONFIG_SCHEMA_VERSION = 1;
     static final Logger LOG = LogUtils.getLogger();
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ID);
     private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, ID);
@@ -51,6 +53,7 @@ public final class Writ {
     public static final RegistryObject<Item> CHAOS = ITEMS.register("chaos_writ", () -> new WritItem(new Item.Properties()));
     private static final RegistryObject<CreativeModeTab> TAB = TABS.register("writs", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.writ")).withTabsBefore(CreativeModeTabs.SPAWN_EGGS).icon(() -> new ItemStack(NORMAL.get())).displayItems((p, out) -> { out.accept(NORMAL.get()); out.accept(RANDOM.get()); out.accept(CHAOS.get()); }).build());
     private static final ForgeConfigSpec CONFIG;
+    private static ObtainMode configuredMode = ObtainMode.TRADE;
     private static final ForgeConfigSpec.IntValue NORMAL_LIMIT, CHAOS_LIMIT, TOTAL_LIMIT;
     private static final ForgeConfigSpec.ConfigValue<String> OBTAIN_MODE;
     private static final ForgeConfigSpec.IntValue CHAOS_USES, CHAOS_XP;
@@ -72,6 +75,8 @@ public final class Writ {
     }
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
+        b.comment("Internal configuration schema version. Do not edit; used by Writ's recovery logic.")
+                .defineInRange("schema_version", CONFIG_SCHEMA_VERSION, 0, Integer.MAX_VALUE);
         NORMAL_LIMIT = b.comment("Maximum trade and random writs one villager can accept together. 0 disables both.",
                         "Checked each time a writ is used; lowering it never removes trades already added.")
                 .defineInRange("max_normal_added_per_villager", 8, 0, 1000000);
@@ -85,20 +90,21 @@ public final class Writ {
         OBTAIN_MODE = b.comment("How chaos writs are obtained:",
                         "  TRADE   - Chaos Writ Unlock writs drop naturally; villagers that sign one sell chaos writs. The crafting recipe is removed.",
                         "  CRAFT_9 - Nine trade writs craft one chaos writ. Writs that sell chaos writs no longer drop naturally.",
-                        "Any other value falls back to TRADE. Read once at server start: restart the server and have players reconnect after changing it.")
-                .define("obtain_mode", "TRADE", value -> true);
-        CHAOS_USES = b.comment("Uses of each new chaos trade before the villager must restock. Read at server start; existing trades keep their values.")
+                        "Village hero gifts are independent of these two chaos writ sources.",
+                        "Any other value falls back to TRADE. Read at game or dedicated server process startup; restart it after changing this setting.")
+                .define("obtain_mode", "TRADE", value -> value != null);
+        CHAOS_USES = b.comment("Uses of each new chaos trade before the villager must restock. Read at game or dedicated server process startup; existing trades keep their values.")
                 .defineInRange("max_uses", 12, 1, Integer.MAX_VALUE);
-        CHAOS_XP = b.comment("Villager experience granted per chaos trade. Read at server start; existing trades keep their values.")
+        CHAOS_XP = b.comment("Villager experience granted per chaos trade. Read at game or dedicated server process startup; existing trades keep their values.")
                 .defineInRange("villager_xp", 0, 0, Integer.MAX_VALUE);
         CHAOS_MULTIPLIER = b.comment("Vanilla price multiplier of new chaos trades: how strongly demand and reputation change the price.",
-                        "Read at server start; existing trades keep their values.")
+                        "Read at game or dedicated server process startup; existing trades keep their values.")
                 .defineInRange("price_multiplier", 0.05, 0.0, (double) Float.MAX_VALUE);
         b.pop();
         b.push("hero_gifts");
         HERO_GIFTS_ENABLED = b.comment(
                 "Whether village hero gifts can be replaced by writs.",
-                "Read at server start; existing worlds keep their behaviour until restart.")
+                "Read at game or dedicated server process startup; existing worlds keep their behaviour until restart.")
             .define("enabled", true);
         HERO_GIFTS_RANDOM = b.comment(
                 "Chance (0-100) that a hero gift becomes one random writ.",
@@ -112,18 +118,24 @@ public final class Writ {
         CONFIG = b.build();
     }
     public Writ() {
+        Path configPath = FMLPaths.CONFIGDIR.get().resolve("writ-common.toml");
+        ConfigFile.LoadResult loaded = ConfigFile.load(CONFIG, configPath, CONFIG_SCHEMA_VERSION);
+        switch (loaded.status()) {
+            case INCOMPATIBLE -> throw new IllegalStateException("Writ config " + configPath + " is newer than this Writ version: " + loaded.message());
+            case FAILED -> throw new IllegalStateException("Cannot load Writ config " + configPath + ": " + loaded.message());
+            case CREATED, UPGRADED, CORRECTED -> LOG.info("Writ config {}: {} ({})", configPath, loaded.status(), loaded.message());
+            case SAVE_FAILED, BACKUP_FAILED, USING_BACKUP -> LOG.warn("Writ config {}: {} ({})", configPath, loaded.status(), loaded.message());
+            case LOADED -> LOG.debug("Writ config {}: {}", configPath, loaded.message());
+        }
+        applyConfig();
         VariantNet.register();
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(bus); TABS.register(bus); LOOT_MODIFIERS.register(bus);
-        bus.addListener(this::configLoaded);
-        bus.addListener(this::configUnloaded);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new BossDrops());
         MinecraftForge.EVENT_BUS.register(new ContainerPayments());
     }
-    private void configLoaded(ModConfigEvent.Loading event) {
-        if (event.getConfig().getSpec() != CONFIG) return;
+    private static void applyConfig() {
         float multiplier = CHAOS_MULTIPLIER.get().floatValue();
         PresetChecks.trade(CHAOS_USES.get(), CHAOS_XP.get(), multiplier);
         chaosParameters = new ChaosParams(CHAOS_USES.get(), CHAOS_XP.get(), multiplier);
@@ -131,20 +143,26 @@ public final class Writ {
         Object raw = OBTAIN_MODE.get();
         ObtainMode mode = ObtainMode.parse(raw);
         if (!(raw instanceof String text) || !text.equals(mode.name())) LOG.error("Invalid chaos_writ.obtain_mode {}; using TRADE until restart", raw);
-        Presets.INSTANCE.startMode(mode);
-        RecipeFilter.modeLocked(mode);
-    }
-    private void configUnloaded(ModConfigEvent.Unloading event) {
-        if (event.getConfig().getSpec() == CONFIG) { Presets.INSTANCE.stopMode(); RecipeFilter.clear(); heroGiftParams = new HeroGiftParams(false, 0, 0, false); }
+        configuredMode = mode;
+        Presets.INSTANCE.startMode(configuredMode);
     }
     static ObtainMode recipeMode() {
         if (Presets.INSTANCE.modeReady()) return Presets.INSTANCE.activeMode();
-        try { return ObtainMode.parse(OBTAIN_MODE.get()); }
-        catch (IllegalStateException ignored) { return ObtainMode.TRADE; }
+        return configuredMode;
     }
     @SubscribeEvent public void reload(AddReloadListenerEvent event) {
+        Presets.INSTANCE.startMode(configuredMode);
         event.addListener(Presets.INSTANCE.reloadListener(event.getConditionContext()));
         event.addListener(new RecipeFilter(event.getServerResources().getRecipeManager()));
+    }
+    @SubscribeEvent public void serverAboutToStart(ServerAboutToStartEvent event) {
+        Presets.INSTANCE.startMode(configuredMode);
+        refreshHeroGiftParameters();
+    }
+    @SubscribeEvent public void serverStopped(ServerStoppedEvent event) {
+        Presets.INSTANCE.stopMode();
+        RecipeFilter.clear();
+        heroGiftParams = new HeroGiftParams(false, 0, 0, false);
     }
     @SubscribeEvent public void syncRecipeBook(OnDatapackSyncEvent event) {
         // Vanilla sends the recipe definitions and then the initial known-recipe book after this event.
