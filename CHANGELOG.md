@@ -1,10 +1,16 @@
 # Changelog
 
-## Unreleased
+## 1.1.1
+
+### Localization
 
 - Added German, Spanish (Spain and Latin America), Italian, Japanese, Korean, Polish, Brazilian Portuguese, Russian and Traditional Chinese localizations.
 - Reworded several Simplified Chinese and French in-game messages and tooltips.
+
+### Documentation
+
 - Reorganized the documentation; server settings, migration and config recovery are now described in the Gameplay Guide.
+- Corrected the config recovery description: a missing config with no recovery files is recreated with defaults, while a config that cannot be read without a usable backup, or a missing config with unusable recovery files, still refuses startup.
 
 ## 1.1.0
 
