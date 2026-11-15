@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Added German, Spanish (Spain and Latin America), Italian, Japanese, Korean, Polish, Brazilian Portuguese, Russian and Traditional Chinese localizations.
+- Reworded several Simplified Chinese and French in-game messages and tooltips.
+- Reorganized the documentation; server settings, migration and config recovery are now described in the Gameplay Guide.
+
 ## 1.1.0
 
 ### Writs and acquisition

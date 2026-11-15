@@ -121,9 +121,15 @@ Every built-in source sets its own pool weights and does not inherit these globa
 
 ### Random writ candidates
 
-Random writs use the existing preset fields; no new preset JSON fields are required. They start from naturally eligible candidates, then require a positive-weight, enabled `rarity` pool and an unrestricted or matching villager profession. A preset is excluded if its default result or any enabled variant result is a trade, random or chaos writ. If `sources` is omitted (represented internally as an empty set), there is no source restriction; otherwise at least one referenced structure source must be reachable, with positive drop chance and effective pool weight. Boss sources alone do not qualify.
+Random writs need no extra fields; they draw from existing presets. A preset is a candidate for a villager when all of the following hold:
 
-The draw uses global pool weights (built-in N 45 / R 35 / SR 14 / SSR 5 / UR 1), renormalized across eligible nonempty pools, followed by preset weight within the pool. Source chances and `pool_weights` establish reachability but do not multiply the draw weight or simulate structure drop rates. After choosing a preset, its default and enabled variants have equal chances; variants do not multiply its weight.
+- it is [naturally eligible](#natural-eligibility);
+- its pool is an enabled `rarity` pool with a positive global `weight`;
+- `allowed_professions` is empty or contains the villager's profession;
+- neither its default result nor any enabled variant result is a trade, random or chaos writ;
+- it omits `sources`, or at least one listed **chest** source can reach it (positive `contract_drop_chance` and a positive effective weight for its pool). Boss sources alone do not qualify.
+
+The draw picks a pool by global pool weight (built-in N 45 / R 35 / SR 14 / SSR 5 / UR 1), counting only pools that have candidates, then a preset by `weight` within that pool. Source chances and `pool_weights` only decide reachability; they do not change the odds. The preset's default trade and each enabled variant are then equally likely, so variants do not make a preset more likely to be drawn.
 
 ### Pool fields
 
@@ -488,19 +494,14 @@ In this example, payments are always logs, wool or an emerald. Results can be an
 
 ## Server configuration
 
-Writ creates `config/writ-common.toml` under the game or server root on first startup. All worlds share it. The old per-world `serverconfig/writ-server.toml` and `defaultconfigs/writ-server.toml` are ignored; copy desired settings manually. Restart the game or dedicated server process after editing: `/reload` and switching worlds do not reread this file. Normal starts do not rewrite it; schema upgrades create a `.bak`, interrupted backup promotion uses `.bak.tmp`, and comment-only edits are not written. If the active config is corrupt or missing and no usable recovery file exists, startup fails; restore a `.bak` or remove the unusable config and recovery files to regenerate defaults. Unverified staging is preserved as `.bak.tmp.orphan` (or with a numbered suffix) without overwriting a valid `.bak`; inspect or remove it manually. A file whose `schema_version` is newer than this Writ version is always rejected; use a matching version or restore an older backup manually.
+Some behavior is set in `config/writ-common.toml` rather than in data: the per-villager limits, the chaos writ obtain mode, the uses, experience and price multiplier of chaos trades, and Hero of the Village gift replacement. The file is read only at game or dedicated server process startup. Every option, its default and range, migration from 1.0.0 and backup recovery are described in [Server settings](gameplay.md#server-settings).
 
-The file controls behavior that datapacks cannot:
-
-- the three per-villager writ limits;
-- the chaos writ obtain mode (`TRADE` or `CRAFT_9`);
-- the uses, villager experience and price multiplier of chaos trades.
-- hero gift replacement through `[hero_gifts]`: `enabled` (default true), `random_percent` (8) and `chaos_percent` (2). These settings are read at game or dedicated server process startup; a sum above 100 disables replacement. Gift replacement is independent of `obtain_mode` and is controlled by server config, not new preset fields.
-
-The comments in that file are the authoritative reference for each option, its default, its valid range and when a change takes effect. The obtain mode interacts with datapack data in two ways:
+The obtain mode interacts with datapack data in two ways:
 
 - It decides which presets drop naturally, through each preset's `loot_modes` and the chaos-writ rule in [Natural eligibility](#natural-eligibility).
 - It decides whether the crafting recipe `writ:chaos_writ` exists. The recipe is an ordinary recipe file (`data/writ/recipes/chaos_writ.json`) that a datapack can override, but Writ removes it whenever the mode is not `CRAFT_9`.
+
+Hero gift replacement has no data fields. It only depends on data in one way: if no preset is a [random writ candidate](#random-writ-candidates), or the chaos lists are empty, the corresponding share of gifts stays vanilla.
 
 ## Complete example
 

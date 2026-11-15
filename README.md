@@ -10,19 +10,20 @@
   <strong>Find trade writs, then have villagers sign them to learn new trades.</strong>
 </p>
 
-Writ is a Minecraft Forge mod that turns villager trading into something you discover. Trade writs are scattered through structure chests and dropped by bosses. Each one carries a specific trade, such as smelting your ore, selling enchanted gear, or restocking rare materials. Hand a writ to a villager and that trade joins the villager's list for good. For the adventurous there is also the chaos writ, which teaches a villager a completely random trade.
+Writ is a Minecraft Forge mod that turns villager trading into something you discover. Trade writs are scattered through structure chests and dropped by bosses. Each one carries a specific trade, such as smelting your ore, selling enchanted gear or restocking rare materials. Hand a writ to a villager and that trade joins its list for good. For the adventurous, the chaos writ teaches a villager a completely random trade.
 
 ## Features
 
 - **Trades as loot.** Writs drop from chests in 13 kinds of structures and from the Elder Guardian, Warden, Ender Dragon and Wither. Each location has its own themed trades, so exploring pays off in new trading options.
-- **Five tiers.** Writs range from Common bulk supplies to Legendary end-game trades. Each tier has its own name color, so you can judge a find at a glance.
-- **Every profession covered.** All 13 vanilla professions have their own writ trades: processing services, filled supply kits, enchanted books and gear, and rare materials.
-- **Choices on one writ.** Some writs offer several versions of a trade, such as every terracotta color. Cycle the choice in your hand before you apply the writ.
-- **Random writs.** Craft four trade writs into one random writ, or receive one as a village hero gift. It draws a suitable preset trade when signed.
+- **Five tiers.** From Common bulk supplies to Legendary end-game trades, each tier has its own name color, so you can judge a find at a glance.
+- **Every profession covered.** All 13 vanilla professions get writ trades: processing services, filled supply kits, enchanted books and gear, rare materials.
+- **Choices on one writ.** Some writs offer several versions of a trade, such as every terracotta color. Cycle through them in your hand before you apply the writ.
+- **Random writs.** Craft four trade writs into one random writ, which draws a fitting trade for the villager that signs it.
 - **Chaos writs.** These teach a villager a random trade drawn from every item in the game, including items from other mods.
-- **Fair limits.** Each villager accepts a limited number of writs, and the server owner can configure the limits.
-- **Fully data-driven.** Trades, tiers, drop sources and chaos rules are defined by datapacks, so modpacks and servers can reshape the content.
-- **Localized** in English, Simplified Chinese and French.
+- **Hero of the Village gifts** can occasionally be a random or chaos writ.
+- **Per-villager limits** keep any one villager from collecting endless trades. Server owners can adjust them.
+- **Data-driven.** Trades, tiers, drop sources and chaos rules are defined by datapacks, so modpacks and servers can reshape the content.
+- **Localized** in English, Simplified and Traditional Chinese, French, German, Italian, Japanese, Korean, Polish, Brazilian Portuguese, Russian and Spanish (Spain and Latin America).
 
 ## Requirements
 
@@ -39,21 +40,21 @@ Writ is a Minecraft Forge mod that turns villager trading into something you dis
 2. Put the Writ `.jar` into the `mods` folder of your game, and of your server if you play multiplayer.
 3. Start the game. Writ adds the **Writ** creative tab with all three items.
 
-Server settings are in `config/writ-common.toml` under the game or server root and are shared by all worlds. Restart the game or dedicated server process after editing; `/reload` and switching worlds do not reread this file. The old per-world `serverconfig/writ-server.toml` is ignored; copy any settings you want to keep into the new file manually. Normal starts do not rewrite it; schema upgrades create a `.bak` backup and comment-only edits are not written. If the active config is corrupt or missing and no usable recovery file exists, startup fails: restore a `.bak` or remove the unusable config and recovery files to regenerate defaults. Unverified staging is preserved as `.bak.tmp.orphan` (or with a numbered suffix) without overwriting a valid `.bak`; inspect or remove it manually. A file whose `schema_version` is newer than this Writ version is always rejected; use a matching Writ version or restore an older backup manually instead of silently downgrading.
+Settings are in `config/writ-common.toml`, shared by all worlds and read only at startup. Upgrading from 1.0.0? Your old per-world `serverconfig/writ-server.toml` is no longer read. See [Server settings](docs/gameplay.md#server-settings) for every option, migration, and what to do if the file is damaged.
 
 ## Quick start
 
 1. **Find a trade writ.** Open chests in structures such as dungeons, desert pyramids, shipwrecks or Nether fortresses, or defeat a boss.
-2. **Read it.** The tooltip shows the tier, the professions that can sign it, and the exact trade.
-3. **Pick a choice (optional).** If the writ offers choices, look at empty space and use the writ to cycle forward, or sneak and use it to cycle backward.
+2. **Read it.** The tooltip shows the tier, the professions that can sign it and the exact trade.
+3. **Pick a choice (optional).** If the writ offers choices, look at empty space and use it to cycle forward, or sneak and use it to cycle backward.
 4. **Find a villager.** It must be an adult with the right profession, and you must have traded with it at least once.
 5. **Apply it.** Use the writ on the villager. The new trade appears at the end of its trade list, and one writ is used up.
 
-Depending on the server's settings, chaos writs can be obtained from a Chaos Writ Unlock trade found in dungeons or by crafting nine trade writs together. Village hero gifts can also yield random or chaos writs independently of that setting.
+Chaos writs come either from a Chaos Writ Unlock writ found in dungeons or from crafting nine trade writs, depending on the server's setting.
 
 ## Documentation
 
-- [Gameplay Guide](docs/gameplay.md): everything a player needs, including acquisition, tiers, choices, chaos writs, limits and common problems.
+- [Gameplay Guide](docs/gameplay.md): getting and using writs, tiers, choices, random and chaos writs, server settings and common problems.
 - [Datapack Reference](docs/datapacks.md): the full data format for presets, pools, sources and chaos configuration, with a complete example pack.
 - [Changelog](CHANGELOG.md)
 
@@ -65,4 +66,4 @@ Writ is under active development. Drop chances, prices and limits are starting v
 
 Report bugs and suggestions at [GitHub Issues](https://github.com/AAAlod/writ/issues).
 
-Writ is created by kaster12321 and released under the [MIT License](LICENSE).
+Writ is created by kaster12321 and released under the [MIT License](LICENSE). The German, Spanish, Italian, Japanese, Korean, Polish, Brazilian Portuguese, Russian and Traditional Chinese translations were contributed by Claude (Anthropic).

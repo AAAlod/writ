@@ -7,7 +7,7 @@ modId="writ"
 version="${file.jarVersion}"
 displayName="Writ"
 authors="kaster12321"
-description='''Writ / 商契: find trade writs in structure chests and on bosses, then have villagers sign them to learn new trades. Chaos writs add a random trade. Trades, tiers, drop sources and chaos rules are defined by datapacks.'''
+description='''Writ / 商契: find trade writs in structure chests and on bosses, then have villagers sign them to learn new trades. Craft four trade writs into a random writ, or gamble on a chaos writ for a completely random trade. Hero of the Village gifts can also be writs. Trades, tiers, drop sources and chaos rules are defined by datapacks.'''
 [[dependencies.writ]]
 modId="forge"
 mandatory=true
