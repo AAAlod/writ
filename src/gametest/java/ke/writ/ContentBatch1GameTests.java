@@ -27,7 +27,8 @@ public final class ContentBatch1GameTests {
         var all = new java.util.ArrayList<>(snapshot.sources().values()); all.addAll(snapshot.bosses().values());
         var builtIn = snapshot.candidates().stream().filter(c -> !c.sources().isEmpty()).toList();
         h.assertTrue(builtIn.size() > 100, "built-in candidates missing: " + builtIn.size());
-        h.assertTrue(LootRules.unreachable(builtIn, snapshot.rarities(), all).isEmpty(), "unreachable built-in presets " + LootRules.unreachable(builtIn, snapshot.rarities(), all));
+        var unreachable = LootRules.unreachable(builtIn, snapshot.rarities(), all).stream().filter(id -> !snapshot.presets().get(new ResourceLocation(id)).sources().equals(java.util.Set.of("writ:general"))).toList();
+        h.assertTrue(unreachable.isEmpty(), "unreachable built-in presets " + unreachable);
         h.assertTrue(snapshot.presets().get(new ResourceLocation("writ:shulker_shell_supply")).result().is(Items.SHULKER_SHELL), "merged shell preset absent");
         h.succeed();
     }

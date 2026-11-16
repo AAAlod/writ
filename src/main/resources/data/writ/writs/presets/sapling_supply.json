@@ -1,0 +1,30 @@
+{
+  "general_loot": true,
+  "sources": [
+    "writ:general"
+  ],
+  "pool": "n",
+  "weight": 1,
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "cost_b": {
+      "item": "minecraft:dirt",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:oak_sapling",
+      "count": 8
+    },
+    "max_uses": 4,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "dynamic_result": {
+    "tag": "minecraft:saplings",
+    "exclude_tag": "writ:sapling_contract_exclusions"
+  },
+  "display_translation_key": "writ.preset.sapling_supply"
+}

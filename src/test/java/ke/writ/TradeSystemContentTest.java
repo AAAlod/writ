@@ -58,6 +58,7 @@ class TradeSystemContentTest {
     static List<String> sourcesOf(JsonObject preset) { return list(preset, "sources").stream().map(TradeSystemContentTest::id).toList(); }
     static boolean active(JsonObject preset) {
         if (weight(preset) <= 0) return false;
+        if (preset.has("general_loot") && preset.get("general_loot").getAsBoolean()) return true;
         return sourcesOf(preset).stream().map(sources::get).anyMatch(s -> s != null && s.chance() > 0 && s.weights().getOrDefault(pool(preset), 0) > 0);
     }
     /** Every offer a preset can produce: the default trade plus each enabled variant with inherited fields. */
@@ -87,7 +88,7 @@ class TradeSystemContentTest {
         for (var e : presets.entrySet()) {
             JsonObject p = e.getValue();
             assertFalse(sourcesOf(p).isEmpty(), "built-in preset must declare sources: " + e.getKey());
-            for (String s : sourcesOf(p)) assertTrue(sources.containsKey(s), e.getKey() + " references unknown source " + s);
+            for (String s : sourcesOf(p)) assertTrue(sources.containsKey(s) || (s.equals("writ:general") && p.has("general_loot") && p.get("general_loot").getAsBoolean()), e.getKey() + " references unknown source " + s);
             if (weight(p) > 0) assertTrue(active(p), "enabled preset is unreachable: " + e.getKey());
         }
         // Only the optional emerald-output economy hook is shipped disabled; it stays usable by ID.
@@ -142,7 +143,7 @@ class TradeSystemContentTest {
             }
         }
         long anyProfession = presets.values().stream().filter(p -> weight(p) > 0 && !p.has("allowed_professions")).count();
-        assertEquals(1, anyProfession, "only the chaos unlock may be signed by any profession");
+        assertEquals(4, anyProfession, "the chaos unlock and three wood contracts have no profession restriction");
     }
 
     @Test void bossesHaveUniqueIdentityLinesAtThirtyPercent() {
@@ -201,6 +202,7 @@ class TradeSystemContentTest {
         for (var e : presets.entrySet()) {
             if (weight(e.getValue()) <= 0) continue;
             for (String key : sourcesOf(e.getValue())) {
+                if (key.equals("writ:general") && e.getValue().has("general_loot") && e.getValue().get("general_loot").getAsBoolean()) continue;
                 Src s = sources.get(key);
                 assertTrue(s != null && s.chance() > 0 && s.weights().getOrDefault(pool(e.getValue()), 0) > 0,
                         e.getKey() + " lists " + key + " but that source never rolls " + pool(e.getValue()));

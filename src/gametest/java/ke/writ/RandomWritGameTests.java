@@ -33,9 +33,21 @@ public final class RandomWritGameTests {
         return villager;
     }
     private static PlayerInteractEvent.EntityInteract interact(Player player, Villager villager, InteractionHand hand) {
+        if (player.getItemInHand(hand).is(Writ.RANDOM.get())) seedForChoice(villager, false);
         var event = new PlayerInteractEvent.EntityInteract(player, hand, villager);
         MinecraftForge.EVENT_BUS.post(event);
         return event;
+    }
+    private static void seedForChoice(Villager villager, boolean multi) {
+        var snapshot = Presets.INSTANCE.currentSnapshot();
+        var profession = BuiltInRegistries.VILLAGER_PROFESSION.getKey(villager.getVillagerData().getProfession());
+        for (long seed = 0; seed < 10000; seed++) {
+            var selected = Presets.INSTANCE.randomPreset(snapshot, profession, RandomSource.create(seed));
+            if (selected.isEmpty()) return;
+            var p = snapshot.presets().get(id(selected.get()));
+            if ((!p.variants().isEmpty()) == multi) { villager.level().getRandom().setSeed(seed); return; }
+        }
+        throw new IllegalStateException("no suitable random test seed");
     }
     private static Player randomPlayer(GameTestHelper h) {
         var player = h.makeMockSurvivalPlayer();
@@ -166,7 +178,7 @@ public final class RandomWritGameTests {
             server.reloadResources(server.getPackRepository().getSelectedIds()).whenComplete((unused, failure) -> server.execute(() -> {
                 try {
                     if (failure != null) throw new IllegalStateException("empty pool reload failed", failure);
-                    h.assertTrue(Presets.INSTANCE.randomOffer(Presets.INSTANCE.currentSnapshot(), id("minecraft:farmer"), h.getLevel().getRandom()).isEmpty(), "random pool is not empty");
+                    h.assertTrue(Presets.INSTANCE.randomPreset(Presets.INSTANCE.currentSnapshot(), id("minecraft:farmer"), h.getLevel().getRandom()).isEmpty(), "random pool is not empty");
                     var v = farmer(h); var p = randomPlayer(h);
                     rejectedUnchanged(h, v, p);
                     TestRestore.finish(h, restore, verify, null);
@@ -231,6 +243,37 @@ public final class RandomWritGameTests {
         h.succeed();
     }
     @GameTest(template = "empty")
+    public static void randomMultiChoiceWaitsForAnotherVillager(GameTestHelper h) {
+        var first = farmer(h); var other = farmer(h); var player = randomPlayer(h);
+        int offers = first.getOffers().size();
+        seedForChoice(first, true);
+        var event = new PlayerInteractEvent.EntityInteract(player, InteractionHand.MAIN_HAND, first);
+        MinecraftForge.EVENT_BUS.post(event);
+        h.assertTrue(event.isCanceled() && first.getOffers().size() == offers, "multi-option draw must not sign");
+        h.assertTrue(first.getPersistentData().getCompound(Writ.ID).getInt("normalAppliedCount") == 0, "multi-option draw consumed quota");
+        h.assertTrue(player.getMainHandItem().getCount() == 1, "multi-option draw must consume one random writ");
+        var contract = player.getInventory().items.stream().filter(item -> item.is(Writ.NORMAL.get())).findFirst().orElseThrow();
+        h.assertTrue(contract.getTag() != null && !contract.getTag().getString("preset_id").isEmpty(), "draw did not lock a preset");
+        int otherOffers = other.getOffers().size();
+        player.setItemInHand(InteractionHand.OFF_HAND, contract.copy());
+        MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.EntityInteract(player, InteractionHand.OFF_HAND, other));
+        h.assertTrue(other.getOffers().size() == otherOffers + 1, "chosen writ could not be signed by another villager");
+        h.succeed();
+    }
+    @GameTest(template = "empty", batch = "isolated_randomFullInventory")
+    public static void randomMultiChoiceFullInventoryDropsWrit(GameTestHelper h) {
+        var villager = farmer(h); var player = h.makeMockSurvivalPlayer();
+        for (int i = 0; i < player.getInventory().items.size(); i++) player.getInventory().items.set(i, new ItemStack(Items.COBBLESTONE, 64));
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Writ.RANDOM.get(), 2));
+        seedForChoice(villager, true);
+        MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.EntityInteract(player, InteractionHand.MAIN_HAND, villager));
+        h.assertTrue(player.getMainHandItem().getCount() == 1, "draw must consume exactly one random writ");
+        var drops = h.getLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, player.getBoundingBox().inflate(4));
+        h.assertTrue(drops.stream().anyMatch(item -> item.getItem().is(Writ.NORMAL.get()) && item.getItem().getCount() == 1), "full inventory must drop the chosen writ");
+        drops.stream().filter(item -> item.getItem().is(Writ.NORMAL.get())).forEach(net.minecraft.world.entity.item.ItemEntity::discard);
+        h.succeed();
+    }
+    @GameTest(template = "empty")
     public static void randomWritStacksAndPassesInAir(GameTestHelper h) {
         var first = new ItemStack(Writ.RANDOM.get());
         var second = new ItemStack(Writ.RANDOM.get());
@@ -275,7 +318,7 @@ public final class RandomWritGameTests {
             var pool = snapshot.pools().get(preset.rarity());
             h.assertTrue(pool != null && pool.kind().equals("rarity") && pool.weight() > 0 && !pool.disabled(), "invalid pool: " + candidate.id());
             h.assertTrue(preset.professions().isEmpty() || preset.professions().contains(farmer), "wrong profession: " + candidate.id());
-            h.assertTrue(preset.sources().isEmpty() || snapshot.sources().values().stream().anyMatch(s -> LootRules.reachableAt(candidate, snapshot.rarities(), s)), "unreachable: " + candidate.id());
+            h.assertTrue(preset.generalLoot() || preset.sources().isEmpty() || snapshot.sources().values().stream().anyMatch(s -> LootRules.reachableAt(candidate, snapshot.rarities(), s)), "unreachable: " + candidate.id());
         }
         h.assertTrue(Presets.hasAnyUsableRandomCandidate(snapshot), "baseline should have usable candidates");
         try { candidates.add(candidates.get(0)); h.fail("candidate list must be immutable"); return; }
@@ -322,11 +365,12 @@ public final class RandomWritGameTests {
         var snapshot = Presets.INSTANCE.currentSnapshot();
         var random = RandomSource.create(12345L);
         for (int i = 0; i < 50; i++) {
-            var offer = Presets.INSTANCE.randomOffer(snapshot, id("minecraft:farmer"), random);
-            h.assertTrue(offer.isPresent(), "farmer offer missing at draw " + i);
-            var result = offer.orElseThrow().getResult();
+            var selected = Presets.INSTANCE.randomPreset(snapshot, id("minecraft:farmer"), random);
+            h.assertTrue(selected.isPresent(), "farmer preset missing at draw " + i);
+            var preset = snapshot.presets().get(id(selected.orElseThrow()));
+            var result = preset.result();
             h.assertFalse(result.is(Writ.NORMAL.get()) || result.is(Writ.RANDOM.get()) || result.is(Writ.CHAOS.get()), "writ result at draw " + i);
-            h.assertFalse(offer.orElseThrow().getBaseCostA().isEmpty(), "empty cost at draw " + i);
+            h.assertFalse(preset.costA().isEmpty(), "empty cost at draw " + i);
         }
         h.succeed();
     }
@@ -339,23 +383,15 @@ public final class RandomWritGameTests {
         var candidates = List.of(new LootRules.Candidate(presetId.toString(), rarity, 1));
         var snapshot = new Presets.Snapshot(Map.of(presetId, p), Set.of(), Map.of(rarity, pool), Map.of(), Map.of(), candidates, new ChaosSampler(List.of()));
         var random = RandomSource.create(987654L);
-        Map<Item, Integer> counts = new LinkedHashMap<>();
-        for (Item item : List.of(Items.DIAMOND, Items.EMERALD, Items.GOLD_INGOT, Items.IRON_INGOT)) counts.put(item, 0);
         for (int i = 0; i < 4000; i++) {
-            var offer = Presets.INSTANCE.randomOffer(snapshot, id("minecraft:farmer"), random);
-            h.assertTrue(offer.isPresent(), "synthetic offer missing at draw " + i);
-            Item result = offer.orElseThrow().getResult().getItem();
-            h.assertTrue(counts.containsKey(result), "unexpected result: " + result);
-            counts.put(result, counts.get(result) + 1);
+            var selected = Presets.INSTANCE.randomPreset(snapshot, id("minecraft:farmer"), random);
+            h.assertTrue(selected.isPresent() && selected.get().equals(presetId.toString()), "preset must be drawn once regardless of its options");
         }
-        System.out.println("Random offer variant counts: diamond=" + counts.get(Items.DIAMOND) + ", emerald=" + counts.get(Items.EMERALD)
-            + ", gold_ingot=" + counts.get(Items.GOLD_INGOT) + ", iron_ingot=" + counts.get(Items.IRON_INGOT));
-        for (var entry : counts.entrySet()) h.assertTrue(entry.getValue() >= 850 && entry.getValue() <= 1150, "variant count outside range: " + entry);
         var empty = new Presets.Snapshot(Map.of(), Set.of(), Map.of(), Map.of(), Map.of(), List.of(), new ChaosSampler(List.of()));
-        h.assertTrue(Presets.INSTANCE.randomOffer(empty, id("minecraft:farmer"), random).isEmpty(), "empty snapshot must return empty offer");
+        h.assertTrue(Presets.INSTANCE.randomPreset(empty, id("minecraft:farmer"), random).isEmpty(), "empty snapshot must return empty offer");
         var restricted = preset(Set.of(), Set.of(id("minecraft:farmer")), Items.DIAMOND, List.of(), rarity);
         var restrictedSnapshot = new Presets.Snapshot(Map.of(presetId, restricted), Set.of(), Map.of(rarity, pool), Map.of(), Map.of(), candidates, new ChaosSampler(List.of()));
-        h.assertTrue(Presets.INSTANCE.randomOffer(restrictedSnapshot, id("minecraft:mason"), random).isEmpty(), "mismatched profession must return empty offer");
+        h.assertTrue(Presets.INSTANCE.randomPreset(restrictedSnapshot, id("minecraft:mason"), random).isEmpty(), "mismatched profession must return empty offer");
         h.succeed();
     }
     @GameTest(template = "empty")

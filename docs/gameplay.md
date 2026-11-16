@@ -24,7 +24,7 @@ This guide covers finding, reading and using writs in survival, plus the server 
 | Item | What it does |
 |---|---|
 | **Trade Writ** | Carries one specific trade. Using it on a villager adds that trade to the villager's trade list. |
-| **Random Writ** | Carries no trade. When a villager signs it, one of the server's trade writ trades is drawn for that villager's profession. |
+| **Random Writ** | Carries no trade. Using it on a villager draws a preset for that villager's profession; a multi-choice preset must be selected before signing. |
 | **Chaos Writ** | Carries no trade. When a villager signs it, a trade is rolled on the spot: one random item as payment for one random item. |
 
 A trade writ tells you exactly what you will get. A random writ gives you a fitting trade from the regular pool, you just don't know which. A chaos writ is a gamble on anything in the game.
@@ -35,7 +35,7 @@ All three items appear in the **Writ** creative tab. The trade writ there is *bl
 
 ### Structure chests
 
-When a chest in one of the supported structures generates its loot (normally when it is first opened), Writ makes **two independent attempts** to add a trade writ, each with that structure's chance. A chest can therefore hold no writ, one, or two, and the two can be identical.
+When a chest in one of the supported structures generates its loot (normally when it is first opened), Writ makes **two independent special attempts** to add a trade writ, each with that structure's chance. In addition, recognized Overworld loot containers get two general attempts, each with a default 25% chance. Attempts can produce duplicate writs.
 
 Each structure favors certain tiers and kinds of trades: a desert pyramid leans toward masonry and desert trades, a Nether fortress toward Nether materials. See [Structure sources](#structure-sources).
 
@@ -160,12 +160,12 @@ The villager receives the selected choice. If that choice no longer exists on th
 
 ## Random writs
 
-When a villager signs a random writ, the server draws one trade from the trades that trade writs can carry naturally:
+When a random writ is used on an eligible villager, the server draws one preset from the trades that trade writs can carry naturally:
 
 - Only trades the villager's profession can sign are considered.
 - Lower tiers are more likely. The draw uses the global tier weights (built-in N 45, R 35, SR 14, SSR 5, UR 1), not any structure's drop chances.
 - Boss-exclusive trades and trades that sell writs (such as Chaos Writ Unlock) are never drawn.
-- If the trade has choices, one of them is picked at random.
+- If the preset has one valid choice, the villager signs it immediately. If it has multiple choices, one random writ becomes a trade writ for that preset; choose an option and sign it with any suitable villager. The number of choices does not affect the preset's chance.
 
 If nothing fits the villager, it refuses with "No random trades are available; please tell an administrator", and the writ is kept. Random writs count toward the same limit as trade writs. The exact rules are in the [Datapack Reference](datapacks.md#random-writ-candidates).
 
@@ -263,6 +263,7 @@ Writ reads the file only when the game or dedicated server process starts. `/rel
 
 | Section | Option | Default | Range | Effect |
 |---|---|---|---|---|
+| (top) | `general_loot_chance` | 0.25 | 0–1 | Chance per general Overworld container attempt; two attempts per recognized container. |
 | (top) | `max_normal_added_per_villager` | 8 | 0–1000000 | Trade writs and random writs one villager can accept together. `0` blocks both. |
 | (top) | `max_chaos_added_per_villager` | 3 | 0–1000000 | Chaos writs one villager can accept. `0` blocks them. |
 | (top) | `max_total_added_per_villager` | 10 | 0–2000000 | All writs one villager can accept, on top of the two limits above. |

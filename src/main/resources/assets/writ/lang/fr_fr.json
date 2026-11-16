@@ -6,9 +6,9 @@
   "itemGroup.writ": "Contrats",
   "writ.tooltip.use": "À utiliser sur un villageois pour lui ajouter cet échange",
   "writ.tooltip.expand_hint": "Maintenez Maj pour plus d'informations",
-  "writ.tooltip.random.summary": "Ajoute un échange tiré au sort parmi ceux du serveur",
-  "writ.tooltip.random.use": "À utiliser sur un villageois pour lui ajouter un échange aléatoire",
-  "writ.tooltip.random.notice": "L'échange est tiré au sort à la signature",
+  "writ.tooltip.random.summary": "Tire un contrat au sort parmi ceux du serveur",
+  "writ.tooltip.random.use": "À utiliser sur un villageois pour tirer un contrat",
+  "writ.tooltip.random.notice": "S'il y a plusieurs options, choisissez avant de signer",
   "writ.tooltip.chaos.summary": "Ajoute un échange entièrement aléatoire",
   "writ.tooltip.notice": "Un échange perdu dans les failles de l'histoire",
   "writ.tooltip.purpose": "Usage : %s",
@@ -45,6 +45,7 @@
   "writ.message.invalid_data": "Le registre de contrats de ce villageois est endommagé ; prévenez un administrateur",
   "writ.message.empty_pool": "Aucun échange du chaos n'est disponible ; prévenez un administrateur",
   "writ.message.random.empty_pool": "Aucun échange aléatoire n'est disponible ; prévenez un administrateur",
+  "writ.message.random.choose": "Choisissez une option sur le contrat, puis signez avec un villageois",
   "writ.message.container_refund": "Le contenu du conteneur utilisé comme paiement vous a été rendu",
   "writ.message.variant.switched": "Choix : %s (%s/%s)",
   "writ.message.variant.reset": "L'ancien choix n'existe plus ; retour à : %s (%s/%s)",
@@ -216,5 +217,8 @@
   "writ.preset.turtle_scute_supply": "Ravitaillement en écailles de tortue",
   "writ.preset.wither_rose_supply": "Roses de Wither",
   "writ.preset.wither_skull_supply": "Livraison de crânes de Wither squelette",
-  "writ.preset.wool_supply": "Livraison de laine en 16 couleurs"
+  "writ.preset.wool_supply": "Livraison de laine en 16 couleurs",
+  "writ.preset.sapling_supply": "Fourniture de pousses",
+  "writ.preset.log_supply": "Fourniture de bois",
+  "writ.preset.sapling_for_logs": "Pousses contre bois"
 }

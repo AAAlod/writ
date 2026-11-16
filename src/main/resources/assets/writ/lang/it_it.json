@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Usalo su un villico per aggiungergli questo scambio",
   "writ.tooltip.expand_hint": "Tieni premuto Maiusc per altri dettagli",
-  "writ.tooltip.random.summary": "Aggiunge uno scambio estratto tra quelli del server",
-  "writ.tooltip.random.use": "Usalo su un villico per aggiungergli uno scambio casuale",
-  "writ.tooltip.random.notice": "Lo scambio viene estratto alla firma",
+  "writ.tooltip.random.summary": "Estrae un contratto casuale dal server",
+  "writ.tooltip.random.use": "Usalo su un villico per estrarre un contratto",
+  "writ.tooltip.random.notice": "Se ci sono più opzioni, scegli prima di firmare",
   "writ.tooltip.chaos.summary": "Aggiunge uno scambio del tutto casuale",
   "writ.tooltip.notice": "Uno scambio perduto tra le crepe della storia",
   "writ.tooltip.purpose": "Uso: %s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "Rifornimento di scuti",
   "writ.preset.wither_rose_supply": "Rose di Wither",
   "writ.preset.wither_skull_supply": "Fornitura di teschi di scheletro di Wither",
-  "writ.preset.wool_supply": "Lana in 16 colori"
+  "writ.preset.wool_supply": "Lana in 16 colori",
+  "writ.preset.sapling_supply": "Fornitura di arboscelli",
+  "writ.preset.log_supply": "Fornitura di tronchi",
+  "writ.preset.sapling_for_logs": "Arboscelli per tronchi",
+  "writ.message.random.choose": "Scegli un’opzione e firma con un villico"
 }

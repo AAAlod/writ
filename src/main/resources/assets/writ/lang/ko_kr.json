@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "주민에게 사용하면 이 거래가 추가됩니다",
   "writ.tooltip.expand_hint": "Shift를 누르고 있으면 자세히 보기",
-  "writ.tooltip.random.summary": "서버의 거래 중 하나를 무작위로 추가합니다",
-  "writ.tooltip.random.use": "주민에게 사용하면 무작위 거래가 추가됩니다",
-  "writ.tooltip.random.notice": "거래는 주민이 서명할 때 정해집니다",
+  "writ.tooltip.random.summary": "서버의 계약 중 하나를 무작위로 뽑습니다",
+  "writ.tooltip.random.use": "주민에게 사용하여 계약을 뽑습니다",
+  "writ.tooltip.random.notice": "선택지가 여러 개면 선택 후 서명하세요",
   "writ.tooltip.chaos.summary": "완전히 무작위인 거래를 추가합니다",
   "writ.tooltip.notice": "역사의 틈새로 사라진 거래",
   "writ.tooltip.purpose": "용도: %s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "인갑 보급",
   "writ.preset.wither_rose_supply": "위더 장미",
   "writ.preset.wither_skull_supply": "위더 스켈레톤 해골 공급",
-  "writ.preset.wool_supply": "16색 양털 공급"
+  "writ.preset.wool_supply": "16색 양털 공급",
+  "writ.preset.sapling_supply": "묘목 공급",
+  "writ.preset.log_supply": "원목 공급",
+  "writ.preset.sapling_for_logs": "묘목과 원목 교환",
+  "writ.message.random.choose": "계약의 선택지를 고른 뒤 주민과 서명하세요"
 }

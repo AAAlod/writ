@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "村人に使うと、この取引を追加する",
   "writ.tooltip.expand_hint": "Shiftを押し続けると詳細を表示",
-  "writ.tooltip.random.summary": "サーバーの取引からランダムに1つ追加する",
-  "writ.tooltip.random.use": "村人に使うと、ランダムな取引を追加する",
-  "writ.tooltip.random.notice": "取引は村人の署名時に抽選される",
+  "writ.tooltip.random.summary": "サーバーの契約からランダムに抽選する",
+  "writ.tooltip.random.use": "村人に使うと契約を抽選する",
+  "writ.tooltip.random.notice": "選択肢が複数ある場合は選んでから署名する",
   "writ.tooltip.chaos.summary": "完全にランダムな取引を追加する",
   "writ.tooltip.notice": "歴史の狭間に失われた取引",
   "writ.tooltip.purpose": "用途：%s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "カメのウロコの補給",
   "writ.preset.wither_rose_supply": "ウィザーローズ",
   "writ.preset.wither_skull_supply": "ウィザースケルトンの頭蓋骨の納品",
-  "writ.preset.wool_supply": "16色の羊毛の納品"
+  "writ.preset.wool_supply": "16色の羊毛の納品",
+  "writ.preset.sapling_supply": "苗木の供給",
+  "writ.preset.log_supply": "原木の供給",
+  "writ.preset.sapling_for_logs": "苗木と原木の交換",
+  "writ.message.random.choose": "選択肢を選んでから村人と契約してください"
 }

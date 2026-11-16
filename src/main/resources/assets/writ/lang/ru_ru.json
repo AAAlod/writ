@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Используйте на крестьянине, чтобы добавить ему это предложение",
   "writ.tooltip.expand_hint": "Удерживайте Shift, чтобы узнать больше",
-  "writ.tooltip.random.summary": "Добавляет случайное предложение из имеющихся на сервере",
-  "writ.tooltip.random.use": "Используйте на крестьянине, чтобы добавить ему случайное предложение",
-  "writ.tooltip.random.notice": "Предложение выбирается при подписании",
+  "writ.tooltip.random.summary": "Случайно выбирает контракт с сервера",
+  "writ.tooltip.random.use": "Используйте на жителе, чтобы выбрать контракт",
+  "writ.tooltip.random.notice": "При нескольких вариантах выберите один до подписания",
   "writ.tooltip.chaos.summary": "Добавляет совершенно случайное предложение",
   "writ.tooltip.notice": "Сделка, затерянная в трещинах истории",
   "writ.tooltip.purpose": "Назначение: %s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "Запас щитков",
   "writ.preset.wither_rose_supply": "Визерские розы",
   "writ.preset.wither_skull_supply": "Поставка черепов визер-скелета",
-  "writ.preset.wool_supply": "Шерсть 16 цветов"
+  "writ.preset.wool_supply": "Шерсть 16 цветов",
+  "writ.preset.sapling_supply": "Поставка саженцев",
+  "writ.preset.log_supply": "Поставка брёвен",
+  "writ.preset.sapling_for_logs": "Саженцы за брёвна",
+  "writ.message.random.choose": "Выберите вариант и подпишите контракт у жителя"
 }

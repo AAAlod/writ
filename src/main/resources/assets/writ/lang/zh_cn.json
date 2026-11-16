@@ -6,9 +6,9 @@
   "itemGroup.writ": "商契",
   "writ.tooltip.use": "对村民使用，为其追加此交易",
   "writ.tooltip.expand_hint": "按住Shift查看更多说明",
-  "writ.tooltip.random.summary": "签约时从服务器现有的交易中随机抽取一项",
-  "writ.tooltip.random.use": "对村民使用，为其追加随机交易",
-  "writ.tooltip.random.notice": "交易在村民签约时抽取",
+  "writ.tooltip.random.summary": "从服务器现有契约中随机抽取一项",
+  "writ.tooltip.random.use": "对村民使用以抽取契约",
+  "writ.tooltip.random.notice": "有多个选项时，先选择后再签约",
   "writ.tooltip.chaos.summary": "追加一项完全随机的交易",
   "writ.tooltip.notice": "一桩遗落在历史缝隙里的交易",
   "writ.tooltip.purpose": "用途：%s",
@@ -45,6 +45,7 @@
   "writ.message.invalid_data": "这位村民的契约记录已损坏，请联系管理员",
   "writ.message.empty_pool": "当前没有可用的混沌交易，请联系管理员",
   "writ.message.random.empty_pool": "当前没有可用的随机交易，请联系管理员",
+  "writ.message.random.choose": "已抽到可选择的契约，请选择交易后与村民签约",
   "writ.message.container_refund": "付款容器里的物品已退还给你",
   "writ.message.variant.switched": "当前选择：%s（%s/%s）",
   "writ.message.variant.reset": "原选择已失效，已重置为：%s（%s/%s）",
@@ -216,5 +217,8 @@
   "writ.preset.turtle_scute_supply": "鳞甲补给",
   "writ.preset.wither_rose_supply": "凋零玫瑰",
   "writ.preset.wither_skull_supply": "凋灵骷髅头颅供货",
-  "writ.preset.wool_supply": "16色羊毛供货"
+  "writ.preset.wool_supply": "16色羊毛供货",
+  "writ.preset.sapling_supply": "树苗供应",
+  "writ.preset.log_supply": "原木供应",
+  "writ.preset.sapling_for_logs": "树苗换原木"
 }

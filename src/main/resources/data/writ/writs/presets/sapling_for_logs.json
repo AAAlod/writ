@@ -1,0 +1,155 @@
+{
+  "general_loot": true,
+  "sources": [
+    "writ:general"
+  ],
+  "pool": "n",
+  "weight": 1,
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 8
+    },
+    "cost_b": {
+      "item": "minecraft:oak_sapling",
+      "count": 8
+    },
+    "result": {
+      "item": "minecraft:oak_log",
+      "count": 64
+    },
+    "max_uses": 4,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "default_variant_translation_key": "block.minecraft.oak_sapling",
+  "variants": [
+    {
+      "id": "spruce_sapling",
+      "translation_key": "block.minecraft.spruce_sapling",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:spruce_sapling",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:spruce_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "birch_sapling",
+      "translation_key": "block.minecraft.birch_sapling",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:birch_sapling",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:birch_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "jungle_sapling",
+      "translation_key": "block.minecraft.jungle_sapling",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:jungle_sapling",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:jungle_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "acacia_sapling",
+      "translation_key": "block.minecraft.acacia_sapling",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:acacia_sapling",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:acacia_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "dark_oak_sapling",
+      "translation_key": "block.minecraft.dark_oak_sapling",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:dark_oak_sapling",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:dark_oak_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "mangrove_propagule",
+      "translation_key": "block.minecraft.mangrove_propagule",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:mangrove_propagule",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:mangrove_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "cherry_sapling",
+      "translation_key": "block.minecraft.cherry_sapling",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:cherry_sapling",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:cherry_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "azalea",
+      "translation_key": "block.minecraft.azalea",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:azalea",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:oak_log",
+          "count": 64
+        }
+      }
+    },
+    {
+      "id": "flowering_azalea",
+      "translation_key": "block.minecraft.flowering_azalea",
+      "trade": {
+        "cost_b": {
+          "item": "minecraft:flowering_azalea",
+          "count": 8
+        },
+        "result": {
+          "item": "minecraft:oak_log",
+          "count": 64
+        }
+      }
+    }
+  ],
+  "display_translation_key": "writ.preset.sapling_for_logs"
+}

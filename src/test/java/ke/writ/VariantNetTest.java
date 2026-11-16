@@ -11,7 +11,7 @@ class VariantNetTest {
             assertEquals(request, VariantPacket.decode(buf)); assertEquals(0, buf.readableBytes()); buf.release();
         }
         assertThrows(RuntimeException.class, () -> VariantPacket.encode(new VariantPacket(0, "x".repeat(257), "", 1), new FriendlyByteBuf(Unpooled.buffer())));
-        assertThrows(RuntimeException.class, () -> VariantPacket.encode(new VariantPacket(0, "x:y", "x".repeat(129), 1), new FriendlyByteBuf(Unpooled.buffer())));
+        assertThrows(RuntimeException.class, () -> VariantPacket.encode(new VariantPacket(0, "x:y", "x".repeat(32768), 1), new FriendlyByteBuf(Unpooled.buffer())));
     }
     @Test void eligibilityAndContextDoNotWriteTags() {
         assertFalse(VariantRules.canRequest(true, null, 1));

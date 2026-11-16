@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Auf einen Dorfbewohner anwenden, um dieses Angebot hinzuzufügen",
   "writ.tooltip.expand_hint": "Umschalt gedrückt halten für weitere Details",
-  "writ.tooltip.random.summary": "Fügt ein zufälliges Angebot aus den Angeboten des Servers hinzu",
-  "writ.tooltip.random.use": "Auf einen Dorfbewohner anwenden, um ein zufälliges Angebot hinzuzufügen",
-  "writ.tooltip.random.notice": "Das Angebot wird bei der Unterzeichnung ausgelost",
+  "writ.tooltip.random.summary": "Zieht einen zufälligen Vertrag des Servers",
+  "writ.tooltip.random.use": "Bei einem Dorfbewohner verwenden, um einen Vertrag zu ziehen",
+  "writ.tooltip.random.notice": "Bei mehreren Optionen vor der Unterzeichnung wählen",
   "writ.tooltip.chaos.summary": "Fügt ein völlig zufälliges Angebot hinzu",
   "writ.tooltip.notice": "Ein Handel, verloren in den Ritzen der Geschichte",
   "writ.tooltip.purpose": "Zweck: %s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "Hornschild-Nachschub",
   "writ.preset.wither_rose_supply": "Wither-Rosen",
   "writ.preset.wither_skull_supply": "Wither-Skelettschädel-Lieferung",
-  "writ.preset.wool_supply": "Wolle in 16 Farben"
+  "writ.preset.wool_supply": "Wolle in 16 Farben",
+  "writ.preset.sapling_supply": "Setzlingsangebot",
+  "writ.preset.log_supply": "Holzangebot",
+  "writ.preset.sapling_for_logs": "Setzlinge gegen Holz",
+  "writ.message.random.choose": "Wähle eine Option und unterzeichne bei einem Dorfbewohner"
 }

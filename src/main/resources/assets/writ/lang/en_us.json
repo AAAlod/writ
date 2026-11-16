@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Use on a villager to add this trade",
   "writ.tooltip.expand_hint": "Hold Shift for more details",
-  "writ.tooltip.random.summary": "Signs a random trade from this server's presets",
-  "writ.tooltip.random.use": "Use on a villager to add a random trade",
-  "writ.tooltip.random.notice": "The trade is drawn when the villager signs",
+  "writ.tooltip.random.summary": "Draws a random writ from this server's presets",
+  "writ.tooltip.random.use": "Use on a villager to draw a writ",
+  "writ.tooltip.random.notice": "When there are multiple options, choose one before signing",
   "writ.tooltip.chaos.summary": "Adds a completely random trade",
   "writ.tooltip.notice": "A trade lost in the cracks of history",
   "writ.tooltip.purpose": "Purpose: %s",
@@ -45,6 +45,7 @@
   "writ.message.invalid_data": "This villager's writ record is damaged; please tell an administrator",
   "writ.message.empty_pool": "No chaos trades are available; please tell an administrator",
   "writ.message.random.empty_pool": "No random trades are available; please tell an administrator",
+  "writ.message.random.choose": "Choose an option on your new writ, then sign it with a villager",
   "writ.message.container_refund": "The contents of the container you paid with were returned to you",
   "writ.message.variant.switched": "Choice: %s (%s/%s)",
   "writ.message.variant.reset": "The previous choice is gone; reset to %s (%s/%s)",
@@ -216,5 +217,8 @@
   "writ.preset.turtle_scute_supply": "Scute Resupply",
   "writ.preset.wither_rose_supply": "Wither Roses",
   "writ.preset.wither_skull_supply": "Wither Skeleton Skull Supply",
-  "writ.preset.wool_supply": "16-Color Wool Supply"
+  "writ.preset.wool_supply": "16-Color Wool Supply",
+  "writ.preset.sapling_supply": "Sapling Supply",
+  "writ.preset.log_supply": "Log Supply",
+  "writ.preset.sapling_for_logs": "Saplings for Logs"
 }

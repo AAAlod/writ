@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Úsalo en un aldeano para añadirle este comercio",
   "writ.tooltip.expand_hint": "Mantén presionado Mayús para ver más detalles",
-  "writ.tooltip.random.summary": "Añade un comercio al azar entre los del servidor",
-  "writ.tooltip.random.use": "Úsalo en un aldeano para añadirle un comercio aleatorio",
-  "writ.tooltip.random.notice": "El comercio se sortea cuando el aldeano firma",
+  "writ.tooltip.random.summary": "Sortea un contrato de los disponibles en el servidor",
+  "writ.tooltip.random.use": "Úsalo en un aldeano para sortear un contrato",
+  "writ.tooltip.random.notice": "Si hay varias opciones, elige una antes de firmar",
   "writ.tooltip.chaos.summary": "Añade un comercio totalmente aleatorio",
   "writ.tooltip.notice": "Un comercio perdido entre las grietas de la historia",
   "writ.tooltip.purpose": "Uso: %s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "Reabastecimiento de escamas",
   "writ.preset.wither_rose_supply": "Rosas del Wither",
   "writ.preset.wither_skull_supply": "Suministro de cráneos de Wither",
-  "writ.preset.wool_supply": "Lana en 16 colores"
+  "writ.preset.wool_supply": "Lana en 16 colores",
+  "writ.preset.sapling_supply": "Suministro de brotes",
+  "writ.preset.log_supply": "Suministro de troncos",
+  "writ.preset.sapling_for_logs": "Brotes por troncos",
+  "writ.message.random.choose": "Elige una opción y firma el contrato con un aldeano"
 }

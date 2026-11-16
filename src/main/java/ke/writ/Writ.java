@@ -58,6 +58,7 @@ public final class Writ {
     private static final ForgeConfigSpec.ConfigValue<String> OBTAIN_MODE;
     private static final ForgeConfigSpec.IntValue CHAOS_USES, CHAOS_XP;
     private static final ForgeConfigSpec.DoubleValue CHAOS_MULTIPLIER;
+    private static final ForgeConfigSpec.DoubleValue GENERAL_LOOT_CHANCE;
     private static final ForgeConfigSpec.BooleanValue HERO_GIFTS_ENABLED;
     private static final ForgeConfigSpec.IntValue HERO_GIFTS_RANDOM, HERO_GIFTS_CHAOS;
     record ChaosParams(int uses, int xp, float multiplier) { }
@@ -66,6 +67,7 @@ public final class Writ {
     record HeroGiftParams(boolean enabled, int randomPercent, int chaosPercent, boolean valid) { }
     private static volatile HeroGiftParams heroGiftParams = new HeroGiftParams(false, 0, 0, false);
     static HeroGiftParams heroGiftParameters() { return heroGiftParams; }
+    static double generalLootChance() { return GENERAL_LOOT_CHANCE.get(); }
     static void refreshHeroGiftParameters() {
         boolean enabled = HERO_GIFTS_ENABLED.get();
         int random = HERO_GIFTS_RANDOM.get(), chaos = HERO_GIFTS_CHAOS.get();
@@ -77,6 +79,8 @@ public final class Writ {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
         b.comment("Internal configuration schema version. Do not edit; used by Writ's recovery logic.")
                 .defineInRange("schema_version", CONFIG_SCHEMA_VERSION, 0, Integer.MAX_VALUE);
+        GENERAL_LOOT_CHANCE = b.comment("Chance per general overworld chest writ attempt; two attempts per eligible container.")
+                .defineInRange("general_loot_chance", 0.25, 0.0, 1.0);
         NORMAL_LIMIT = b.comment("Maximum trade and random writs one villager can accept together. 0 disables both.",
                         "Checked each time a writ is used; lowering it never removes trades already added.")
                 .defineInRange("max_normal_added_per_villager", 8, 0, 1000000);
@@ -204,9 +208,18 @@ public final class Writ {
         if (random) {
             Presets.Snapshot snapshot = Presets.INSTANCE.currentSnapshot();
             ResourceLocation professionId = BuiltInRegistries.VILLAGER_PROFESSION.getKey(profession);
-            Optional<MerchantOffer> resolved = Presets.INSTANCE.randomOffer(snapshot, professionId, event.getLevel().getRandom());
-            if (resolved.isEmpty()) { message(event, "random.empty_pool"); return; }
-            offer = resolved.get();
+            Optional<String> selected = Presets.INSTANCE.randomPreset(snapshot, professionId, event.getLevel().getRandom());
+            if (selected.isEmpty()) { message(event, "random.empty_pool"); return; }
+            Presets.Preset preset = snapshot.presets().get(ResourceLocation.tryParse(selected.get()));
+            if (!preset.variants().isEmpty()) {
+                ItemStack contract = Presets.INSTANCE.contractFor(snapshot, selected.get());
+                if (contract.isEmpty()) { message(event, "random.empty_pool"); return; }
+                if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+                if (!event.getEntity().getInventory().add(contract)) event.getEntity().drop(contract, false);
+                message(event, "random.choose");
+                return;
+            }
+            offer = Presets.offerFor(preset, null);
         } else {
             Presets.OfferResult resolution = normal ? Presets.INSTANCE.resolveOffer(stack, v) : null;
             offer = normal ? resolution.offer() : Chaos.offer(event.getLevel().getRandom());

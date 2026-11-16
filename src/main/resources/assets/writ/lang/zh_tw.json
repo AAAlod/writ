@@ -6,9 +6,9 @@
   "itemGroup.writ": "商契",
   "writ.tooltip.use": "對村民使用，為其加入此交易",
   "writ.tooltip.expand_hint": "按住 Shift 檢視更多說明",
-  "writ.tooltip.random.summary": "簽約時從伺服器現有的交易中隨機抽取一項",
-  "writ.tooltip.random.use": "對村民使用，為其加入一項隨機交易",
-  "writ.tooltip.random.notice": "交易在村民簽約時抽取",
+  "writ.tooltip.random.summary": "隨機抽取伺服器上的契約",
+  "writ.tooltip.random.use": "對村民使用以抽取契約",
+  "writ.tooltip.random.notice": "有多個選項時，先選擇後再簽約",
   "writ.tooltip.chaos.summary": "加入一項完全隨機的交易",
   "writ.tooltip.notice": "一樁遺落在歷史縫隙裡的交易",
   "writ.tooltip.purpose": "用途：%s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "鱗甲補給",
   "writ.preset.wither_rose_supply": "凋零玫瑰",
   "writ.preset.wither_skull_supply": "凋零骷髏頭顱供貨",
-  "writ.preset.wool_supply": "16 色羊毛供貨"
+  "writ.preset.wool_supply": "16 色羊毛供貨",
+  "writ.preset.sapling_supply": "樹苗供應",
+  "writ.preset.log_supply": "原木供應",
+  "writ.preset.sapling_for_logs": "樹苗換原木",
+  "writ.message.random.choose": "請選擇契約選項，再與村民簽約"
 }

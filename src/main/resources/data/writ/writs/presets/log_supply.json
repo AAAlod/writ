@@ -1,0 +1,30 @@
+{
+  "general_loot": true,
+  "sources": [
+    "writ:general"
+  ],
+  "pool": "n",
+  "weight": 1,
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 9
+    },
+    "cost_b": {
+      "item": "minecraft:bone_meal",
+      "count": 3
+    },
+    "result": {
+      "item": "minecraft:oak_log",
+      "count": 64
+    },
+    "max_uses": 4,
+    "villager_xp": 2,
+    "price_multiplier": 0.05
+  },
+  "dynamic_result": {
+    "tag": "minecraft:logs",
+    "exclude_tag": "writ:log_contract_exclusions"
+  },
+  "display_translation_key": "writ.preset.log_supply"
+}

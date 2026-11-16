@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Użyj na osadniku, aby dodać mu tę ofertę",
   "writ.tooltip.expand_hint": "Przytrzymaj Shift, aby zobaczyć więcej",
-  "writ.tooltip.random.summary": "Dodaje losową ofertę spośród ofert serwera",
-  "writ.tooltip.random.use": "Użyj na osadniku, aby dodać mu losową ofertę",
-  "writ.tooltip.random.notice": "Oferta jest losowana przy podpisaniu",
+  "writ.tooltip.random.summary": "Losuje kontrakt dostępny na serwerze",
+  "writ.tooltip.random.use": "Użyj na osadniku, aby wylosować kontrakt",
+  "writ.tooltip.random.notice": "Jeśli jest kilka opcji, wybierz przed podpisaniem",
   "writ.tooltip.chaos.summary": "Dodaje całkowicie losową ofertę",
   "writ.tooltip.notice": "Oferta zagubiona w szczelinach historii",
   "writ.tooltip.purpose": "Przeznaczenie: %s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "Zapas tarczek",
   "writ.preset.wither_rose_supply": "Witherowe róże",
   "writ.preset.wither_skull_supply": "Dostawa czaszek witherowych szkieletów",
-  "writ.preset.wool_supply": "Wełna w 16 kolorach"
+  "writ.preset.wool_supply": "Wełna w 16 kolorach",
+  "writ.preset.sapling_supply": "Dostawa sadzonek",
+  "writ.preset.log_supply": "Dostawa kłód",
+  "writ.preset.sapling_for_logs": "Sadzonki za kłody",
+  "writ.message.random.choose": "Wybierz opcję i podpisz kontrakt z osadnikiem"
 }

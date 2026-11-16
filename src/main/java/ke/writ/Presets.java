@@ -26,7 +26,13 @@ final class Presets {
     record Variant(String id, String label, String translationKey, ItemStack costA, ItemStack costB, ItemStack result, int maxUses) { }
     record Preset(ItemStack costA, ItemStack costB, ItemStack result, int maxUses, int xp, float multiplier,
                   Set<ResourceLocation> professions, String rarity, int weight, Set<String> modes, String displayName, String displayTranslationKey, List<Variant> variants,
-                  Set<String> sources, String defaultVariantLabel, String defaultVariantTranslationKey) { }
+                  Set<String> sources, String defaultVariantLabel, String defaultVariantTranslationKey, boolean generalLoot, boolean dynamic, String defaultId) {
+        Preset(ItemStack costA, ItemStack costB, ItemStack result, int maxUses, int xp, float multiplier,
+               Set<ResourceLocation> professions, String rarity, int weight, Set<String> modes, String displayName, String displayTranslationKey, List<Variant> variants,
+               Set<String> sources, String defaultVariantLabel, String defaultVariantTranslationKey) {
+            this(costA, costB, result, maxUses, xp, multiplier, professions, rarity, weight, modes, displayName, displayTranslationKey, variants, sources, defaultVariantLabel, defaultVariantTranslationKey, false, false, null);
+        }
+    }
     record Snapshot(Map<ResourceLocation, Preset> presets, Set<ResourceLocation> invalidPresets, Map<String, PoolData.Pool> pools,
                     Map<String, LootRules.Source> sources, Map<String, LootRules.Source> bosses, List<LootRules.Candidate> candidates, ChaosSampler chaos) {
         Map<String, Integer> rarities() { return poolWeights(pools); }
@@ -58,7 +64,10 @@ final class Presets {
             if (path.startsWith("presets/")) {
                 ResourceLocation id = new ResourceLocation(resource.getNamespace(), path.substring("presets/".length()));
                 try {
-                    Preset p = parse(GsonHelper.convertToJsonObject(entry.getValue(), "preset"));
+                    JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), "preset");
+                    var unknownFields = PresetChecks.unknownFields(json);
+                    if (!unknownFields.isEmpty()) presetWarnings.add(id + ": unrecognized fields (ignored): " + unknownFields);
+                    Preset p = dynamicPreset(parse(json), json, reloadContext);
                     loaded.put(id, p);
                     if (!validRarities.isEmpty() && !validRarities.containsKey(p.rarity())) presetWarnings.add(id + ": unknown pool " + p.rarity() + "; excluded from natural loot");
                     if (p.modes().isEmpty()) presetWarnings.add(id + ": empty loot_modes; excluded from natural loot");
@@ -182,23 +191,16 @@ final class Presets {
     }
     private static List<LootRules.Candidate> candidates(Map<ResourceLocation, Preset> presets, Map<String, PoolData.Pool> pools, ObtainMode mode) {
         return presets.entrySet().stream().filter(e -> pools.containsKey(e.getValue().rarity()) && !pools.get(e.getValue().rarity()).disabled() && e.getValue().weight() > 0 &&
-                LootRules.naturallyEligible(mode, e.getValue().modes(), e.getValue().result().is(Writ.CHAOS.get())))
+                (!e.getValue().dynamic() || e.getValue().defaultId() != null) && LootRules.naturallyEligible(mode, e.getValue().modes(), e.getValue().result().is(Writ.CHAOS.get())))
                 .map(e -> new LootRules.Candidate(e.getKey().toString(), e.getValue().rarity(), e.getValue().weight(), e.getValue().sources())).toList();
     }
     static List<LootRules.Candidate> randomCandidates(Snapshot snapshot, ResourceLocation profession) {
         return randomCandidates(snapshot, Set.of(profession));
     }
-    Optional<MerchantOffer> randomOffer(Snapshot snapshot, ResourceLocation profession, RandomSource random) {
+    Optional<String> randomPreset(Snapshot snapshot, ResourceLocation profession, RandomSource random) {
         List<LootRules.Candidate> candidates = randomCandidates(snapshot, profession);
         if (candidates.isEmpty()) return Optional.empty();
-        String id = LootRules.select(candidates, snapshot.rarities(), Map.of(), bound -> uniform(random, bound)).orElse(null);
-        if (id == null) return Optional.empty();
-        Preset p = snapshot.presets().get(ResourceLocation.tryParse(id));
-        if (p == null) return Optional.empty();
-        int choices = p.variants().size() + 1;
-        int idx = random.nextInt(choices);
-        Variant v = idx == 0 ? null : p.variants().get(idx - 1);
-        return Optional.of(offerFor(p, v));
+        return LootRules.select(candidates, snapshot.rarities(), Map.of(), bound -> uniform(random, bound));
     }
     static boolean hasAnyUsableRandomCandidate(Snapshot snapshot) {
         return !randomCandidates(snapshot, validProfessions()).isEmpty();
@@ -219,7 +221,7 @@ final class Presets {
             if (pool == null || !"rarity".equals(pool.kind()) || pool.disabled() || pool.weight() <= 0) return false;
             if (!p.professions().isEmpty() && Collections.disjoint(p.professions(), professions)) return false;
             if (isWritResult(p.result()) || p.variants().stream().anyMatch(v -> isWritResult(v.result()))) return false;
-            return p.sources().isEmpty() || snapshot.sources().values().stream().anyMatch(source -> LootRules.reachableAt(candidate, rarities, source));
+            return (p.generalLoot() && Writ.generalLootChance() > 0) || p.sources().isEmpty() || snapshot.sources().values().stream().anyMatch(source -> LootRules.reachableAt(candidate, rarities, source));
         }).sorted(Comparator.comparing(LootRules.Candidate::id)).toList();
     }
     private static boolean isWritResult(ItemStack result) {
@@ -237,9 +239,15 @@ final class Presets {
                 .map(LootRules.Source::resourceId).distinct().sorted().toList();
         if (!emptySources.isEmpty()) Writ.LOG.warn("Contract sources with no positive-weight candidates: {}", emptySources);
         var keys = sources.stream().map(LootRules.Source::key).collect(java.util.stream.Collectors.toSet());
+        keys.add("writ:general");
         var unknownReferences = current.presets().entrySet().stream().flatMap(e -> e.getValue().sources().stream().filter(k -> !keys.contains(k)).map(k -> e.getKey() + " -> " + k)).sorted().toList();
         if (!unknownReferences.isEmpty()) Writ.LOG.warn("Preset sources reference no enabled source: {}", unknownReferences);
-        var unreachable = LootRules.unreachable(current.candidates(), current.rarities(), sources);
+        var specialOnly = current.candidates().stream().filter(candidate -> {
+            Preset p = current.presets().get(ResourceLocation.tryParse(candidate.id()));
+            PoolData.Pool pool = current.pools().get(candidate.rarity());
+            return p == null || !p.generalLoot() || pool == null || !"rarity".equals(pool.kind()) || pool.weight() <= 0 || Writ.generalLootChance() <= 0;
+        }).toList();
+        var unreachable = LootRules.unreachable(specialOnly, current.rarities(), sources);
         if (!unreachable.isEmpty()) Writ.LOG.warn("Natural contract presets unreachable from every enabled source: {}", unreachable);
         ObtainMode.diagnostics(mode, unlocks, current.rarities(), sources).forEach(Writ.LOG::warn);
     }
@@ -281,15 +289,27 @@ final class Presets {
         if (source == null || random.nextDouble() >= source.chance()) return ItemStack.EMPTY;
         return samplePreset(current, source, random).map(id -> contractFor(current, id)).orElse(ItemStack.EMPTY);
     }
+    ItemStack generateGeneral(RandomSource random) {
+        Snapshot current = snapshot;
+        if (random.nextDouble() >= Writ.generalLootChance()) return ItemStack.EMPTY;
+        var candidates = current.candidates().stream().filter(candidate -> {
+            Preset preset = current.presets().get(ResourceLocation.tryParse(candidate.id()));
+            PoolData.Pool pool = current.pools().get(candidate.rarity());
+            return preset != null && preset.generalLoot() && pool != null && "rarity".equals(pool.kind());
+        }).toList();
+        return LootRules.select(candidates, current.rarities(), Map.of(), bound -> uniform(random, bound))
+                .map(id -> contractFor(current, id)).orElse(ItemStack.EMPTY);
+    }
     Snapshot currentSnapshot() { return snapshot; }
     Optional<String> samplePreset(Snapshot current, LootRules.Source source, RandomSource random) {
         return LootRules.select(current.candidates(), current.rarities(), source, bound -> uniform(random, bound));
     }
     ItemStack contractFor(Snapshot current, String id) {
         Preset p = current.presets().get(ResourceLocation.tryParse(id));
-        if (p == null) return ItemStack.EMPTY;
+        if (p == null || (p.dynamic() && p.defaultId() == null)) return ItemStack.EMPTY;
         ItemStack stack = new ItemStack(Writ.NORMAL.get());
         CompoundTag tag = stack.getOrCreateTag(); tag.putString("preset_id", id); tag.putInt("contract_version", PresetChecks.CONTRACT_VERSION);
+        if (p.dynamic()) tag.putString("selected_variant", p.defaultId());
         writeSnapshot(current, p, tag, 0);
         return stack;
     }
@@ -321,9 +341,10 @@ final class Presets {
         tag.put("display_snapshot", display);
     }
     private static int selection(Preset p, CompoundTag tag) {
-        if (tag == null || !tag.contains("selected_variant")) return 0;
+        if (tag == null || !tag.contains("selected_variant")) return p.dynamic() ? -1 : 0;
         if (!tag.contains("selected_variant", 8)) return -1;
         String selected = tag.getString("selected_variant");
+        if (p.dynamic() && selected.equals(p.defaultId())) return 0;
         for (int i = 0; i < p.variants().size(); i++) if (p.variants().get(i).id().equals(selected)) return i + 1;
         return -1;
     }
@@ -350,14 +371,16 @@ final class Presets {
         ResourceLocation id = ResourceLocation.tryParse(tag.getString("preset_id"));
         Snapshot current = snapshot; Preset p = id == null ? null : current.presets().get(id);
         if (p == null) return new SwitchResult("preset_invalid", false, null, 0, 0);
-        if (p.variants().isEmpty()) {
+        if (p.dynamic() && p.defaultId() == null) return new SwitchResult("variant_invalid", false, null, 0, 0);
+        if (p.variants().isEmpty() && !p.dynamic()) {
             if (!tag.contains("selected_variant")) return new SwitchResult(null, false, null, 0, 0);
             tag.remove("selected_variant"); writeSnapshot(current, p, tag, 0);
             return new SwitchResult(null, true, null, 1, 1);
         }
         int previous = selection(p, tag); boolean reset = previous < 0;
+        if (p.dynamic() && p.variants().isEmpty() && !reset) return new SwitchResult(null, false, null, 0, 0);
         int next = reset ? 0 : Math.floorMod(previous + (backwards ? -1 : 1), p.variants().size() + 1);
-        if (next == 0) tag.remove("selected_variant"); else tag.putString("selected_variant", p.variants().get(next - 1).id());
+        if (next == 0) { if (p.dynamic()) tag.putString("selected_variant", p.defaultId()); else tag.remove("selected_variant"); } else tag.putString("selected_variant", p.variants().get(next - 1).id());
         writeSnapshot(current, p, tag, next);
         Variant v = next == 0 ? null : p.variants().get(next - 1);
         return new SwitchResult(null, reset, selectionName(p, v), next + 1, p.variants().size() + 1);
@@ -395,7 +418,39 @@ final class Presets {
         String defaultKey = json.has("default_variant_translation_key") ? requiredString(json, "default_variant_translation_key") : null;
         List<Variant> variants = parseVariants(json, a, b, result, uses, xp, multiplier);
         if (!variants.isEmpty() && result.is(Writ.CHAOS.get())) throw new IllegalArgumentException("variants: chaos result is not supported");
-        return new Preset(a, b, result, uses, xp, multiplier, Set.copyOf(professions), rarity, weight, Set.copyOf(modes), displayName, displayKey, variants, parseSources(json), defaultLabel, defaultKey);
+        return new Preset(a, b, result, uses, xp, multiplier, Set.copyOf(professions), rarity, weight, Set.copyOf(modes), displayName, displayKey, variants, parseSources(json), defaultLabel, defaultKey, GsonHelper.getAsBoolean(json, "general_loot", false), false, null);
+    }
+    private static Preset dynamicPreset(Preset p, JsonObject json, net.minecraftforge.common.crafting.conditions.ICondition.IContext context) {
+        if (!json.has("dynamic_result")) return p;
+        if (!p.variants().isEmpty()) throw new IllegalArgumentException("dynamic_result cannot be combined with variants");
+        JsonObject dynamic = GsonHelper.getAsJsonObject(json, "dynamic_result");
+        ResourceLocation source = new ResourceLocation(GsonHelper.getAsString(dynamic, "tag"));
+        ResourceLocation excluded = new ResourceLocation(GsonHelper.getAsString(dynamic, "exclude_tag"));
+        var tags = context.getAllTags(net.minecraft.core.registries.Registries.ITEM);
+        var sourceItems = tags.get(source);
+        if (sourceItems == null) throw new IllegalArgumentException("missing dynamic result tag " + source);
+        Set<Item> deny = new HashSet<>();
+        for (ResourceLocation id : List.of(new ResourceLocation("writ", "contract_exclusions"), excluded)) {
+            var entries = tags.get(id);
+            if (entries == null) throw new IllegalArgumentException("missing dynamic exclusion tag " + id);
+            entries.forEach(holder -> deny.add(holder.value()));
+        }
+        var items = sourceItems.stream().map(holder -> holder.value()).filter(item -> {
+                    ItemStack result = dynamicResult(item, p.result());
+                    return !deny.contains(item) && !result.isEmpty() && result.getCount() <= result.getMaxStackSize();
+                })
+                .distinct().sorted(Comparator.comparing(item -> BuiltInRegistries.ITEM.getKey(item).toString())).toList();
+        ItemStack first = items.isEmpty() ? p.result() : dynamicResult(items.get(0), p.result());
+        String firstId = items.isEmpty() ? null : BuiltInRegistries.ITEM.getKey(items.get(0)).toString();
+        List<Variant> variants = items.stream().skip(1).map(item -> new Variant(BuiltInRegistries.ITEM.getKey(item).toString(), null, null,
+                p.costA().copy(), p.costB().copy(), dynamicResult(item, p.result()), p.maxUses())).toList();
+        return new Preset(p.costA(), p.costB(), first, p.maxUses(), p.xp(), p.multiplier(), p.professions(), p.rarity(), p.weight(), p.modes(),
+                p.displayName(), p.displayTranslationKey(), variants, p.sources(), p.defaultVariantLabel(), p.defaultVariantTranslationKey(), p.generalLoot(), true, firstId);
+    }
+    private static ItemStack dynamicResult(Item item, ItemStack template) {
+        ItemStack stack = new ItemStack(item, template.getCount());
+        if (template.hasTag()) stack.setTag(template.getTag().copy());
+        return stack;
     }
     /** Optional {@code sources}: source file IDs (bare names default to {@code writ:}); absent means any source weighting the pool. */
     static Set<String> parseSources(JsonObject json) {

@@ -1,4 +1,5 @@
 {
+  "general_loot": true,
   "pool": "r",
   "weight": 1,
   "sources": [

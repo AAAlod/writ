@@ -92,7 +92,7 @@ class LangCoverageTest {
             assertEquals("writ.preset." + name, json.get("display_translation_key").getAsString(), name);
             assertTranslated(json.get("display_translation_key").getAsString(), name);
             assertFalse(json.has("default_variant_label") && !json.has("default_variant_translation_key"), name + " hardcodes its default selection name");
-            if (json.has("default_variant_translation_key")) assertTranslated(json.get("default_variant_translation_key").getAsString(), name + " default");
+            if (json.has("default_variant_translation_key")) assertSelectionTranslated(json.get("default_variant_translation_key").getAsString(), json.getAsJsonObject("trade"), name + " default");
             if (!json.has("variants")) { assertFalse(json.has("default_variant_translation_key"), name + " names a default selection without variants"); continue; }
             String defaultItem = json.getAsJsonObject("trade").getAsJsonObject("result").get("item").getAsString();
             boolean defaultNamed = json.has("default_variant_translation_key");
@@ -101,7 +101,7 @@ class LangCoverageTest {
             for (JsonElement element : json.getAsJsonArray("variants")) {
                 JsonObject variant = element.getAsJsonObject(); String where = name + "/" + variant.get("id").getAsString();
                 boolean enabled = !variant.has("enabled") || variant.get("enabled").getAsBoolean();
-                if (variant.has("translation_key")) { assertTranslated(variant.get("translation_key").getAsString(), where); continue; }
+                if (variant.has("translation_key")) { assertSelectionTranslated(variant.get("translation_key").getAsString(), variant.has("trade") ? variant.getAsJsonObject("trade") : json.getAsJsonObject("trade"), where); continue; }
                 // Without a key the selection is named after its result item, so a plain-text label would pin one language...
                 assertFalse(variant.has("label"), where + " has a label but no translation_key");
                 if (!enabled) continue;
@@ -116,6 +116,12 @@ class LangCoverageTest {
             assertTrue(json.has("translation_key"), file.getFileName() + " has no translation_key");
             assertTranslated(json.get("translation_key").getAsString(), file.getFileName().toString());
         }
+    }
+
+    private static void assertSelectionTranslated(String key, JsonObject trade, String where) {
+        if (key.startsWith("block.minecraft.")) {
+            assertTrue(trade.has("cost_b") && trade.getAsJsonObject("cost_b").get("item").getAsString().equals("minecraft:" + key.substring("block.minecraft.".length())), where + " vanilla translation must name its payment item");
+        } else assertTranslated(key, where);
     }
 
     @Test void everyKeyUsedByCodeExists() throws IOException {

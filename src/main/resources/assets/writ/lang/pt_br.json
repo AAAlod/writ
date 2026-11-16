@@ -6,9 +6,9 @@
   "itemGroup.writ": "Writ",
   "writ.tooltip.use": "Use em um aldeão para adicionar esta troca",
   "writ.tooltip.expand_hint": "Segure Shift para mais detalhes",
-  "writ.tooltip.random.summary": "Adiciona uma troca sorteada entre as do servidor",
-  "writ.tooltip.random.use": "Use em um aldeão para adicionar uma troca aleatória",
-  "writ.tooltip.random.notice": "A troca é sorteada quando o aldeão assina",
+  "writ.tooltip.random.summary": "Sorteia um contrato disponível no servidor",
+  "writ.tooltip.random.use": "Use em um aldeão para sortear um contrato",
+  "writ.tooltip.random.notice": "Se houver várias opções, escolha antes de assinar",
   "writ.tooltip.chaos.summary": "Adiciona uma troca totalmente aleatória",
   "writ.tooltip.notice": "Uma troca perdida nas frestas da história",
   "writ.tooltip.purpose": "Uso: %s",
@@ -216,5 +216,9 @@
   "writ.preset.turtle_scute_supply": "Reabastecimento de escamas",
   "writ.preset.wither_rose_supply": "Rosas-do-Wither",
   "writ.preset.wither_skull_supply": "Fornecimento de crânios de esqueleto-Wither",
-  "writ.preset.wool_supply": "Lã em 16 cores"
+  "writ.preset.wool_supply": "Lã em 16 cores",
+  "writ.preset.sapling_supply": "Fornecimento de mudas",
+  "writ.preset.log_supply": "Fornecimento de troncos",
+  "writ.preset.sapling_for_logs": "Mudas por troncos",
+  "writ.message.random.choose": "Escolha uma opção e assine o contrato com um aldeão"
 }
