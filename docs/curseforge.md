@@ -6,7 +6,7 @@ Instead of breaking and replacing job site blocks until the right book shows up,
 
 - **Trades worth exploring for.** Thirteen kinds of structures hide their own themed writs, from dungeons and shipwrecks to bastions and End cities. The Elder Guardian, Warden, Ender Dragon and Wither drop exclusive ones.
 - **Five tiers, from everyday to legendary.** A Common writ might restock building stone; a Legendary one might sell a Nether Star or a Totem of Undying. Each tier has its own name color.
-- **Something new for every profession.** Masons cure concrete, toolsmiths smelt ore in bulk, librarians sell Mending, fletchers pack an expedition kit.
+- **Something new for every profession.** Masons cure concrete, toolsmiths smelt ore in bulk, librarians sell bottles o' enchanting, fletchers pack an expedition kit.
 - **Choose before you sign.** Some writs hold several versions of a trade, such as every color of terracotta or wool. Cycle through them in your hand.
 - **Random writs.** Four trade writs craft one random writ, which draws a fitting trade for whichever villager signs it.
 - **Chaos writs for the brave.** A random one-for-one trade drawn from every item in the game, modded items included. It might be a bargain. It might be nonsense.
@@ -62,7 +62,7 @@ Writ is an AI-assisted project. AI coding assistants, including Claude Code, Ope
 
 - **交易藏在战利品里**：地牢、废弃矿井、沙漠神殿、沉船、海底废墟、埋藏的宝藏、掠夺者前哨站、要塞、林地府邸、下界要塞、堡垒遗迹、远古城市和末地城，各有一套主题交易。远古守卫者、监守者、末影龙和凋灵还会掉落专属契约。
 - **五个档位**：N 普通、R 稀有、SR 精良、SSR 珍稀、UR 传说，名称颜色各不相同。普通契约可能是建筑石材供货，传说契约可能直接卖下界之星或不死图腾。
-- **每种职业都有新活**：石匠能固化混凝土，工具匠能批量熔炼矿石，图书管理员能卖经验修补，制箭师能备好一整箱远征物资。
+- **每种职业都有新活**：石匠能固化混凝土，工具匠能批量熔炼矿石，图书管理员能卖附魔之瓶，制箭师能备好一整箱远征物资。
 - **签约前先挑选**：部分契约提供同一交易的不同版本，比如各色陶瓦、各色羊毛，在手里切换就能选。
 - **随机契约**：4 张交易契约合成 1 张，签约时按村民职业抽一项交易。
 - **混沌契约**：随机一种物品换随机一种物品，范围是游戏里的全部物品，模组物品也算在内。可能捡到宝，也可能完全用不上。
