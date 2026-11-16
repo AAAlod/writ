@@ -181,6 +181,16 @@ Minecraft 1.20.1 使用数据包格式 `15`：
 | `default_variant_label` | 非空字符串 | 否 | 无 | 默认选项的纯文本名称，仅在预设有变体时显示。 |
 | `default_variant_translation_key` | 非空字符串 | 否 | 无 | 默认选项的语言键。 |
 | `variants` | 数组 | 否 | 无 | 有序的备选交易，见[变体](#变体)。 |
+| `dynamic_result` | 对象 | 否 | 无 | 从物品 Tag 生成产出选项，见[动态产出选项](#动态产出选项)。不能与启用的 `variants` 混用。 |
+| `general_loot` | 布尔值 | 否 | `false` | 是否加入主世界容器的一般候选池。 |
+
+### 动态产出选项
+
+`dynamic_result.tag` 是必填的物品 Tag ID，不带 `#`；`exclude_tag` 可省略，用于指定额外的排除 Tag。公共 `writ:contract_exclusions` 始终生效；显式指定的专用 Tag 必须存在。缺失来源 Tag 会使预置无效，候选为空时不参与自然抽取。候选去重后按物品 ID 排序，第一项为默认选项。每项继承模板结果的数量和 NBT、支付物及使用次数；最大堆叠数不足的物品会被过滤，作者需确认继承的 NBT 对各物品有意义。动态选项不能与启用的显式 `variants` 混用。
+
+`CRAFT_9` 模式下，默认或任一启用选项产出 `writ:chaos_writ` 的预置整体退出自然掉落并记录日志；预置仍会加载，手动取得及已有契约仍可使用，已签入交易不变。
+
+完整的非木材示例见 [`examples/ingot-writ`](../examples/ingot-writ/)，将该文件夹放入存档的 `datapacks` 后重载即可。示例价格仅用于演示，未经平衡。示例组合原版物品和可选的 Forge 锭 Tag；各模组需自行将物品加入该 Tag。需要专用排除列表时，可创建物品 Tag 并在 `exclude_tag` 中填写其 ID。
 
 ### 交易对象
 
@@ -642,7 +652,7 @@ Contract reload: pools=6 (disabled=0), presets=… (natural=…, manual-only=…
 
 预置可设置 `"general_loot": true` 加入主世界容器的一般候选；省略时为 `false`，以免旧数据包的来源范围被自动扩大。原有 `sources` 和特殊来源概率保持不变。只希望从一般池获得时，可设置 `"sources": ["writ:general"]`；该名称用于限制特殊来源，并不代表一个特殊来源文件。一般尝试每个容器两次，单次概率由 `writ-common.toml` 的 `general_loot_chance` 控制，默认 0.25。设为 0 时，只能从一般池获得的预置也会退出随机契约候选。一般池仅使用 rarity 类型的档位，仍按档位及预置权重抽取。
 
-动态结果预置使用例如 `"dynamic_result": {"tag": "minecraft:logs", "exclude_tag": "writ:log_contract_exclusions"}`。物品候选由指定物品 Tag 生成，同时排除 `#writ:contract_exclusions` 公共名单与指定的专用名单。树苗专用名单为 `#writ:sapling_contract_exclusions`。使用标准数据包物品 Tag 合并、嵌套和 `replace` 即可修改；名单默认空。整合包作者可以排除珍贵原木，再通过另一个预置单独提供交易。候选为空时预置不会参与自然或随机抽取；已取得契约选项失效后需重新切换。已签入的村民交易不会随重载改变。
+动态结果预置使用例如 `"dynamic_result": {"tag": "minecraft:logs", "exclude_tag": "writ:log_contract_exclusions"}`。物品候选由指定物品 Tag 生成，同时排除 `#writ:contract_exclusions` 公共名单与可选的专用名单。树苗专用名单为 `#writ:sapling_contract_exclusions`。使用标准数据包物品 Tag 合并、嵌套和 `replace` 即可修改；名单默认空。整合包作者可以排除珍贵原木，再通过另一个预置单独提供交易。候选为空时预置不会参与自然或随机抽取；已取得契约选项失效后需重新切换。已签入的村民交易不会随重载改变。
 
 `writ:sapling_for_logs` 是显式配对预置，直接以现有 `variants` 覆盖或扩展完整的树苗与原木组合，不会从两个 Tag 猜测配对；它不使用动态结果的排除名单。
 

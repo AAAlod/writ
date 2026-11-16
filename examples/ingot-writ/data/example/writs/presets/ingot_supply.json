@@ -1,0 +1,24 @@
+{
+  "pool": "ur",
+  "weight": 1,
+  "sources": [
+    "writ:end_city"
+  ],
+  "trade": {
+    "cost_a": {
+      "item": "minecraft:emerald",
+      "count": 16
+    },
+    "result": {
+      "item": "minecraft:iron_ingot",
+      "count": 1
+    },
+    "max_uses": 4,
+    "villager_xp": 0,
+    "price_multiplier": 0.05
+  },
+  "dynamic_result": {
+    "tag": "example:ingots"
+  },
+  "display_name": "Selectable ingot supply"
+}

@@ -181,6 +181,16 @@ File: `data/<namespace>/writs/presets/<path>.json`, with ID `<namespace>:<path>`
 | `default_variant_label` | non-empty string | no | none | Plain-text name of the default choice. Only shown when the preset has variants. |
 | `default_variant_translation_key` | non-empty string | no | none | Language key for the default choice. |
 | `variants` | array | no | none | Ordered alternative trades. See [Variants](#variants). |
+| `dynamic_result` | object | no | none | Generate result choices from an item tag; see [Dynamic result choices](#dynamic-result-choices). Cannot be combined with enabled `variants`. |
+| `general_loot` | boolean | no | `false` | Include this preset in the general overworld container pool. |
+
+### Dynamic result choices
+
+`dynamic_result.tag` is the required item tag ID, without `#`. The optional `exclude_tag` names an additional item tag to exclude. `writ:contract_exclusions` always applies; an explicitly named tag must exist. A missing source tag invalidates the preset; empty candidates prevent natural selection. Choices are deduplicated and sorted by item ID; the first is the default. They inherit the template result's count and NBT, costs, and uses. Items whose maximum stack size is too small are filtered; authors must ensure inherited NBT makes sense for their items. Enabled explicit `variants` cannot be combined with dynamic choices.
+
+In `CRAFT_9`, a preset whose default or any enabled choice yields `writ:chaos_writ` is excluded from natural drops as a whole and logged. It remains loaded for manual or existing writs; signed trades remain unchanged.
+
+A complete non-wood example is in [`examples/ingot-writ`](../examples/ingot-writ/). Copy that directory to a world's `datapacks` folder and reload. Its price is illustrative, not balanced. It combines vanilla items with the optional Forge ingots tag; individual mods must register their items in that tag. To add a dedicated exclusion list, create an item tag and set `exclude_tag` to its ID.
 
 ### Trade object
 
@@ -642,7 +652,7 @@ A writ created this way has no stored preview. Its tooltip says "No preview avai
 
 Set `"general_loot": true` on a preset to opt it into general Overworld container loot. It defaults to `false` for compatibility. Existing `sources` and their special attempts remain in effect; use `"sources": ["writ:general"]` for a general-only preset. Each recognized container makes two general attempts at `general_loot_chance` in `config/writ-common.toml` (default 0.25). Set it to zero to disable general attempts; general-only presets then also leave the random writ candidate pool. Only `rarity` pools participate, using the existing pool and preset weights.
 
-For a dynamic result, for example use `"dynamic_result": {"tag": "minecraft:logs", "exclude_tag": "writ:log_contract_exclusions"}`. The result choices are the item tag's members, excluding both `#writ:contract_exclusions` and the designated exclusion tag. The built-in sapling-specific exclusion is `#writ:sapling_contract_exclusions`. These are ordinary item tags: datapacks can merge them, nest tags, or use `replace`. They are empty by default; pack authors can exclude valuable logs here and create a separately priced explicit preset. Empty or invalid choices do not enter natural or random draws. An unsigned writ whose choice becomes invalid cannot be signed until its choice is changed. Existing signed trades are not rewritten.
+For a dynamic result, for example use `"dynamic_result": {"tag": "minecraft:logs", "exclude_tag": "writ:log_contract_exclusions"}`. The result choices are the item tag's members, excluding `#writ:contract_exclusions` and the optional designated exclusion tag. The built-in sapling-specific exclusion is `#writ:sapling_contract_exclusions`. These are ordinary item tags: datapacks can merge them, nest tags, or use `replace`. They are empty by default; pack authors can exclude valuable logs here and create a separately priced explicit preset. Empty or invalid choices do not enter natural or random draws. An unsigned writ whose choice becomes invalid cannot be signed until its choice is changed. Existing signed trades are not rewritten.
 
 `writ:sapling_for_logs` uses the existing explicit `variants` format for sapling-to-log pairs. Datapacks can override or extend those pairs; they are not inferred from tags and do not automatically use dynamic exclusions.
 

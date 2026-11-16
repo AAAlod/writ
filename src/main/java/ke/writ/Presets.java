@@ -132,13 +132,11 @@ final class Presets {
         if (!disabledReferences.isEmpty()) Writ.LOG.warn("Positive weights reference disabled pools: {}", disabledReferences);
         if (modeReady) logModeAndReachability(snapshot);
         if (!chaosWarnings.isEmpty()) Writ.LOG.warn("Chaos config diagnostics: {}", chaosWarnings);
-        var unlocks = candidates.stream().filter(c -> {
-            Preset preset = loaded.get(ResourceLocation.tryParse(c.id()));
-            return preset != null && preset.modes().contains("TRADE") && preset.result().is(Writ.CHAOS.get());
-        }).toList();
+        var unlocks = unlockCandidates(loaded, candidates);
+        boolean generalUnlock = modeReady && generalUnlockReachable(loaded, pools, unlocks, Writ.generalLootChance());
         int sourceFiles = (int) objects.keySet().stream().filter(id -> id.getPath().startsWith("loot/sources/")).count();
         int bossFiles = (int) objects.keySet().stream().filter(id -> id.getPath().startsWith("loot/bosses/")).count();
-        var stats = ReloadStats.calculate(pools, loaded.size(), candidates, enabled.values(), sourceFiles, enabledBosses.values(), bossFiles, mode, modeReady, unlocks, rarities);
+        var stats = ReloadStats.calculate(pools, loaded.size(), candidates, enabled.values(), sourceFiles, enabledBosses.values(), bossFiles, mode, modeReady, unlocks, rarities, generalUnlock);
         Writ.LOG.info("Contract reload: pools={} (disabled={}), presets={} (natural={}, manual-only={}), sources={}/{} enabled, bosses={}/{} enabled, trade-chain={}",
                 stats.pools(), stats.disabled(), stats.presets(), stats.natural(), stats.manualOnly(), stats.sourcesEnabled(), stats.sourcesTotal(), stats.bossesEnabled(), stats.bossesTotal(), stats.tradeChain());
         Writ.LOG.info("Chaos candidate pool sizes: payment={}, result={}", chaos.size(), chaos.resultSize());
@@ -191,8 +189,26 @@ final class Presets {
     }
     private static List<LootRules.Candidate> candidates(Map<ResourceLocation, Preset> presets, Map<String, PoolData.Pool> pools, ObtainMode mode) {
         return presets.entrySet().stream().filter(e -> pools.containsKey(e.getValue().rarity()) && !pools.get(e.getValue().rarity()).disabled() && e.getValue().weight() > 0 &&
-                (!e.getValue().dynamic() || e.getValue().defaultId() != null) && LootRules.naturallyEligible(mode, e.getValue().modes(), e.getValue().result().is(Writ.CHAOS.get())))
+                (!e.getValue().dynamic() || e.getValue().defaultId() != null) && LootRules.naturallyEligible(mode, e.getValue().modes(), hasChaosResult(e.getValue())))
                 .map(e -> new LootRules.Candidate(e.getKey().toString(), e.getValue().rarity(), e.getValue().weight(), e.getValue().sources())).toList();
+    }
+    private static boolean hasChaosResult(Preset p) {
+        return p.result().is(Writ.CHAOS.get()) || p.variants().stream().anyMatch(v -> v.result().is(Writ.CHAOS.get()));
+    }
+    static List<LootRules.Candidate> unlockCandidates(Map<ResourceLocation, Preset> presets, List<LootRules.Candidate> candidates) {
+        return candidates.stream().filter(c -> {
+            Preset p = presets.get(ResourceLocation.tryParse(c.id()));
+            return p != null && p.modes().contains("TRADE") && hasChaosResult(p);
+        }).toList();
+    }
+    static boolean generalUnlockReachable(Map<ResourceLocation, Preset> presets, Map<String, PoolData.Pool> pools,
+                                          List<LootRules.Candidate> unlocks, double chance) {
+        return chance > 0 && unlocks.stream().anyMatch(c -> {
+            Preset p = presets.get(ResourceLocation.tryParse(c.id()));
+            PoolData.Pool pool = pools.get(c.rarity());
+            return p != null && p.generalLoot() && c.weight() > 0 && pool != null && !pool.disabled()
+                    && "rarity".equals(pool.kind()) && pool.weight() > 0;
+        });
     }
     static List<LootRules.Candidate> randomCandidates(Snapshot snapshot, ResourceLocation profession) {
         return randomCandidates(snapshot, Set.of(profession));
@@ -229,10 +245,13 @@ final class Presets {
     }
     private void logModeAndReachability(Snapshot current) {
         Writ.LOG.info("Chaos contract obtain mode: {} (locked until server restart)", mode);
-        var unlocks = current.candidates().stream().filter(c -> {
-            Preset p = current.presets().get(ResourceLocation.tryParse(c.id()));
-            return p != null && p.modes().contains("TRADE") && p.result().is(Writ.CHAOS.get());
-        }).toList();
+        if (mode == ObtainMode.CRAFT_9) {
+            var excluded = current.presets().entrySet().stream()
+                    .filter(e -> e.getValue().modes().contains("CRAFT_9") && e.getValue().weight() > 0 && hasChaosResult(e.getValue()))
+                    .map(e -> e.getKey().toString()).sorted().toList();
+            if (!excluded.isEmpty()) Writ.LOG.warn("CRAFT_9 excludes presets with chaos writ results from natural loot: {}", excluded);
+        }
+        var unlocks = unlockCandidates(current.presets(), current.candidates());
         var sources = new ArrayList<>(current.sources().values());
         sources.addAll(current.bosses().values());
         var emptySources = sources.stream().filter(source -> LootRules.select(current.candidates(), current.rarities(), source, bound -> 0).isEmpty())
@@ -249,7 +268,8 @@ final class Presets {
         }).toList();
         var unreachable = LootRules.unreachable(specialOnly, current.rarities(), sources);
         if (!unreachable.isEmpty()) Writ.LOG.warn("Natural contract presets unreachable from every enabled source: {}", unreachable);
-        ObtainMode.diagnostics(mode, unlocks, current.rarities(), sources).forEach(Writ.LOG::warn);
+        boolean generalUnlock = generalUnlockReachable(current.presets(), current.pools(), unlocks, Writ.generalLootChance());
+        ObtainMode.diagnostics(mode, unlocks, current.rarities(), sources, generalUnlock).forEach(Writ.LOG::warn);
     }
     private static Map<String, Integer> poolWeights(Map<String, PoolData.Pool> pools) {
         Map<String, Integer> values = new TreeMap<>(); pools.forEach((id, pool) -> values.put(id, pool.weight())); return Map.copyOf(values);
@@ -425,12 +445,15 @@ final class Presets {
         if (!p.variants().isEmpty()) throw new IllegalArgumentException("dynamic_result cannot be combined with variants");
         JsonObject dynamic = GsonHelper.getAsJsonObject(json, "dynamic_result");
         ResourceLocation source = new ResourceLocation(GsonHelper.getAsString(dynamic, "tag"));
-        ResourceLocation excluded = new ResourceLocation(GsonHelper.getAsString(dynamic, "exclude_tag"));
+        ResourceLocation excluded = dynamic.has("exclude_tag") ? new ResourceLocation(requiredString(dynamic, "exclude_tag")) : null;
         var tags = context.getAllTags(net.minecraft.core.registries.Registries.ITEM);
         var sourceItems = tags.get(source);
         if (sourceItems == null) throw new IllegalArgumentException("missing dynamic result tag " + source);
         Set<Item> deny = new HashSet<>();
-        for (ResourceLocation id : List.of(new ResourceLocation("writ", "contract_exclusions"), excluded)) {
+        List<ResourceLocation> exclusionTags = new ArrayList<>();
+        exclusionTags.add(new ResourceLocation("writ", "contract_exclusions"));
+        if (excluded != null && !exclusionTags.contains(excluded)) exclusionTags.add(excluded);
+        for (ResourceLocation id : exclusionTags) {
             var entries = tags.get(id);
             if (entries == null) throw new IllegalArgumentException("missing dynamic exclusion tag " + id);
             entries.forEach(holder -> deny.add(holder.value()));

@@ -30,6 +30,7 @@ test { useJUnitPlatform() }
 // Sync (not Copy) so files removed from src/gametest/datapack do not linger in the reused world.
 tasks.register('installGameTestData', Sync) {
     from 'src/gametest/datapack'
+    from('examples/ingot-writ') { exclude 'pack.mcmeta', 'README.md' }
     into 'run-gametest/world/datapacks/baseline-tests'
 }
 tasks.matching { it.name == 'runGameTestServer' }.configureEach { dependsOn 'installGameTestData', 'gametestClasses' }

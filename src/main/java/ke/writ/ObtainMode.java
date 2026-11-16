@@ -16,8 +16,12 @@ enum ObtainMode {
     }
     static List<String> diagnostics(ObtainMode mode, Collection<LootRules.Candidate> unlocks,
                                     Map<String, Integer> rarities, Collection<LootRules.Source> sources) {
+        return diagnostics(mode, unlocks, rarities, sources, false);
+    }
+    static List<String> diagnostics(ObtainMode mode, Collection<LootRules.Candidate> unlocks,
+                                    Map<String, Integer> rarities, Collection<LootRules.Source> sources, boolean generalReachable) {
         if (mode != TRADE) return List.of();
-        boolean reachable = unlocks.stream().anyMatch(p -> sources.stream().anyMatch(s -> LootRules.reachableAt(p, rarities, s)));
+        boolean reachable = generalReachable || unlocks.stream().anyMatch(p -> sources.stream().anyMatch(s -> LootRules.reachableAt(p, rarities, s)));
         return reachable ? List.of() : List.of("TRADE acquisition chain unreachable: no positive-weight chaos unlock preset has an enabled positive-chance source with positive pool weight");
     }
 }

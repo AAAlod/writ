@@ -51,8 +51,9 @@ public final class ObtainGameTests {
             };
             appender.start(); logger.addAppender(appender);
             try {
-                // Disable every TRADE chaos-result fixture, including the built-in override.
-                for (var entry : snapshot.presets().entrySet()) if (entry.getValue().result().is(Writ.CHAOS.get())) {
+                // Disable all actual TRADE unlock candidates, including chaos-result variants.
+                var unlockIds = Presets.unlockCandidates(snapshot.presets(), snapshot.candidates()).stream().map(LootRules.Candidate::id).collect(java.util.stream.Collectors.toSet());
+                for (var entry : snapshot.presets().entrySet()) if (unlockIds.contains(entry.getKey().toString())) {
                     String id = entry.getKey().toString();
                     Path target = path(pack, entry.getKey().getNamespace() + ":presets/" + entry.getKey().getPath());
                     var originalResource = server.getResourceManager().getResourceOrThrow(new ResourceLocation(entry.getKey().getNamespace(), "writs/presets/" + entry.getKey().getPath() + ".json"));
@@ -91,7 +92,10 @@ public final class ObtainGameTests {
     private static void cleanup(GameTestHelper h, Map<Path, byte[]> files, org.apache.logging.log4j.core.Logger logger, AbstractAppender appender, Throwable error) {
         logger.removeAppender(appender); appender.stop();
         TestRestore.finish(h, () -> restore(files), () -> {
-            if (!ObtainMode.diagnostics(ObtainMode.TRADE, Presets.INSTANCE.currentSnapshot().candidates(), Presets.INSTANCE.currentSnapshot().rarities(), java.util.stream.Stream.concat(Presets.INSTANCE.currentSnapshot().sources().values().stream(), Presets.INSTANCE.currentSnapshot().bosses().values().stream()).toList()).isEmpty())
+            var snapshot = Presets.INSTANCE.currentSnapshot();
+            var unlocks = Presets.unlockCandidates(snapshot.presets(), snapshot.candidates());
+            boolean general = Presets.generalUnlockReachable(snapshot.presets(), snapshot.pools(), unlocks, Writ.generalLootChance());
+            if (!ObtainMode.diagnostics(ObtainMode.TRADE, unlocks, snapshot.rarities(), java.util.stream.Stream.concat(snapshot.sources().values().stream(), snapshot.bosses().values().stream()).toList(), general).isEmpty())
                 throw new IllegalStateException("acquisition chain was not restored");
         }, error);
     }
