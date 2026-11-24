@@ -16,7 +16,7 @@
   "writ.profession.any": "Qualsiasi professione",
   "writ.tooltip.details_hint": "Tieni premuto Maiusc per i dettagli dell'oggetto",
   "writ.tooltip.choice": "Scelta: %s (%s/%s)",
-  "writ.tooltip.choice_hint": "Mira nel vuoto e usa (%1$s) per cambiare la scelta dell'intera pila; tieni premuto %2$s per tornare indietro",
+  "writ.tooltip.choice_hint": "Mira nel vuoto e usa (%1$s) per scegliere l’offerta per l’intera pila",
   "writ.tooltip.blank": "Vuoto: questo contratto non contiene alcuno scambio",
   "writ.tooltip.no_preview": "Anteprima non disponibile per questo scambio",
   "writ.tooltip.unsupported": "Formato più recente: impossibile mostrare lo scambio",

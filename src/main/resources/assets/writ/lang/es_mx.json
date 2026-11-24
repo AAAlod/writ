@@ -16,7 +16,7 @@
   "writ.profession.any": "Cualquier profesión",
   "writ.tooltip.details_hint": "Mantén presionado Mayús para ver los detalles del objeto",
   "writ.tooltip.choice": "Opción: %s (%s/%s)",
-  "writ.tooltip.choice_hint": "Apunta al vacío y presiona %1$s para cambiar la opción de toda la pila; mantén %2$s para retroceder",
+  "writ.tooltip.choice_hint": "Apunta al vacío y presiona %1$s para elegir el trato de toda la pila",
   "writ.tooltip.blank": "En blanco: este contrato no contiene ningún comercio",
   "writ.tooltip.no_preview": "No hay vista previa de este comercio",
   "writ.tooltip.unsupported": "Formato más reciente: no se puede mostrar el comercio",

@@ -16,7 +16,7 @@
   "writ.profession.any": "Qualquer profissão",
   "writ.tooltip.details_hint": "Segure Shift para ver detalhes do item",
   "writ.tooltip.choice": "Opção: %s (%s/%s)",
-  "writ.tooltip.choice_hint": "Mire no vazio e use (%1$s) para trocar a opção da pilha inteira; segure %2$s para voltar",
+  "writ.tooltip.choice_hint": "Mire no vazio e use (%1$s) para escolher a oferta da pilha inteira",
   "writ.tooltip.blank": "Em branco: este contrato não tem nenhuma troca",
   "writ.tooltip.no_preview": "Prévia indisponível para esta troca",
   "writ.tooltip.unsupported": "Formato mais recente: não é possível exibir a troca",

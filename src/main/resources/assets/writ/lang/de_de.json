@@ -16,7 +16,7 @@
   "writ.profession.any": "Jeder Beruf",
   "writ.tooltip.details_hint": "Umschalt gedrückt halten für Gegenstandsdetails",
   "writ.tooltip.choice": "Auswahl: %s (%s/%s)",
-  "writ.tooltip.choice_hint": "Ins Leere zielen und %1$s drücken, um die Auswahl des ganzen Stapels zu wechseln; %2$s halten, um zurückzuwechseln",
+  "writ.tooltip.choice_hint": "Ins Leere zielen und %1$s drücken, um das Angebot für den ganzen Stapel auszuwählen",
   "writ.tooltip.blank": "Leer: Diese Urkunde enthält kein Angebot",
   "writ.tooltip.no_preview": "Für dieses Angebot ist keine Vorschau verfügbar",
   "writ.tooltip.unsupported": "Neueres Format: Vorschau nicht möglich",

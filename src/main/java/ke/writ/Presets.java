@@ -384,6 +384,39 @@ final class Presets {
         Preset p = id == null ? null : snapshot.presets().get(id);
         return p == null ? List.of() : p.professions().stream().sorted().toList();
     }
+    static Preset selectionPreset(Snapshot current, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (!VariantRules.canRequest(stack.is(Writ.NORMAL.get()), tag, stack.getCount())) return null;
+        ResourceLocation id = ResourceLocation.tryParse(tag.getString("preset_id"));
+        Preset preset = id == null ? null : current.presets().get(id);
+        return preset == null || (preset.dynamic() && preset.defaultId() == null) ? null : preset;
+    }
+
+    static boolean selectVariant(Snapshot current, Preset preset, ItemStack stack, String id) {
+        int index;
+        if (id.equals(preset.dynamic() ? preset.defaultId() : "")) {
+            index = 0;
+        } else {
+            index = -1;
+            for (int i = 0; i < preset.variants().size(); i++) {
+                if (preset.variants().get(i).id().equals(id)) {
+                    index = i + 1;
+                    break;
+                }
+            }
+        }
+        if (index < 0) return false;
+        writeSelection(current, preset, stack.getOrCreateTag(), index);
+        return true;
+    }
+
+    private static void writeSelection(Snapshot current, Preset preset, CompoundTag tag, int index) {
+        if (index > 0) tag.putString("selected_variant", preset.variants().get(index - 1).id());
+        else if (preset.dynamic()) tag.putString("selected_variant", preset.defaultId());
+        else tag.remove("selected_variant");
+        writeSnapshot(current, preset, tag, index);
+    }
+
     SwitchResult switchVariant(ItemStack stack, boolean backwards) {
         CompoundTag tag = stack.getTag();
         if (!stack.is(Writ.NORMAL.get()) || tag == null || !tag.contains("preset_id", 8)) return new SwitchResult("preset_missing", false, null, 0, 0);
@@ -400,8 +433,7 @@ final class Presets {
         int previous = selection(p, tag); boolean reset = previous < 0;
         if (p.dynamic() && p.variants().isEmpty() && !reset) return new SwitchResult(null, false, null, 0, 0);
         int next = reset ? 0 : Math.floorMod(previous + (backwards ? -1 : 1), p.variants().size() + 1);
-        if (next == 0) { if (p.dynamic()) tag.putString("selected_variant", p.defaultId()); else tag.remove("selected_variant"); } else tag.putString("selected_variant", p.variants().get(next - 1).id());
-        writeSnapshot(current, p, tag, next);
+        writeSelection(current, p, tag, next);
         Variant v = next == 0 ? null : p.variants().get(next - 1);
         return new SwitchResult(null, reset, selectionName(p, v), next + 1, p.variants().size() + 1);
     }

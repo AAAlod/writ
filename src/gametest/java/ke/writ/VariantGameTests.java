@@ -34,11 +34,17 @@ public final class VariantGameTests {
                         Presets.INSTANCE.switchVariant(stack, false);
                         var villager = h.spawn(EntityType.VILLAGER, new BlockPos(1, 1, 1));
                         h.assertTrue(Presets.INSTANCE.offer(stack, villager).getResult().is(Items.BLUE_TERRACOTTA), "variant fixture not active");
+                        var openPlayer = serverPlayer(h);
+                        openPlayer.setItemInHand(InteractionHand.MAIN_HAND, stack);
+                        var openBeforeReload = VariantNet.begin(openPlayer, packet(0, stack));
+                        h.assertTrue(openBeforeReload != null, "could not open selector before reload");
                         java.nio.file.Files.writeString(path, base.replace("minecraft:blue_terracotta", "minecraft:red_terracotta"));
                         server.reloadResources(server.getPackRepository().getSelectedIds()).whenComplete((unused2, failure2) -> server.execute(() -> {
                             try {
                                 if (failure2 != null) throw new IllegalStateException(failure2);
                                 h.assertTrue(Presets.INSTANCE.offer(stack, villager).getResult().is(Items.RED_TERRACOTTA), "changed variant not applied");
+                                h.assertFalse(VariantNet.apply(openPlayer, openBeforeReload, "blue"),
+                                        "confirmed old terms after the same option ID changed on reload");
                                 var empty = com.google.gson.JsonParser.parseString(base).getAsJsonObject(); empty.add("variants", new com.google.gson.JsonArray());
                                 java.nio.file.Files.writeString(path, empty.toString());
                                 server.reloadResources(server.getPackRepository().getSelectedIds()).whenComplete((unused3, failure3) -> server.execute(() -> {
@@ -46,8 +52,8 @@ public final class VariantGameTests {
                                         if (failure3 != null) throw new IllegalStateException(failure3);
                                         h.assertTrue(Presets.INSTANCE.offer(stack, villager) == null && stack.getTag().getString("selected_variant").equals("blue"), "removed variant silently downgraded");
                                         var resetPlayer = serverPlayer(h); resetPlayer.setItemInHand(InteractionHand.MAIN_HAND, stack);
-                                        var reset = VariantNet.handleRequest(resetPlayer, packet(0, stack));
-                                        h.assertTrue(reset != null && reset.reset(), "removed selection must reset through handler");
+                                        var reset = VariantNet.begin(resetPlayer, packet(0, stack));
+                                        h.assertTrue(reset != null && VariantNet.apply(resetPlayer, reset, ""), "removed selection must be recoverable through the selector");
                                         h.assertFalse(stack.getTag().contains("selected_variant"), "reset must remove selection");
                                         h.assertTrue(Presets.INSTANCE.offer(stack, villager).getResult().is(Items.TERRACOTTA), "reset default offer missing");
                                         h.assertTrue(SnapshotView.parse(stack.getTag()).variantTotal() == 0 && SnapshotView.parse(stack.getTag()).result().id().equals("minecraft:terracotta"), "reset snapshot must match default without variant");
@@ -64,7 +70,9 @@ public final class VariantGameTests {
         });
     }
     private static net.minecraft.server.level.ServerPlayer serverPlayer(GameTestHelper h) {
-        var p = new net.minecraft.server.level.ServerPlayer(h.getLevel().getServer(), h.getLevel(), new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "variant-test"));
+        var p = new net.minecraft.server.level.ServerPlayer(h.getLevel().getServer(), h.getLevel(), new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "variant-test")) {
+            @Override public void displayClientMessage(net.minecraft.network.chat.Component text, boolean overlay) { }
+        };
         var pos = h.absolutePos(new BlockPos(1, 20, 1)); p.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5); p.setYRot(0); p.setXRot(0); return p;
     }
     private static VariantPacket packet(int hand, net.minecraft.world.item.ItemStack stack) {
@@ -76,11 +84,13 @@ public final class VariantGameTests {
         var original = old.getTag().copy();
         for (var wrong : java.util.List.of(new VariantPacket(0, "other:id", "", 2), new VariantPacket(0, "writ:terracotta", "blue", 2), new VariantPacket(0, "writ:terracotta", "", 1))) {
             var p = serverPlayer(h); p.setItemInHand(InteractionHand.MAIN_HAND, old);
-            h.assertTrue(VariantNet.handleRequest(p, wrong) == null && old.getTag().equals(original), "mismatched context changed stack");
+            h.assertTrue(VariantNet.begin(p, wrong) == null && old.getTag().equals(original), "mismatched context changed stack");
         }
         var valid = serverPlayer(h); valid.setItemInHand(InteractionHand.MAIN_HAND, old);
-        var result = VariantNet.handleRequest(valid, packet(0, old));
-        h.assertTrue(result != null && old.getTag().getString("selected_variant").equals("white") && SnapshotView.parse(old.getTag()).variantTotal() == 17, "legacy contract did not switch and refresh snapshot");
+        var result = VariantNet.begin(valid, packet(0, old));
+        h.assertTrue(result != null && VariantNet.apply(valid, result, "white")
+                && old.getCount() == 2 && old.getTag().getString("selected_variant").equals("white")
+                && SnapshotView.parse(old.getTag()).variantTotal() == 17, "legacy stack selection was not saved");
         h.succeed();
     }
     @GameTest(template = "empty")
@@ -88,24 +98,87 @@ public final class VariantGameTests {
         var p = serverPlayer(h);
         var main = Presets.INSTANCE.contractFor(Presets.INSTANCE.currentSnapshot(), "writ:terracotta");
         var off = main.copy(); p.setItemInHand(InteractionHand.MAIN_HAND, main); p.setItemInHand(InteractionHand.OFF_HAND, off);
-        h.assertTrue(VariantNet.handleRequest(p, packet(-1, main)) == null && !main.getTag().contains("selected_variant"), "invalid hand accepted");
-        h.assertTrue(VariantNet.handleRequest(p, packet(1, off)) != null && off.getTag().getString("selected_variant").equals("white") && !main.getTag().contains("selected_variant"), "offhand did not switch alone");
-        h.assertTrue(VariantNet.handleRequest(p, packet(0, main)) == null && !main.getTag().contains("selected_variant"), "rapid second request accepted");
+        h.assertTrue(VariantNet.begin(p, packet(-1, main)) == null && !main.getTag().contains("selected_variant"), "invalid hand accepted");
+        var opened = VariantNet.begin(p, packet(1, off));
+        h.assertTrue(opened != null && !off.getTag().contains("selected_variant"), "opening mutated the contract");
+        h.assertFalse(VariantNet.apply(p, opened, "not_an_option"), "server accepted an unknown option");
+        h.assertTrue(VariantNet.apply(p, opened, "white") && off.getTag().getString("selected_variant").equals("white")
+                && !main.getTag().contains("selected_variant"), "offhand did not switch alone");
+        var swappedPlayer = serverPlayer(h);
+        swappedPlayer.setItemInHand(InteractionHand.MAIN_HAND, main);
+        var beforeSwap = VariantNet.begin(swappedPlayer, packet(0, main));
+        h.assertTrue(beforeSwap != null, "could not open before stack replacement");
+        swappedPlayer.setItemInHand(InteractionHand.MAIN_HAND, main.copy());
+        h.assertFalse(VariantNet.apply(swappedPlayer, beforeSwap, "white"), "accepted a replacement stack with identical contents");
+        h.assertTrue(VariantNet.begin(p, packet(0, main)) == null && !main.getTag().contains("selected_variant"), "rapid second request accepted");
         var blockPlayer = serverPlayer(h); var block = blockPlayer.blockPosition().above().south(2);
         h.getLevel().setBlockAndUpdate(block, net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
         blockPlayer.setItemInHand(InteractionHand.MAIN_HAND, main.copy());
-        h.assertTrue(!VariantNet.clearTarget(blockPlayer) && VariantNet.handleRequest(blockPlayer, packet(0, main)) == null, "block must reject intent");
+        h.assertTrue(!VariantNet.clearTarget(blockPlayer) && VariantNet.begin(blockPlayer, packet(0, main)) == null, "block must reject intent");
         h.getLevel().removeBlock(block, false);
         var entityPlayer = serverPlayer(h);
         var entity = EntityType.ARMOR_STAND.create(h.getLevel());
         entity.setPos(entityPlayer.getX(), entityPlayer.getY(), entityPlayer.getZ() + 2); h.getLevel().addFreshEntity(entity);
         entityPlayer.setItemInHand(InteractionHand.MAIN_HAND, main.copy());
-        h.assertTrue(!VariantNet.clearTarget(entityPlayer) && VariantNet.handleRequest(entityPlayer, packet(0, main)) == null, "entity must reject intent");
+        h.assertTrue(!VariantNet.clearTarget(entityPlayer) && VariantNet.begin(entityPlayer, packet(0, main)) == null, "entity must reject intent");
         entity.discard();
         var other = serverPlayer(h); other.setItemInHand(InteractionHand.MAIN_HAND, new net.minecraft.world.item.ItemStack(Items.STONE));
-        h.assertTrue(VariantNet.handleRequest(other, packet(0, main)) == null, "non-contract accepted");
+        h.assertTrue(VariantNet.begin(other, packet(0, main)) == null, "non-contract accepted");
         h.succeed();
     }
+    @GameTest(template = "empty")
+    public static void randomChoiceSignsOnlyWithOriginalVillagerInReach(GameTestHelper h) {
+        var villager = h.spawn(EntityType.VILLAGER, new BlockPos(1, 2, 1));
+        villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.MASON));
+        villager.setVillagerXp(1);
+        var player = serverPlayer(h);
+        player.setPos(villager.getX(), villager.getY(), villager.getZ() + 1);
+        int slot = 10;
+        var contract = Presets.INSTANCE.contractFor(Presets.INSTANCE.currentSnapshot(), "writ:terracotta");
+        player.getInventory().setItem(slot, contract);
+        int initial = villager.getOffers().size();
+        var session = VariantNet.prepare(player, slot, contract, villager.getUUID());
+        h.assertTrue(session != null && VariantNet.apply(player, session, "white"), "random choice failed");
+        h.assertTrue(villager.getOffers().size() == initial + 1 && contract.isEmpty()
+                && villager.getOffers().get(initial).getResult().is(Items.WHITE_TERRACOTTA),
+                "random choice did not sign selected trade and consume the writ");
+
+        var fallback = Presets.INSTANCE.contractFor(Presets.INSTANCE.currentSnapshot(), "writ:terracotta");
+        player.getInventory().setItem(slot, fallback);
+        session = VariantNet.prepare(player, slot, fallback, villager.getUUID());
+        player.setPos(villager.getX(), villager.getY() + 20, villager.getZ());
+        h.assertTrue(session != null && VariantNet.apply(player, session, "white"), "out-of-reach choice was not saved");
+        h.assertTrue(villager.getOffers().size() == initial + 1 && fallback.getCount() == 1
+                && fallback.getTag().getString("selected_variant").equals("white"), "out-of-reach signing lost the fallback");
+        h.succeed();
+    }
+
+    @GameTest(template = "empty")
+    public static void selectorTransmitsItemCountsAndFullTags(GameTestHelper h) {
+        var result = new net.minecraft.world.item.ItemStack(Items.ENCHANTED_BOOK);
+        var enchantments = new net.minecraft.nbt.ListTag();
+        var entry = new net.minecraft.nbt.CompoundTag();
+        entry.putString("id", "minecraft:mending");
+        entry.putShort("lvl", (short) 1);
+        enchantments.add(entry);
+        result.getOrCreateTag().put("StoredEnchantments", enchantments);
+        var choice = new VariantNet.Option("book", net.minecraft.network.chat.Component.literal("Book"),
+                new net.minecraft.world.item.ItemStack(Items.EMERALD, 16),
+                net.minecraft.world.item.ItemStack.EMPTY, result);
+        var buffer = new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
+        try {
+            choice.encode(buffer);
+            var decoded = VariantNet.Option.decode(buffer);
+            h.assertTrue(decoded.id().equals(choice.id()) && decoded.name().equals(choice.name())
+                    && decoded.costA().getCount() == 16 && decoded.costB().isEmpty()
+                    && net.minecraft.world.item.ItemStack.matches(result, decoded.result())
+                    && buffer.readableBytes() == 0, "choice preview lost item count, tag or optional payment");
+        } finally {
+            buffer.release();
+        }
+        h.succeed();
+    }
+
     @GameTest(template = "empty")
     public static void variantValidation(GameTestHelper h) {
         var base = com.google.gson.JsonParser.parseString("{\"pool\":\"n\",\"weight\":1,\"trade\":{\"cost_a\":{\"item\":\"minecraft:emerald\",\"count\":1},\"cost_b\":{\"item\":\"minecraft:white_concrete_powder\",\"count\":32},\"result\":{\"item\":\"minecraft:white_concrete\",\"count\":32},\"max_uses\":8,\"villager_xp\":0,\"price_multiplier\":0}} ").getAsJsonObject();

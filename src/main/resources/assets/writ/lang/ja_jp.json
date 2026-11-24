@@ -16,7 +16,7 @@
   "writ.profession.any": "職業不問",
   "writ.tooltip.details_hint": "Shiftを押し続けるとアイテムの詳細を表示",
   "writ.tooltip.choice": "選択：%s（%s/%s）",
-  "writ.tooltip.choice_hint": "何もない方向を向いて%1$sでスタック全体の選択を切り替え（%2$sを押しながらで逆順）",
+  "writ.tooltip.choice_hint": "何もない方向を向いて%1$sでスタック全体の取引を選ぶ",
   "writ.tooltip.blank": "白紙：取引が書かれていない",
   "writ.tooltip.no_preview": "この取引はプレビューできない",
   "writ.tooltip.unsupported": "新しい形式のため、取引をプレビューできない",

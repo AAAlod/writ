@@ -16,6 +16,10 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -181,7 +185,6 @@ public final class Writ {
         ItemStack stack = event.getItemStack();
         boolean normal = stack.is(NORMAL.get()), random = stack.is(RANDOM.get()), chaos = stack.is(CHAOS.get());
         if (!normal && !random && !chaos) return;
-        boolean usesNormalQuota = normal || random;
         if (event.getTarget().getType() != EntityType.VILLAGER) {
             if (!event.getLevel().isClientSide && isOtherMerchant(event.getTarget()))
                 event.getEntity().displayClientMessage(Component.translatable("writ.message.other_merchant"), true);
@@ -191,41 +194,45 @@ public final class Writ {
         event.setCancellationResult(InteractionResult.SUCCESS);
         event.setCanceled(true);
         if (event.getLevel().isClientSide) return;
-        Villager v = (Villager) event.getTarget();
+        sign(event.getEntity(), (Villager) event.getTarget(), stack, event.getHand());
+    }
+
+    static void sign(Player player, Villager v, ItemStack stack, InteractionHand hand) {
+        if (player.isSpectator()) return;
+        boolean normal = stack.is(NORMAL.get()), random = stack.is(RANDOM.get());
+        boolean usesNormalQuota = normal || random;
         // Same eligibility rule as before; each cause gets its own wording so the player knows what to fix.
         VillagerProfession profession = v.getVillagerData().getProfession();
         String ineligible = v.isBaby() ? "villager.baby" : profession == VillagerProfession.NONE ? "villager.unemployed" : profession == VillagerProfession.NITWIT ? "villager.nitwit" : v.getVillagerXp() <= 0 ? "villager.novice" : null;
-        if (ineligible != null) { refuse(event, v, Component.translatable("writ.message." + ineligible)); return; }
-        if (v.isTrading()) { message(event, "busy"); return; }
+        if (ineligible != null) { refuse(player, v, Component.translatable("writ.message." + ineligible)); return; }
+        if (v.isTrading()) { message(player, "busy"); return; }
         CompoundTag root = v.getPersistentData();
-        if (root.contains(ID) && !root.contains(ID, Tag.TAG_COMPOUND)) { message(event, "invalid_data"); return; }
+        if (root.contains(ID) && !root.contains(ID, Tag.TAG_COMPOUND)) { message(player, "invalid_data"); return; }
         CompoundTag data = root.getCompound(ID);
-        if (root.contains(ID) && (!data.contains("version", Tag.TAG_INT) || !data.contains("normalAppliedCount", Tag.TAG_INT) || !data.contains("chaosAppliedCount", Tag.TAG_INT))) { LOG.error("Incomplete contract data on villager {}", v.getUUID()); message(event, "invalid_data"); return; }
-        if (!validCounter(data, "normalAppliedCount") || !validCounter(data, "chaosAppliedCount") || (data.contains("version") && (!data.contains("version", Tag.TAG_INT) || data.getInt("version") != 1))) { LOG.error("Invalid contract data on villager {}", v.getUUID()); message(event, "invalid_data"); return; }
+        if (root.contains(ID) && (!data.contains("version", Tag.TAG_INT) || !data.contains("normalAppliedCount", Tag.TAG_INT) || !data.contains("chaosAppliedCount", Tag.TAG_INT))) { LOG.error("Incomplete contract data on villager {}", v.getUUID()); message(player, "invalid_data"); return; }
+        if (!validCounter(data, "normalAppliedCount") || !validCounter(data, "chaosAppliedCount") || (data.contains("version") && (!data.contains("version", Tag.TAG_INT) || data.getInt("version") != 1))) { LOG.error("Invalid contract data on villager {}", v.getUUID()); message(player, "invalid_data"); return; }
         int n = data.getInt("normalAppliedCount"), c = data.getInt("chaosAppliedCount");
-        if (!Limits.allows(n, c, NORMAL_LIMIT.get(), CHAOS_LIMIT.get(), TOTAL_LIMIT.get(), usesNormalQuota)) { refuse(event, v, Component.translatable("writ.message.limit." + ((long) n + c >= TOTAL_LIMIT.get() ? "total" : usesNormalQuota ? "trade" : "chaos"))); return; }
+        if (!Limits.allows(n, c, NORMAL_LIMIT.get(), CHAOS_LIMIT.get(), TOTAL_LIMIT.get(), usesNormalQuota)) { refuse(player, v, Component.translatable("writ.message.limit." + ((long) n + c >= TOTAL_LIMIT.get() ? "total" : usesNormalQuota ? "trade" : "chaos"))); return; }
         MerchantOffer offer;
         if (random) {
             Presets.Snapshot snapshot = Presets.INSTANCE.currentSnapshot();
             ResourceLocation professionId = BuiltInRegistries.VILLAGER_PROFESSION.getKey(profession);
-            Optional<String> selected = Presets.INSTANCE.randomPreset(snapshot, professionId, event.getLevel().getRandom());
-            if (selected.isEmpty()) { message(event, "random.empty_pool"); return; }
+            Optional<String> selected = Presets.INSTANCE.randomPreset(snapshot, professionId, v.level().getRandom());
+            if (selected.isEmpty()) { message(player, "random.empty_pool"); return; }
             Presets.Preset preset = snapshot.presets().get(ResourceLocation.tryParse(selected.get()));
             if (!preset.variants().isEmpty()) {
                 ItemStack contract = Presets.INSTANCE.contractFor(snapshot, selected.get());
-                if (contract.isEmpty()) { message(event, "random.empty_pool"); return; }
-                if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
-                if (!event.getEntity().getInventory().add(contract)) event.getEntity().drop(contract, false);
-                message(event, "random.choose");
+                if (contract.isEmpty()) { message(player, "random.empty_pool"); return; }
+                storeRandomDraw(player, v, hand, stack, contract);
                 return;
             }
             offer = Presets.offerFor(preset, null);
         } else {
             Presets.OfferResult resolution = normal ? Presets.INSTANCE.resolveOffer(stack, v) : null;
-            offer = normal ? resolution.offer() : Chaos.offer(event.getLevel().getRandom());
+            offer = normal ? resolution.offer() : Chaos.offer(v.level().getRandom());
             if (offer == null) {
-                if (normal && resolution.failure().equals("profession_mismatch")) refuse(event, v, Component.translatable("writ.message.profession_mismatch", Texts.professions(Presets.INSTANCE.professionsOf(stack))));
-                else message(event, !normal ? "empty_pool" : resolution.failure().equals("preset_missing") && (!stack.hasTag() || stack.getTag().getString("preset_id").isEmpty()) ? "blank" : resolution.failure());
+                if (normal && resolution.failure().equals("profession_mismatch")) refuse(player, v, Component.translatable("writ.message.profession_mismatch", Texts.professions(Presets.INSTANCE.professionsOf(stack))));
+                else message(player, !normal ? "empty_pool" : resolution.failure().equals("preset_missing") && (!stack.hasTag() || stack.getTag().getString("preset_id").isEmpty()) ? "blank" : resolution.failure());
                 return;
             }
         }
@@ -235,19 +242,38 @@ public final class Writ {
         data.putInt("chaosAppliedCount", c);
         data.putInt(usesNormalQuota ? "normalAppliedCount" : "chaosAppliedCount", usesNormalQuota ? n + 1 : c + 1);
         root.put(ID, data);
-        if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+        if (!player.getAbilities().instabuild) stack.shrink(1);
         // Mirror vanilla's own cues: the villager agrees aloud and sparkles as it does when it gains trades.
         v.playSound(SoundEvents.VILLAGER_YES, 1.0F, v.getVoicePitch());
-        event.getLevel().broadcastEntityEvent(v, (byte) 14);
-        event.getEntity().displayClientMessage(Component.translatable("writ.message.success", Texts.trade(offer)), true);
+        v.level().broadcastEntityEvent(v, (byte) 14);
+        player.displayClientMessage(Component.translatable("writ.message.success", Texts.trade(offer)), true);
     }
+    private static void storeRandomDraw(Player player, Villager villager, InteractionHand hand,
+                                        ItemStack random, ItemStack contract) {
+        Inventory inventory = player.getInventory();
+        boolean consume = !player.getAbilities().instabuild;
+        int slot = inventory.getFreeSlot();
+        if (consume && random.getCount() == 1) {
+            slot = hand == InteractionHand.MAIN_HAND ? inventory.selected : Inventory.SLOT_OFFHAND;
+        }
+        if (consume) random.shrink(1);
+        if (slot >= 0) {
+            inventory.setItem(slot, contract);
+            if (player instanceof ServerPlayer serverPlayer && serverPlayer.connection != null
+                    && VariantNet.openRandom(serverPlayer, slot, contract, villager)) return;
+        } else if (!inventory.add(contract)) {
+            player.drop(contract, false);
+        }
+        message(player, "random.choose");
+    }
+
     /** The villager itself turns the writ down: it shakes its head, as it does when it has nothing to trade. */
-    private static void refuse(PlayerInteractEvent.EntityInteract e, Villager v, Component reason) {
+    private static void refuse(Player player, Villager v, Component reason) {
         v.setUnhappyCounter(40);
         v.playSound(SoundEvents.VILLAGER_NO, 1.0F, v.getVoicePitch());
-        e.getEntity().displayClientMessage(reason, true);
+        player.displayClientMessage(reason, true);
     }
     private static boolean validCounter(CompoundTag tag, String key) { return !tag.contains(key) || (tag.contains(key, Tag.TAG_INT) && tag.getInt(key) >= 0); }
     static boolean isOtherMerchant(net.minecraft.world.entity.Entity entity) { return entity.getType() != EntityType.VILLAGER && entity instanceof Merchant; }
-    private static void message(PlayerInteractEvent.EntityInteract e, String key) { e.getEntity().displayClientMessage(Component.translatable("writ.message." + key), true); }
+    private static void message(Player player, String key) { player.displayClientMessage(Component.translatable("writ.message." + key), true); }
 }

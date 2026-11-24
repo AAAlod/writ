@@ -84,7 +84,7 @@ final class WritItem extends Item {
                     : !view.variantLabel().isEmpty() ? Component.literal(view.variantLabel())
                     : name(view.result());
             lines.add(Component.translatable("writ.tooltip.choice", choice.copy().withStyle(ChatFormatting.WHITE), view.variantIndex(), view.variantTotal()).withStyle(ChatFormatting.GRAY));
-            if (shift) lines.add(Component.translatable("writ.tooltip.choice_hint", Component.keybind("key.use"), Component.keybind("key.sneak")).withStyle(ChatFormatting.DARK_GRAY));
+            if (shift) lines.add(Component.translatable("writ.tooltip.choice_hint", Component.keybind("key.use")).withStyle(ChatFormatting.DARK_GRAY));
         }
         return hasDetails;
     }
@@ -111,7 +111,9 @@ final class WritItem extends Item {
 
     @Override public net.minecraft.world.InteractionResultHolder<ItemStack> use(Level level, net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (level.isClientSide && !player.isSpectator() && VariantRules.canRequest(stack.is(Writ.NORMAL.get()), stack.getTag(), stack.getCount()) && VariantBridge.request(player, hand, stack)) {
+        if (level.isClientSide && !player.isSpectator()
+                && VariantRules.canRequest(stack.is(Writ.NORMAL.get()), stack.getTag(), stack.getCount())
+                && VariantBridge.request(player, hand, stack)) {
             return net.minecraft.world.InteractionResultHolder.success(stack);
         }
         return net.minecraft.world.InteractionResultHolder.pass(stack);

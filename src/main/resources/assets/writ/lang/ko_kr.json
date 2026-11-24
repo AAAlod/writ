@@ -16,7 +16,7 @@
   "writ.profession.any": "모든 직업",
   "writ.tooltip.details_hint": "Shift를 누르고 있으면 아이템 정보 보기",
   "writ.tooltip.choice": "선택: %s (%s/%s)",
-  "writ.tooltip.choice_hint": "빈 곳을 바라보고 %1$s 키로 묶음 전체의 선택을 바꿉니다(%2$s 키를 누르고 있으면 반대로)",
+  "writ.tooltip.choice_hint": "빈 곳을 바라보고 %1$s 키를 눌러 묶음 전체의 거래를 선택합니다",
   "writ.tooltip.blank": "빈 계약서: 거래가 적혀 있지 않습니다",
   "writ.tooltip.no_preview": "이 거래는 미리 볼 수 없습니다",
   "writ.tooltip.unsupported": "더 새로운 형식이라 거래를 미리 볼 수 없습니다",

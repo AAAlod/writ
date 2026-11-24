@@ -16,7 +16,7 @@
   "writ.profession.any": "不限",
   "writ.tooltip.details_hint": "按住 Shift 檢視物品詳情",
   "writ.tooltip.choice": "目前選擇：%s（%s/%s）",
-  "writ.tooltip.choice_hint": "看向空處按 %1$s 切換整組的選項（按住 %2$s 反向切換）",
+  "writ.tooltip.choice_hint": "看向空處按 %1$s，為整組契約選擇交易",
   "writ.tooltip.blank": "空白契約：未記載任何交易",
   "writ.tooltip.no_preview": "無法預覽此交易",
   "writ.tooltip.unsupported": "契約格式較新，無法預覽此交易",

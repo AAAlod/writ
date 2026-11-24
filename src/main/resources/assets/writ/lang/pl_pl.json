@@ -16,7 +16,7 @@
   "writ.profession.any": "Dowolny zawód",
   "writ.tooltip.details_hint": "Przytrzymaj Shift, aby zobaczyć szczegóły przedmiotu",
   "writ.tooltip.choice": "Wybór: %s (%s/%s)",
-  "writ.tooltip.choice_hint": "Celuj w pustkę i użyj (%1$s), aby zmienić wybór całego stosu; przytrzymaj %2$s, aby cofnąć",
+  "writ.tooltip.choice_hint": "Celuj w pustkę i naciśnij %1$s, aby wybrać ofertę dla całego stosu",
   "writ.tooltip.blank": "Pusta: ta umowa nie zawiera żadnej oferty",
   "writ.tooltip.no_preview": "Podgląd tej oferty jest niedostępny",
   "writ.tooltip.unsupported": "Nowszy format: nie można wyświetlić oferty",
