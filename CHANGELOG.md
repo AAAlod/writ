@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.2
+
+### Gameplay
+
+- Replaced cycling with a searchable trade selector. Use a trade writ in the air to preview payments and output, then confirm a choice for the whole stack.
+- Random writs with one valid choice still sign immediately. A multi-choice draw produces a trade writ and opens the selector. Confirming tries to sign with the original villager. Canceling or failing to sign leaves the resulting trade writ for later.
+- Added Log Supply and Sapling Supply, with choices generated from item tags, and Saplings for Logs, with explicit sapling-to-log pairs.
+- Supported Overworld loot chests, barrels and chest minecarts get two additional general loot attempts, each at 25% by default. Structure-specific attempts retain their existing rates.
+
+### Datapacks and compatibility
+
+- Added `general_loot` for presets and `general_loot_chance` for the server's per-attempt chance.
+- Added `dynamic_result`, a shared exclusion tag, optional per-preset exclusion tags, and an ingot supply example datapack.
+- Fixed natural drop filtering in `CRAFT_9` mode for presets with enabled Chaos Writ outputs. Added warnings for unknown preset fields and improved acquisition diagnostics.
+- Existing signed trades keep their terms. Players can recover a stale choice on an unsigned writ by confirming an available choice. Multiplayer requires updating both the client and server.
+
 ## 1.1.1
 
 ### Localization

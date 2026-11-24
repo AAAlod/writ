@@ -130,7 +130,7 @@ Random writs need no extra fields; they draw from existing presets. A preset is 
 - it has enabled general loot with a positive general chance, omits `sources`, or at least one listed **chest** source can reach it (positive `contract_drop_chance` and a positive effective weight for its pool). Boss sources alone do not qualify;
 - a dynamic preset has at least one valid choice.
 
-The draw picks a pool by global pool weight (built-in N 45 / R 35 / SR 14 / SSR 5 / UR 1), counting only pools that have candidates, then a preset by `weight` within that pool. Source chances and `pool_weights` only decide reachability; they do not change the odds. A single valid choice signs immediately; multiple choices become a trade writ for the player to select. Choices do not make a preset more likely to be drawn.
+The draw picks a pool by global pool weight (built-in N 45 / R 35 / SR 14 / SSR 5 / UR 1), counting only pools that have candidates, then a preset by `weight` within that pool. Source chances and `pool_weights` only decide reachability; they do not change the odds. A single valid choice signs immediately. With multiple choices, the draw produces a trade writ and opens the selector. Confirming attempts to sign with the original villager. Choices do not make a preset more likely to be drawn.
 
 ### Pool fields
 
@@ -249,7 +249,7 @@ A preset can drop naturally only if all of these hold:
 - its pool exists and is not disabled;
 - its `weight` is greater than 0;
 - its `loot_modes` contains the server's current obtain mode;
-- the server is not in `CRAFT_9` mode while the preset's result is `writ:chaos_writ`. In `CRAFT_9` mode, presets that sell chaos writs never drop.
+- In `CRAFT_9` mode, neither the base trade nor any enabled choice may give `writ:chaos_writ` if the preset is to drop naturally.
 
 A preset that fails these checks is *manual-only*. It still loads, and any trade writ that carries its ID still works (see [Testing a preset](#testing-a-preset)).
 
@@ -259,7 +259,7 @@ If any field of a preset is invalid, including any field inside one of its varia
 
 ## Variants
 
-Variants turn one preset into an ordered list of choices. Players cycle through the choices on the writ. The preset's own trade is always the first choice, and the enabled variants follow in array order.
+Variants turn one preset into an ordered list of choices. Players browse and confirm choices in the trade selector. The preset's own trade is always the first choice, and the enabled variants follow in array order.
 
 ### Variant fields
 
@@ -327,8 +327,8 @@ Other rules:
 A writ remembers its choice by the variant `id`:
 
 - **Reordering** variants is safe.
-- **Removing, disabling or renaming** a variant makes writs that selected it invalid. Applying such a writ is refused with "This writ's choice is no longer offered". When the player cycles that writ, it resets to the default choice.
-- If a preset loses all of its variants, cycling a writ that still has an old choice clears that choice.
+- **Removing, disabling or renaming** a variant makes writs that selected it invalid. Applying such a writ is refused with "This writ's choice is no longer offered". To recover it, use the writ in the air and confirm an available choice in the selector.
+- If all explicit variants are removed, an older writ with a stale choice can still open the selector and confirm the base trade to clear that choice.
 - New writs are always generated with the default choice selected.
 
 ## Acquisition sources
@@ -633,7 +633,7 @@ Any trade writ whose `preset_id` tag names a preset will work, so you can test w
 /give @s writ:trade_writ{preset_id:"example:honey_supply"}
 ```
 
-A writ created this way has no stored preview. Its tooltip says "No preview available for this trade", and the name falls back as described in [Display names](#display-names). For a preset with variants, cycling the writ once stores a preview. Loot functions that set the same tag work the same way.
+A writ created this way has no stored preview. Its tooltip says "No preview available for this trade", and the name falls back as described in [Display names](#display-names). Confirming a choice in the selector stores or refreshes the preview. Loot functions that set the same tag work the same way.
 
 ### Troubleshooting
 
@@ -648,11 +648,14 @@ A writ created this way has no stored preview. Its tooltip says "No preview avai
 | The tooltip shows old values | Tooltips are stored when a writ is generated. The villager still receives the current definition. |
 | Chaos writs are refused | Check `Chaos config diagnostics`. Malformed config or an empty allow list empties the lists. |
 | A change to the obtain mode does nothing | Restart the game or dedicated server process; switching worlds does not reread it. |
+
 ## General loot and dynamic results
+
+See the [ingot supply example](../examples/ingot-writ/) for a complete pack that offers several ingots through a single item tag.
 
 Set `"general_loot": true` on a preset to opt it into general Overworld container loot. It defaults to `false` for compatibility. Existing `sources` and their special attempts remain in effect; use `"sources": ["writ:general"]` for a general-only preset. Each recognized container makes two general attempts at `general_loot_chance` in `config/writ-common.toml` (default 0.25). Set it to zero to disable general attempts; general-only presets then also leave the random writ candidate pool. Only `rarity` pools participate, using the existing pool and preset weights.
 
-For a dynamic result, for example use `"dynamic_result": {"tag": "minecraft:logs", "exclude_tag": "writ:log_contract_exclusions"}`. The result choices are the item tag's members, excluding `#writ:contract_exclusions` and the optional designated exclusion tag. The built-in sapling-specific exclusion is `#writ:sapling_contract_exclusions`. These are ordinary item tags: datapacks can merge them, nest tags, or use `replace`. They are empty by default; pack authors can exclude valuable logs here and create a separately priced explicit preset. Empty or invalid choices do not enter natural or random draws. An unsigned writ whose choice becomes invalid cannot be signed until its choice is changed. Existing signed trades are not rewritten.
+For a dynamic result, for example use `"dynamic_result": {"tag": "minecraft:logs", "exclude_tag": "writ:log_contract_exclusions"}`. The result choices are the item tag's members, excluding `#writ:contract_exclusions` and the optional designated exclusion tag. The built-in sapling-specific exclusion is `#writ:sapling_contract_exclusions`. These are ordinary item tags: datapacks can merge them, nest tags, or use `replace`. They are empty by default; pack authors can exclude valuable logs here and create a separately priced explicit preset. Empty or invalid choices do not enter natural or random draws. If an unsigned writ's item is removed from the tag or excluded, confirm one of the remaining choices before signing. If no choices remain, restore a valid item in the datapack first. Existing signed trades are not rewritten.
 
 `writ:sapling_for_logs` uses the existing explicit `variants` format for sapling-to-log pairs. Datapacks can override or extend those pairs; they are not inferred from tags and do not automatically use dynamic exclusions.
 

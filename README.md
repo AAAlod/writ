@@ -10,15 +10,15 @@
   <strong>Find trade writs, then have villagers sign them to learn new trades.</strong>
 </p>
 
-Writ is a Minecraft Forge mod that turns villager trading into something you discover. Trade writs are scattered through structure chests and dropped by bosses. Each one carries a specific trade, such as smelting your ore, selling enchanted gear or restocking rare materials. Hand a writ to a villager and that trade joins its list for good. For the adventurous, the chaos writ teaches a villager a completely random trade.
+Writ is a Minecraft Forge mod that turns villager trading into something you discover. Trade writs appear in loot containers and as boss drops. Each one carries a trade, such as smelting your ore, selling enchanted gear or restocking rare materials. Hand a writ to a villager and that trade joins its list for good. For the adventurous, the chaos writ teaches a villager a completely random trade.
 
 ## Features
 
-- **Trades as loot.** Writs drop from chests in 13 kinds of structures and from the Elder Guardian, Warden, Ender Dragon and Wither. Each location has its own themed trades, so exploring pays off in new trading options.
+- **Trades as loot.** Writs drop from chests in 13 kinds of structures and from the Elder Guardian, Warden, Ender Dragon and Wither. Supported Overworld loot containers can also contain general writs. Each structure and boss has its own themed trades.
 - **Five tiers.** From Common bulk supplies to Legendary end-game trades, each tier has its own name color, so you can judge a find at a glance.
 - **Every profession covered.** All 13 vanilla professions get writ trades: processing services, filled supply kits, enchanted books and gear, rare materials.
-- **Choices on one writ.** Some writs offer several versions of a trade, such as every terracotta color. Cycle through them in your hand before you apply the writ.
-- **Random writs.** Craft four trade writs into one random writ, which draws a fitting trade for the villager that signs it.
+- **Choices on one writ.** Search and preview the choices on a writ before you sign it. Try different terracotta colors or choose logs and saplings from item tags.
+- **Random writs.** Craft four trade writs into one random writ. Use it on a villager to draw a fitting trade. A draw with multiple choices opens the selector before signing.
 - **Chaos writs.** These teach a villager a random trade drawn from every item in the game, including items from other mods.
 - **Hero of the Village gifts** can occasionally be a random or chaos writ.
 - **Per-villager limits** keep any one villager from collecting endless trades. Server owners can adjust them.
@@ -44,9 +44,9 @@ Settings are in `config/writ-common.toml`, shared by all worlds and read only at
 
 ## Quick start
 
-1. **Find a trade writ.** Open chests in structures such as dungeons, desert pyramids, shipwrecks or Nether fortresses, or defeat a boss.
+1. **Find a trade writ.** Check Overworld loot chests, barrels and chest minecarts for general writs, or explore structures and defeat bosses for themed writs.
 2. **Read it.** The tooltip shows the tier, the professions that can sign it and the exact trade.
-3. **Pick a choice (optional).** If the writ offers choices, look at empty space and use it to cycle forward, or sneak and use it to cycle backward.
+3. **Pick a choice (optional).** If the writ offers choices, use it while looking at empty space. Pick a trade in the selector and confirm.
 4. **Find a villager.** It must be an adult with the right profession, and you must have traded with it at least once.
 5. **Apply it.** Use the writ on the villager. The new trade appears at the end of its trade list, and one writ is used up.
 

@@ -35,9 +35,15 @@ All three items appear in the **Writ** creative tab. The trade writ there is *bl
 
 ### Structure chests
 
-When a chest in one of the supported structures generates its loot (normally when it is first opened), Writ makes **two independent special attempts** to add a trade writ, each with that structure's chance. In addition, recognized Overworld loot containers get two general attempts, each with a default 25% chance. Attempts can produce duplicate writs.
+When a chest in one of the supported structures generates its loot (normally when it is first opened), Writ makes **two independent special attempts** to add a trade writ, each with that structure's chance. Structure-specific attempts can produce duplicate writs.
 
 Each structure favors certain tiers and kinds of trades: a desert pyramid leans toward masonry and desert trades, a Nether fortress toward Nether materials. See [Structure sources](#structure-sources).
+
+### General Overworld loot
+
+When a supported Overworld loot chest, barrel or chest minecart generates its loot, it also gets **two independent attempts** to add a general writ, each with a **25%** chance by default. A structure chest can yield writs from both pools, and duplicate writs are possible.
+
+This pool includes **Log Supply**, **Sapling Supply** and **Saplings for Logs**. The first two offer items from the server's log and sapling tags, including compatible modded items. Saplings for Logs uses explicit sapling-to-log pairs.
 
 ### Bosses
 
@@ -147,16 +153,11 @@ Writ tiers are separate from vanilla item rarity. Chaos Writ Unlock has no tier;
 
 Some trade writs offer several versions of one trade. *Terracotta Supply* offers plain terracotta or any of the 16 dyed colors; *Glass Supply* lets you buy glass outright or bring your own sand to have it smelted. Such a writ shows a line like **Choice: Blue Terracotta (13/17)**.
 
-To change the choice, hold the writ and look at **empty space** (no block or entity within reach, so the sky or a distant view works), then:
-
-- **use** the writ to move to the next choice, or
-- **sneak and use** to move to the previous one.
-
-The first choice is the writ's default trade, and cycling wraps around at both ends. Each change is confirmed above the hotbar.
+Hold the writ and use it while looking at **empty space** to open the trade selector. Scroll the list or search by option name, choice ID, or the name or ID of an item in the trade. Click an option to preview its payments and result on the parchment, then click the green check mark to save it. Press Esc to close without saving. The inventory key (E by default) also closes the screen while the search field is unfocused.
 
 A choice applies to the **whole stack** in your hand. To set different choices, split the stack first. Writs with different choices do not stack.
 
-The villager receives the selected choice. If that choice no longer exists on the server, the writ is refused with "This writ's choice is no longer offered"; use it in the air once to reset it to the default.
+The villager receives the selected choice. If the server removes that choice, use the writ in the air and confirm an available option before signing. If all options are gone, the pack author must restore an eligible option first.
 
 ## Random writs
 
@@ -165,7 +166,7 @@ When a random writ is used on an eligible villager, the server draws one preset 
 - Only trades the villager's profession can sign are considered.
 - Lower tiers are more likely. The draw uses the global tier weights (built-in N 45, R 35, SR 14, SSR 5, UR 1), not any structure's drop chances.
 - Boss-exclusive trades and trades that sell writs (such as Chaos Writ Unlock) are never drawn.
-- If the preset has one valid choice, the villager signs it immediately. If it has multiple choices, one random writ becomes a trade writ for that preset; choose an option and sign it with any suitable villager. The number of choices does not affect the preset's chance.
+- If the preset has one valid choice, the villager signs it immediately. For multiple choices, the draw creates a trade writ and opens the selector. Confirming saves the selection and attempts to sign with the original villager. If you close the screen or signing fails, you can use the resulting writ with any eligible villager later. If the selector cannot open, for example because a full inventory has no slot for the result, pick up or find the resulting writ and use it manually. The number of choices does not affect the preset's chance.
 
 If nothing fits the villager, it refuses with "No random trades are available; please tell an administrator", and the writ is kept. Random writs count toward the same limit as trade writs. The exact rules are in the [Datapack Reference](datapacks.md#random-writ-candidates).
 
@@ -348,7 +349,7 @@ The server's data changed after the writ was created. The villager always receiv
 The writ was probably created with a command and has no stored preview. It still works, and the villager receives the server's trade.
 
 **Using the writ in the air does nothing.**
-Make sure no block or entity is within reach in front of you and that the writ actually offers choices (its tooltip has a **Choice:** line). Spectators cannot change choices, and Writ must be installed on your client.
+Look at empty space beyond reach and check that the writ offers another choice or has an outdated choice to recover. The tooltip may reflect older data after a reload. Spectator mode cannot open the selector.
 
 **I can't craft a chaos writ.**
 The server is in `TRADE` mode. Look for Chaos Writ Unlock writs in dungeons instead.
@@ -361,7 +362,7 @@ See [Backups and recovery](#backups-and-recovery).
 
 ## Compatibility and limitations
 
-- Writ must be installed on **both the server and every client**. Players without it cannot join a server that runs it.
+- Install the same Writ version on **both the server and every client**.
 - Only the vanilla villager accepts writs. Wandering traders and villager-like entities from other mods are not supported. Professions added by other mods are recognized, but the built-in trade writs only target vanilla professions.
 - Unless the server excludes them, chaos trades can draw items from any installed mod, including creative-only and technical items.
 - Behavior with mods that reroll, reset or replace villager trades, or that change how structure chests generate loot (for example per-player loot mods), has not been verified.
