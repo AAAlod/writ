@@ -17,7 +17,8 @@ try {
     # ForgeGradle otherwise attempts an online certificate check even with --offline.
     $env:JAVA_TOOL_OPTIONS = "$oldJavaToolOptions -Dnet.minecraftforge.gradle.check.certs=false".Trim()
     if (-not $SkipBuild) {
-        & .\gradlew.bat clean build --offline --no-daemon
+        # Merge JVM stderr in cmd.exe so Windows PowerShell 5.1 does not treat it as a terminating error.
+        & cmd /c ".\gradlew.bat clean build --offline --no-daemon 2>&1"
         if ($LASTEXITCODE -ne 0) { throw 'Offline build failed.' }
     }
     if (-not $SkipGameTest) {
