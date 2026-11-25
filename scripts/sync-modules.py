@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MODULES = ROOT / "modules"
 LOCK = ROOT / "modules.lock.json"
 SYNC_BRANCH_PREFIX = "sync/"
+INTEGRATION_BRANCH = "refs/heads/integration-forge-1.20.1"
 CORE = "writ-core"
 DEVICE = "resonance-device"
 LANGUAGES = {f"assets/writ/lang/{locale}.json" for locale in ("en_us", "fr_fr", "zh_cn")}
@@ -23,6 +24,8 @@ DEVICE_RESOURCES = {RESOURCES + path for path in LANGUAGES | {
     "assets/writ/textures/item/resonance_device.png",
 }}
 CORE_PREFIXES = ("src/main/", "src/test/", "src/gametest/")
+DEVICE_DEV_PREFIXES = (DEVICE_JAVA + "dev/", RESOURCES + "data/writ_resonance_dev/")
+DEVICE_STANDALONE_RESOURCES = {RESOURCES + "META-INF/mods.toml", RESOURCES + "pack.mcmeta"}
 REQUIRED = {
     CORE: {"src/main/java/ke/writ/Writ.java", RESOURCES + "META-INF/mods.toml"}
     | {RESOURCES + path for path in LANGUAGES},
@@ -46,15 +49,24 @@ def accepted(module, path):
     )
 
 
+def excluded_production_file(module, path):
+    return module == DEVICE and (
+        path.startswith(DEVICE_DEV_PREFIXES) or path in DEVICE_STANDALONE_RESOURCES
+    )
+
+
 def read_snapshot(module, repo, commit):
     if not re.fullmatch(r"[a-f0-9]{40}", commit) or git(repo, "cat-file", "-t", commit).strip() != b"commit":
         raise ValueError(f"{module}: provide a full Git commit ID")
     objects = git(repo, "ls-tree", "-rz", commit, "--", "src").split(b"\0")
     files = {}
+    unclassified = []
     for entry in filter(None, objects):
         metadata, raw_path = entry.split(b"\t", 1)
         path = raw_path.decode("utf-8")
         if not accepted(module, path):
+            if path.startswith("src/main/") and not excluded_production_file(module, path):
+                unclassified.append(path)
             continue
         mode, kind, object_id = metadata.split()
         if mode != b"100644" or kind != b"blob" or any(
@@ -64,6 +76,9 @@ def read_snapshot(module, repo, commit):
         ):
             raise ValueError(f"{module}: unsupported snapshot path {path}")
         files[path] = git(repo, "cat-file", "blob", object_id.decode("ascii"))
+    if unclassified:
+        paths = "\n  ".join(unclassified)
+        raise ValueError(f"{module}: classify these production files before syncing:\n  {paths}")
     if not REQUIRED[module].issubset(files) or len({name.casefold() for name in files}) != len(files):
         raise ValueError(f"{module}: missing required files or ambiguous paths")
     tree = git(repo, "rev-parse", f"{commit}^{{tree}}").decode("ascii").strip()
@@ -146,6 +161,12 @@ def main():
     branch = git(ROOT, "branch", "--show-current").strip().decode("utf-8")
     if not branch.startswith(SYNC_BRANCH_PREFIX):
         parser.error("run from a sync/* candidate branch, created from the integration branch")
+    try:
+        git(ROOT, "merge-base", "--is-ancestor", INTEGRATION_BRANCH, "HEAD")
+    except subprocess.CalledProcessError as error:
+        if error.returncode == 1:
+            parser.error("candidate must contain the current local integration-forge-1.20.1 tip")
+        raise
     if git(ROOT, "status", "--porcelain"):
         parser.error("integration checkout must be clean")
     names = [name for name, _, _ in args.module]
@@ -169,10 +190,17 @@ def main():
 
     install(snapshots, lock, changed)
     paths = ["modules.lock.json", *(f"modules/{name}" for name in changed)]
-    git(ROOT, "add", "--", *paths)
-    git(ROOT, "diff", "--cached", "--check")
     message = "\n".join(f"{name}: {commit}" for name, commit in sorted(changed.items()))
-    print(git(ROOT, "commit", "-m", "chore: 同步集成模块源码", "-m", message).decode("utf-8", "replace").strip())
+    try:
+        git(ROOT, "add", "--", *paths)
+        git(ROOT, "diff", "--cached", "--check")
+        result = git(ROOT, "commit", "-m", "chore: 同步集成模块源码", "-m", message)
+    except subprocess.CalledProcessError as error:
+        if error.output:
+            print(error.output.decode("utf-8", "replace").strip())
+        parser.exit(1, "Snapshots installed, but Git did not complete the commit. "
+                       "Inspect the checkout and follow INTEGRATION.md before retrying.\n")
+    print(result.decode("utf-8", "replace").strip())
 
 
 if __name__ == "__main__":

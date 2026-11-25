@@ -21,6 +21,10 @@ python scripts/sync-modules.py --module resonance-device '<DEVICE_REPO>' <FULL_S
 
 首次导入需要两个 `--module` 参数，分别指定 `writ-core` 和 `resonance-device`。更新时只给出有改动的模块，另一个保持锁定。脚本读 Git 提交中的文件，校验现有快照、检查冲突并生成一个本地同步提交。重复同步同一提交时不产生额外提交。模块行为的修改回子库处理。
 
+候选分支必须包含当前本地正式分支的最新提交。遇到未分类的 `src/main/` 文件，同步会列出路径并停止。确认文件是发行资源、独立开发入口还是测试素材后，再更新同步规则。法器的独立入口、开发夹具以及独立构建的元数据有明确的排除规则。
+
+若快照已安装但 Git 提交失败，用 `git status --short`、`git diff` 和 `git diff --cached` 核对新快照与锁文件。修复 Git 身份或钩子问题后，可对本次涉及的模块和锁文件重新暂存，运行 `git diff --cached --check`，再按同步提交格式完成提交。要重新导入时，先确认候选分支只包含本次失败留下的改动，再按 `HEAD` 恢复本次涉及的模块目录与锁文件，检查工作区干净后重跑同步。
+
 已获集成授权时也可以在子库发起同步。例如在核心库根目录执行 `python ../writ-integration/scripts/sync-modules.py --module writ-core . (git rev-parse HEAD)`。总库先建好本次的 `sync/*` 分支。总库的正式分支提交、远端推送、标签和发布都按各自的审核流程执行。
 
 从总库运行 `scripts/verify-release.ps1 -MinGameTests 101` 执行当前发布校验。需要两种获取模式的验收时，分别在 `run-gametest/config/writ-common.toml` 设置 `TRADE` 和 `CRAFT_9` 运行 GameTest。两种模式共用同一份生产 JAR。
