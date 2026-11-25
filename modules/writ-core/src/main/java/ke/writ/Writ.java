@@ -3,7 +3,6 @@ package ke.writ;
 import com.mojang.logging.LogUtils;
 import java.nio.file.Path;
 import java.util.Optional;
-import ke.writ.resonance.ResonanceModule;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -33,8 +32,7 @@ import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,7 +41,6 @@ import org.slf4j.Logger;
 import com.mojang.serialization.Codec;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 
-@Mod(Writ.ID)
 public final class Writ {
     public static final String ID = "writ";
     static final int CONFIG_SCHEMA_VERSION = 1;
@@ -126,7 +123,7 @@ public final class Writ {
         b.pop();
         CONFIG = b.build();
     }
-    public Writ() {
+    public Writ(IEventBus bus) {
         Path configPath = FMLPaths.CONFIGDIR.get().resolve("writ-common.toml");
         ConfigFile.LoadResult loaded = ConfigFile.load(CONFIG, configPath, CONFIG_SCHEMA_VERSION);
         switch (loaded.status()) {
@@ -138,9 +135,7 @@ public final class Writ {
         }
         applyConfig();
         VariantNet.register();
-        var bus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(bus); TABS.register(bus); LOOT_MODIFIERS.register(bus);
-        ResonanceModule.init(bus, ContractExemption::useDefaultDeviceEffect);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.addListener(ContractExemption::registerCommands);
         MinecraftForge.EVENT_BUS.register(new BossDrops());

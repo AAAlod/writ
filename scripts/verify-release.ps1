@@ -59,14 +59,19 @@ try {
         $legacyData = 'trade' + '_contracts'
         $legacyPaths = @($zip.Entries | Where-Object { $_.FullName.Contains($legacyNamespace) -or $_.FullName.Contains($legacyData) })
         if ($legacyPaths.Count -ne 0) { throw 'Legacy package or resource paths found in release JAR.' }
-        foreach ($required in @('ke/writ/Writ.class', 'ke/writ/ConfigFile.class', 'assets/writ/models/item/trade_writ.json', 'assets/writ/models/item/chaos_writ.json', 'assets/writ/lang/en_us.json', 'assets/writ/lang/zh_cn.json', 'assets/writ/lang/fr_fr.json', 'data/writ/writs/presets/a_unlock.json',
+        foreach ($required in @('ke/writ/Writ.class', 'ke/writ/ConfigFile.class', 'ke/writ/WritIntegratedMod.class',
+            'ke/writ/resonance/ResonanceModule.class', 'assets/writ/models/item/resonance_device.json', 'assets/writ/models/item/trade_writ.json', 'assets/writ/models/item/chaos_writ.json', 'assets/writ/lang/en_us.json', 'assets/writ/lang/zh_cn.json', 'assets/writ/lang/fr_fr.json', 'data/writ/writs/presets/a_unlock.json',
             'ke/writ/HeroGifts.class', 'data/writ/loot_modifiers/hero_gifts.json', 'data/writ/recipes/random_writ.json',
             'data/writ/advancements/recipes/random_writ.json', 'assets/writ/models/item/random_writ.json',
             'assets/writ/textures/item/random_writ.png', 'assets/writ/textures/item/random_writ.png.mcmeta')) {
             if ($null -eq $zip.GetEntry($required)) { throw "Missing required JAR entry: $required" }
         }
+        $unexpected = @($zip.Entries | Where-Object {
+            $_.FullName -eq 'ke/writ/WritCoreMod.class' -or $_.FullName.StartsWith('ke/writ/resonance/dev/')
+        })
+        if ($unexpected.Count -ne 0) { throw 'Standalone entrypoints or dev classes found in the integrated JAR.' }
         $languageKeys = @(
-            'item.writ.random_writ', 'writ.tooltip.random.summary', 'writ.tooltip.random.use',
+            'item.writ.random_writ', 'item.writ.resonance_device', 'writ.effect.contract_exemption.applied', 'writ.tooltip.random.summary', 'writ.tooltip.random.use',
             'writ.tooltip.random.notice', 'writ.tooltip.chaos.summary', 'writ.tooltip.expand_hint',
             'writ.message.random.empty_pool'
         )

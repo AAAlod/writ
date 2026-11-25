@@ -2,18 +2,30 @@ plugins { id 'net.minecraftforge.gradle' version '6.0.54' }
 group = 'ke.writ'
 version = '1.1.2.1'
 base { archivesName = 'writ' }
+def minecraftVersion = '1.20.1'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-apply from: 'gradle/resonance-module.gradle'
+sourceSets {
+    main {
+        java.srcDirs = ['modules/writ-core/src/main/java', 'modules/resonance-device/src/main/java',
+                        'integration/src/main/java']
+        resources.srcDirs = ['modules/writ-core/src/main/resources']
+    }
+    test {
+        java.srcDirs = ['modules/writ-core/src/test/java']
+        resources.srcDirs = ['modules/writ-core/src/test/resources']
+    }
+}
+apply from: 'gradle/integrated-modules.gradle'
 sourceSets {
     gametest {
-        java.srcDirs = ['src/gametest/java']
-        resources.srcDirs = ['src/gametest/resources']
+        java.srcDirs = ['modules/writ-core/src/gametest/java', 'integration/src/gametest/java']
+        resources.srcDirs = ['modules/writ-core/src/gametest/resources']
         compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
         runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
     }
 }
 minecraft {
-    mappings channel: 'official', version: '1.20.1'
+    mappings channel: 'official', version: minecraftVersion
     runs {
         client { workingDirectory project.file('run'); mods { writ { source sourceSets.main } } }
         server { workingDirectory project.file('run'); args '--nogui'; mods { writ { source sourceSets.main } } }
@@ -22,15 +34,18 @@ minecraft {
 }
 repositories { mavenCentral() }
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.4.10'
+    minecraft "net.minecraftforge:forge:${minecraftVersion}-47.4.10"
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.3'
 }
-test { useJUnitPlatform() }
+test {
+    useJUnitPlatform()
+    systemProperty 'writ.test.sourceRoot', file('modules/writ-core').absolutePath
+}
 // A profession-restricted preset is installed only into the disposable GameTest world.
 // Sync (not Copy) so files removed from src/gametest/datapack do not linger in the reused world.
 tasks.register('installGameTestData', Sync) {
-    from 'src/gametest/datapack'
+    from 'modules/writ-core/src/gametest/datapack'
     from('examples/ingot-writ') { exclude 'pack.mcmeta', 'README.md' }
     into 'run-gametest/world/datapacks/baseline-tests'
 }
@@ -45,6 +60,7 @@ tasks.withType(org.gradle.api.tasks.bundling.AbstractArchiveTask).configureEach 
 }
 
 jar {
+    archiveFileName = "${base.archivesName.get()}-${project.version}-forge-${minecraftVersion}.jar"
     manifest { attributes('Implementation-Version': project.version) }
     exclude '**/*GameTests*.class'
 }

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** Checks the shipped trade content against the fixed trade-system principles, using only the JSON on disk. */
 class TradeSystemContentTest {
-    static final Path DATA = Path.of("src/main/resources/data/writ/writs");
+    static final Path DATA = TestSourcePaths.projectFile("src/main/resources/data/writ/writs");
     static final List<String> TIERS = List.of("writ:n", "writ:r", "writ:sr", "writ:ssr", "writ:ur");
     static final List<String> PROFESSIONS = List.of("armorer", "butcher", "cartographer", "cleric", "farmer", "fisherman", "fletcher",
             "leatherworker", "librarian", "mason", "shepherd", "toolsmith", "weaponsmith");

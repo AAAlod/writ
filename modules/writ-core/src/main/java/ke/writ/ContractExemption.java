@@ -1,9 +1,6 @@
 package ke.writ;
 
-import java.util.Locale;
 import java.util.OptionalInt;
-import ke.writ.resonance.EffectResult;
-import ke.writ.resonance.Operation;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -25,15 +22,6 @@ final class ContractExemption {
     }
 
     private ContractExemption() {}
-
-    static EffectResult useDefaultDeviceEffect(ServerPlayer player, LivingEntity target, Operation operation) {
-        Result result = switch (operation) {
-            case APPLY -> apply(player, target, OptionalInt.empty());
-            case REMOVE -> remove(player, target);
-        };
-        String key = "writ.effect.contract_exemption." + result.name().toLowerCase(Locale.ROOT);
-        return new EffectResult(result == Result.APPLIED || result == Result.REMOVED, Component.translatable(key));
-    }
 
     static boolean isActive(LivingEntity target) {
         CompoundTag protection = target.getPersistentData().getCompound(ID);

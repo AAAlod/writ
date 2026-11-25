@@ -1,0 +1,55 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import java.security.MessageDigest
+
+def lockFile = file('modules.lock.json')
+def core = file('modules/writ-core')
+def device = file('modules/resonance-device')
+def roots = ['writ-core': core, 'resonance-device': device]
+def coreLanguages = new File(core, 'src/main/resources/assets/writ/lang')
+def deviceResources = new File(device, 'src/main/resources')
+def deviceLanguages = fileTree(new File(deviceResources, 'assets/writ/lang')) { include '*.json' }
+
+def verifyModules = tasks.register('verifyModuleSnapshots') {
+    inputs.file(lockFile)
+    inputs.files(roots.values())
+    doLast {
+        def lock = new JsonSlurper().parse(lockFile, 'UTF-8')
+        if (lock.schema != 1 || lock.modules.keySet() != roots.keySet()) {
+            throw new GradleException('Expected both module snapshots in modules.lock.json')
+        }
+        roots.each { name, root ->
+            def snapshot = lock.modules[name]
+            def paths = fileTree(root).files.collect {
+                root.toPath().relativize(it.toPath()).toString().replace('\\', '/')
+            }.toSet()
+            if (paths != snapshot.files.keySet()) {
+                throw new GradleException("${name} files do not match modules.lock.json")
+            }
+            snapshot.files.each { path, expected ->
+                def actual = MessageDigest.getInstance('SHA-256')
+                        .digest(new File(root, path).bytes).encodeHex().toString()
+                if (actual != expected) throw new GradleException("${name} hash mismatch: ${path}")
+            }
+        }
+    }
+}
+
+tasks.named('compileJava') { dependsOn verifyModules }
+tasks.named('processResources') {
+    dependsOn verifyModules
+    inputs.files(deviceLanguages)
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+    from(deviceResources) { exclude 'assets/writ/lang/**' }
+    doLast {
+        def parser = new JsonSlurper()
+        deviceLanguages.files.sort { it.name }.each { fragment ->
+            def destination = new File(destinationDir, "assets/writ/lang/${fragment.name}")
+            def coreKeys = parser.parse(new File(coreLanguages, fragment.name), 'UTF-8')
+            def deviceKeys = parser.parse(fragment, 'UTF-8')
+            def conflicts = coreKeys.keySet().intersect(deviceKeys.keySet())
+            if (conflicts) throw new GradleException("Duplicate translation keys in ${fragment.name}: ${conflicts}")
+            destination.setText(JsonOutput.prettyPrint(JsonOutput.toJson(coreKeys + deviceKeys)) + '\n', 'UTF-8')
+        }
+    }
+}

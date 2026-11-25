@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 class SourceMigrationPreservationTest {
+    private static final Path PRESETS = TestSourcePaths.projectFile("src/main/resources/data/writ/writs/presets");
     /** Pre-redesign presets folded into a parent: old ID -> parent preset and variant (null = parent default). */
     static final java.util.Map<String, String[]> MERGED = java.util.Map.of(
             "processing_strip_oak_log", new String[]{"log_stripping", null}, "processing_strip_spruce_log", new String[]{"log_stripping", "spruce"},
@@ -28,12 +29,12 @@ class SourceMigrationPreservationTest {
             for (var entry:before.entrySet()) {
                 String id=entry.getKey(); var old=entry.getValue().getAsJsonObject();
                 if (MERGED.containsKey(id)) {
-                    assertFalse(Files.exists(Path.of("src/main/resources/data/writ/writs/presets",id+".json")),"merged preset still present "+id);
+                    assertFalse(Files.exists(PRESETS.resolve(id+".json")),"merged preset still present "+id);
                     String[] target=MERGED.get(id);
                     assertEquals(effective(old,null),effective(readPreset(target[0]),target[1]),"merged trade changed "+id);
                     continue;
                 }
-                assertTrue(Files.exists(Path.of("src/main/resources/data/writ/writs/presets",id+".json")),"preset silently removed "+id);
+                assertTrue(Files.exists(PRESETS.resolve(id+".json")),"preset silently removed "+id);
                 var now=readPreset(id);
                 if (id.equals("a_unlock")) {
                     var expectedTrade = old.getAsJsonObject("trade").deepCopy();
@@ -54,7 +55,7 @@ class SourceMigrationPreservationTest {
     }
     record Mapping(String oldId,String parent,String variant) { }
     private static JsonObject readPreset(String id) throws Exception {
-        try(var r=Files.newBufferedReader(Path.of("src/main/resources/data/writ/writs/presets",id+".json"),StandardCharsets.UTF_8)) { return JsonParser.parseReader(r).getAsJsonObject(); }
+        try(var r=Files.newBufferedReader(PRESETS.resolve(id+".json"),StandardCharsets.UTF_8)) { return JsonParser.parseReader(r).getAsJsonObject(); }
     }
     private static JsonObject effective(JsonObject parent,String id) {
         var trade=parent.getAsJsonObject("trade").deepCopy();
@@ -73,7 +74,7 @@ class SourceMigrationPreservationTest {
         try(var stream=getClass().getResourceAsStream("/migration/mason-premerge.json")) {
             assertNotNull(stream); var old=JsonParser.parseReader(new InputStreamReader(stream,StandardCharsets.UTF_8)).getAsJsonObject(); assertEquals(18,old.size());
             for(var m:mappings) {
-                assertFalse(Files.exists(Path.of("src/main/resources/data/writ/writs/presets",m.oldId()+".json")),"old preset still present "+m.oldId());
+                assertFalse(Files.exists(PRESETS.resolve(m.oldId()+".json")),"old preset still present "+m.oldId());
                 assertEquals(effective(old.getAsJsonObject(m.oldId()),null),effective(readPreset(m.parent()),m.variant()),"trade changed "+m.oldId());
             }
             assertEquals(effective(old.getAsJsonObject("sea_lantern"),"shards"),effective(readPreset("ocean_blocks"),"shards"),"shards trade changed");

@@ -17,7 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** Every player-facing string must exist, with the same arguments, in each shipped language; shipped data must not hardcode one language. */
 class LangCoverageTest {
-    static final Path LANG = Path.of("src/main/resources/assets/writ/lang"), DATA = Path.of("src/main/resources/data/writ/writs"), JAVA = Path.of("src/main/java/ke/writ");
+    static final Path LANG = TestSourcePaths.projectFile("src/main/resources/assets/writ/lang"),
+            DATA = TestSourcePaths.projectFile("src/main/resources/data/writ/writs"),
+            JAVA = TestSourcePaths.projectFile("src/main/java/ke/writ");
     static final List<String> LANGUAGES = List.of("en_us", "zh_cn", "fr_fr");
     /** The vanilla 1.20.1 keys the shipped data borrows, checked against the client's en_us.json; the client translates them into every language. */
     static final Set<String> VANILLA_KEYS = Set.of(
