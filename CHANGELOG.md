@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.3
+
+### Gameplay
+
+- Added the Resonance Focus to the Writ Creative tab. It binds to the first player who uses it. An unconfigured focus applies Writ Exemption to a creature, and its owner can sneak-use the focus to remove an exemption they applied.
+- Exempt villagers refuse new writs and keep their existing offers. Server operators can clear exemptions with `/writ exemption clear <target>`.
+- Administrators can give a focus an explicit NBT list of status effects. Sneak-use removes the listed effects. The per-world `cooldown_ticks` setting in `serverconfig/writ-resonance-server.toml` defaults to 100 ticks (5 seconds). Set it to 0 to disable the cooldown.
+
 ## 1.1.2.1
 
 ### Bug fixes

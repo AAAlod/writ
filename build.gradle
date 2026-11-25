@@ -1,6 +1,6 @@
 plugins { id 'net.minecraftforge.gradle' version '6.0.54' }
 group = 'ke.writ'
-version = '1.1.2.1'
+version = '1.1.3'
 base { archivesName = 'writ' }
 def minecraftVersion = '1.20.1'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
