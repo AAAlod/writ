@@ -2,7 +2,7 @@ param(
     [switch]$SkipGameTest,
     [switch]$SkipBuild,
     # Keep in sync with the current required GameTest count.
-    [int]$MinGameTests = 75
+    [int]$MinGameTests = 103
 )
 
 $ErrorActionPreference = 'Stop'
@@ -14,6 +14,9 @@ try {
     $versionMatch = [regex]::Match([System.IO.File]::ReadAllText((Join-Path $root 'build.gradle')), "(?m)^\s*version\s*=\s*['""]([^'""]+)['""]")
     if (-not $versionMatch.Success) { throw 'Could not read the project version from build.gradle.' }
     $expectedVersion = $versionMatch.Groups[1].Value
+    if ($SkipBuild -or $SkipGameTest) {
+        Write-Host 'Partial verification. Use a full run to associate a clean build and all tests with the release candidate.'
+    }
     # ForgeGradle otherwise attempts an online certificate check even with --offline.
     $env:JAVA_TOOL_OPTIONS = "$oldJavaToolOptions -Dnet.minecraftforge.gradle.check.certs=false".Trim()
     if (-not $SkipBuild) {
@@ -76,14 +79,16 @@ try {
             'writ.tooltip.random.notice', 'writ.tooltip.chaos.summary', 'writ.tooltip.expand_hint',
             'writ.message.random.empty_pool'
         )
+        $deviceResources = Join-Path $root 'modules/resonance-device/src/main/resources'
+        $englishDevice = [System.IO.File]::ReadAllText((Join-Path $deviceResources 'assets/writ/lang/en_us.json')) | ConvertFrom-Json
         foreach ($language in @('en_us', 'zh_cn', 'fr_fr')) {
             $languagePath = "assets/writ/lang/$language.json"
             $languageEntry = $zip.GetEntry($languagePath)
             if ($null -eq $languageEntry) { throw "Missing required JAR entry: $languagePath" }
             $languageReader = [System.IO.StreamReader]::new($languageEntry.Open(), [System.Text.Encoding]::UTF8)
-            try { $languageText = $languageReader.ReadToEnd() } finally { $languageReader.Dispose() }
+            try { $translations = $languageReader.ReadToEnd() | ConvertFrom-Json } finally { $languageReader.Dispose() }
             foreach ($key in $languageKeys) {
-                if ($languageText -notmatch ('"' + [regex]::Escape($key) + '"\s*:')) {
+                if ($null -eq $translations.PSObject.Properties[$key]) {
                     throw "Missing language key '$key' in JAR entry $languagePath."
                 }
             }
@@ -91,10 +96,29 @@ try {
             $hostFragment = Join-Path $root "integration/src/main/resources/$languagePath"
             $expectedTooltip = ([System.IO.File]::ReadAllText($hostFragment) | ConvertFrom-Json).$defaultEffectKey
             if ([string]::IsNullOrWhiteSpace($expectedTooltip) -or
-                ($languageText | ConvertFrom-Json).$defaultEffectKey -cne $expectedTooltip) {
+                $translations.$defaultEffectKey -cne $expectedTooltip) {
                 throw "Missing Writ default-effect tooltip in $languagePath."
             }
+            $deviceFragment = [System.IO.File]::ReadAllText((Join-Path $deviceResources $languagePath)) | ConvertFrom-Json
+            foreach ($english in $englishDevice.PSObject.Properties) {
+                if ($english.Name -ceq $defaultEffectKey) { continue }
+                $localized = $translations.PSObject.Properties[$english.Name].Value
+                if ([string]::IsNullOrWhiteSpace($localized) -or $localized -cne $deviceFragment.PSObject.Properties[$english.Name].Value) {
+                    throw "Missing or changed device translation '$($english.Name)' in $languagePath."
+                }
+                $englishSlots = @([regex]::Matches($english.Value, '%%|%s') | Where-Object { $_.Value -ceq '%s' })
+                $localizedSlots = @([regex]::Matches($localized, '%%|%s') | Where-Object { $_.Value -ceq '%s' })
+                if ($localizedSlots.Count -ne $englishSlots.Count -or $localized -match '%\d+\$') {
+                    throw "Unexpected format arguments for '$($english.Name)' in $languagePath."
+                }
+            }
         }
+        $chaosPath = 'data/writ/writs/chaos/config.json'
+        $chaosEntries = @($zip.Entries | Where-Object { $_.FullName -ceq $chaosPath })
+        if ($chaosEntries.Count -ne 1) { throw "Expected one integrated $chaosPath in the JAR." }
+        $chaosReader = [System.IO.StreamReader]::new($chaosEntries[0].Open())
+        try { $chaos = $chaosReader.ReadToEnd() | ConvertFrom-Json } finally { $chaosReader.Dispose() }
+        if ($chaos.exclude -cnotcontains 'writ:resonance_device') { throw 'Integrated chaos pools must exclude the resonance device by default.' }
         $glmPath = 'data/forge/loot_modifiers/global_loot_modifiers.json'
         $glmEntry = $zip.GetEntry($glmPath)
         if ($null -eq $glmEntry) { throw "Missing required JAR entry: $glmPath" }
