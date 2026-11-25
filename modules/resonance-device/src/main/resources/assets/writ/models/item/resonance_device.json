@@ -1,1 +1,6 @@
-{"parent": "minecraft:item/stick"}
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "writ:item/resonance_device"
+  }
+}

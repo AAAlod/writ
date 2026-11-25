@@ -1,10 +1,17 @@
 {
-  "item.writ.resonance_device": "Resonance Device",
+  "item.writ.resonance_device": "Resonance Focus",
   "writ.resonance.tooltip.unbound": "Unbound — right-click to bind",
   "writ.resonance.tooltip.bound": "Frequency %s",
-  "writ.resonance.bound": "Resonance Device bound. Frequency %s",
-  "writ.resonance.unauthorized": "This Resonance Device belongs to another owner.",
-  "writ.resonance.no_default_effect": "No default effect is configured for this Resonance Device.",
-  "writ.resonance.config_error": "Resonance Device effects are misconfigured: %s",
-  "writ.resonance.effect_unavailable": "The effect cannot be applied to this target."
+  "writ.resonance.tooltip.effect": "%s %s · %s",
+  "writ.resonance.tooltip.duration_seconds": "%ss",
+  "writ.resonance.tooltip.duration_infinite": "permanent",
+  "writ.resonance.tooltip.duration_instant": "instant",
+  "writ.resonance.tooltip.default_effect": "Default effect: provided by the host",
+  "writ.resonance.tooltip.cooldown": "Cooldown: %ss",
+  "writ.resonance.bound": "Resonance Focus bound. Frequency %s",
+  "writ.resonance.unauthorized": "This Resonance Focus belongs to another owner.",
+  "writ.resonance.no_default_effect": "No default effect is configured for this Resonance Focus.",
+  "writ.resonance.config_error": "Resonance Focus effects are misconfigured: %s",
+  "writ.resonance.effect_unavailable": "The effect cannot be applied to this target.",
+  "writ.resonance.cooldown": "Resonance Focus is cooling down: %ss"
 }

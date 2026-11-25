@@ -1,10 +1,17 @@
 {
-  "item.writ.resonance_device": "Appareil de Résonance",
+  "item.writ.resonance_device": "Focalisateur de Résonance",
   "writ.resonance.tooltip.unbound": "Non lié — clic droit pour lier",
   "writ.resonance.tooltip.bound": "Fréquence %s",
-  "writ.resonance.bound": "Appareil de Résonance lié. Fréquence %s",
-  "writ.resonance.unauthorized": "Cet Appareil de Résonance appartient à un autre propriétaire.",
-  "writ.resonance.no_default_effect": "Aucun effet par défaut n'est configuré pour cet Appareil de Résonance.",
-  "writ.resonance.config_error": "Les effets de l'Appareil de Résonance sont mal configurés : %s",
-  "writ.resonance.effect_unavailable": "L'effet ne peut pas être appliqué à cette cible."
+  "writ.resonance.tooltip.effect": "%s %s · %s",
+  "writ.resonance.tooltip.duration_seconds": "%s s",
+  "writ.resonance.tooltip.duration_infinite": "permanent",
+  "writ.resonance.tooltip.duration_instant": "instantané",
+  "writ.resonance.tooltip.default_effect": "Effet par défaut : fourni par l'hôte",
+  "writ.resonance.tooltip.cooldown": "Recharge : %s s",
+  "writ.resonance.bound": "Focalisateur de Résonance lié. Fréquence %s",
+  "writ.resonance.unauthorized": "Ce Focalisateur de Résonance appartient à un autre propriétaire.",
+  "writ.resonance.no_default_effect": "Aucun effet par défaut n'est configuré pour ce Focalisateur de Résonance.",
+  "writ.resonance.config_error": "Les effets du Focalisateur de Résonance sont mal configurés : %s",
+  "writ.resonance.effect_unavailable": "L'effet ne peut pas être appliqué à cette cible.",
+  "writ.resonance.cooldown": "Focalisateur de Résonance en recharge : %s s"
 }

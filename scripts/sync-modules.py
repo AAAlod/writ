@@ -18,7 +18,10 @@ DEVICE = "resonance-device"
 LANGUAGES = {f"assets/writ/lang/{locale}.json" for locale in ("en_us", "fr_fr", "zh_cn")}
 DEVICE_JAVA = "src/main/java/ke/writ/resonance/"
 RESOURCES = "src/main/resources/"
-DEVICE_RESOURCES = {RESOURCES + path for path in LANGUAGES | {"assets/writ/models/item/resonance_device.json"}}
+DEVICE_RESOURCES = {RESOURCES + path for path in LANGUAGES | {
+    "assets/writ/models/item/resonance_device.json",
+    "assets/writ/textures/item/resonance_device.png",
+}}
 CORE_PREFIXES = ("src/main/", "src/test/", "src/gametest/")
 REQUIRED = {
     CORE: {"src/main/java/ke/writ/Writ.java", RESOURCES + "META-INF/mods.toml"}

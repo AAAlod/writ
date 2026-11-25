@@ -9,6 +9,8 @@ def roots = ['writ-core': core, 'resonance-device': device]
 def coreLanguages = new File(core, 'src/main/resources/assets/writ/lang')
 def deviceResources = new File(device, 'src/main/resources')
 def deviceLanguages = fileTree(new File(deviceResources, 'assets/writ/lang')) { include '*.json' }
+def hostLanguages = file('integration/src/main/resources/assets/writ/lang')
+def hostDefaultEffectKey = 'writ.resonance.tooltip.default_effect'
 
 def verifyModules = tasks.register('verifyModuleSnapshots') {
     inputs.file(lockFile)
@@ -38,7 +40,7 @@ def verifyModules = tasks.register('verifyModuleSnapshots') {
 tasks.named('compileJava') { dependsOn verifyModules }
 tasks.named('processResources') {
     dependsOn verifyModules
-    inputs.files(deviceLanguages)
+    inputs.files(deviceLanguages, fileTree(hostLanguages) { include '*.json' })
     duplicatesStrategy = DuplicatesStrategy.FAIL
     from(deviceResources) { exclude 'assets/writ/lang/**' }
     doLast {
@@ -49,7 +51,12 @@ tasks.named('processResources') {
             def deviceKeys = parser.parse(fragment, 'UTF-8')
             def conflicts = coreKeys.keySet().intersect(deviceKeys.keySet())
             if (conflicts) throw new GradleException("Duplicate translation keys in ${fragment.name}: ${conflicts}")
-            destination.setText(JsonOutput.prettyPrint(JsonOutput.toJson(coreKeys + deviceKeys)) + '\n', 'UTF-8')
+            // Writ names the default effect it provides. All other translations come from their owning modules.
+            def hostKeys = parser.parse(new File(hostLanguages, fragment.name), 'UTF-8')
+            if (hostKeys.keySet() != ([hostDefaultEffectKey] as Set) || !deviceKeys.containsKey(hostDefaultEffectKey)) {
+                throw new GradleException("Expected only the host default-effect override for ${fragment.name}")
+            }
+            destination.setText(JsonOutput.prettyPrint(JsonOutput.toJson(coreKeys + deviceKeys + hostKeys)) + '\n', 'UTF-8')
         }
     }
 }

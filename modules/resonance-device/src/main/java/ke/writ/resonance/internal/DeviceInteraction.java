@@ -27,7 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Server-side device interaction logic: binding, ownership enforcement and effect dispatch.
+ * Server-side device interaction logic: binding, ownership enforcement, cooldowns and effect dispatch.
  *
  * <p>Entity interactions arrive through Forge's normal {@link PlayerInteractEvent.EntityInteract}
  * path. The module listener defaults to {@code receiveCanceled == false}, so interactions already
@@ -40,6 +40,19 @@ public final class DeviceInteraction {
 
     /** Remembers the last processed interaction so one physical click can never run twice. */
     private static final Map<UUID, LastInteraction> LAST_INTERACTIONS = new ConcurrentHashMap<>();
+
+    /**
+     * Last successful effect dispatch per player, in level game time. The cooldown is per player so
+     * swapping to another focus cannot bypass it. The module-wide cooldown value is also what the
+     * vanilla item cooldown overlay displays, so every focus shows the same, consistent duration.
+     */
+    private static final Map<UUID, Long> LAST_EFFECT_USE = new ConcurrentHashMap<>();
+
+    // These ticks are meaningful only within the current server session.
+    static void clearSession() {
+        LAST_INTERACTIONS.clear();
+        LAST_EFFECT_USE.clear();
+    }
 
     /** Relative right-click on air: binds the device when unbound, otherwise does nothing. */
     public static InteractionResult useOnAir(Level level, Player player, InteractionHand hand, ItemStack stack) {
@@ -106,7 +119,27 @@ public final class DeviceInteraction {
             send(player, Component.translatable(MessageKeys.UNAUTHORIZED));
             return;
         }
-        runEffects(player, target, stack, operation);
+
+        int cooldownTicks = ModuleRuntime.get().defaultCooldownTicks();
+        long gameTime = player.level().getGameTime();
+        if (cooldownTicks > 0) {
+            Long lastUse = LAST_EFFECT_USE.get(player.getUUID());
+            if (lastUse != null) {
+                long remaining = cooldownTicks - (gameTime - lastUse);
+                if (remaining > 0) {
+                    send(player, Component.translatable(MessageKeys.COOLDOWN,
+                            EffectFormat.secondsText((int) remaining)));
+                    return;
+                }
+            }
+        }
+
+        boolean dispatched = runEffects(player, target, stack, operation);
+        if (dispatched && cooldownTicks > 0) {
+            LAST_EFFECT_USE.put(player.getUUID(), gameTime);
+            player.getCooldowns().addCooldown(stack.getItem(), cooldownTicks);
+            pruneCooldownState(gameTime);
+        }
     }
 
     static void bind(ServerPlayer player, ItemStack stack) {
@@ -121,16 +154,18 @@ public final class DeviceInteraction {
      * <p>An explicit list is fully validated (field types, ids and effect resolution) before any
      * effect runs; an empty/absent list resolves the host default effect. Effects execute in list
      * order. A target rejecting one effect does not roll back the others.</p>
+     *
+     * @return {@code true} when an effect dispatch was attempted (and the cooldown should start),
+     *         {@code false} for a configuration error or a missing host default
      */
-    static void runEffects(ServerPlayer player, LivingEntity target, ItemStack stack, Operation operation) {
+    static boolean runEffects(ServerPlayer player, LivingEntity target, ItemStack stack, Operation operation) {
         ParsedEffects parsed = EffectsParser.parse(DeviceData.getTagOrNull(stack));
         if (parsed instanceof ParsedEffects.Invalid invalid) {
             send(player, Component.translatable(MessageKeys.CONFIG_ERROR, invalid.detail()));
-            return;
+            return false;
         }
         if (parsed instanceof ParsedEffects.Default) {
-            runDefaultEffect(player, target, operation);
-            return;
+            return runDefaultEffect(player, target, operation);
         }
 
         List<EffectSpec> specs = ((ParsedEffects.Explicit) parsed).effects();
@@ -140,7 +175,7 @@ public final class DeviceInteraction {
             if (effect == null) {
                 send(player, Component.translatable(MessageKeys.CONFIG_ERROR,
                         "unregistered effect id: " + spec.id()));
-                return;
+                return false;
             }
             effects.put(spec.id(), effect);
         }
@@ -163,27 +198,29 @@ public final class DeviceInteraction {
         if (!changed) {
             send(player, Component.translatable(MessageKeys.EFFECT_UNAVAILABLE));
         }
+        return true;
     }
 
-    private static void runDefaultEffect(ServerPlayer player, LivingEntity target, Operation operation) {
+    private static boolean runDefaultEffect(ServerPlayer player, LivingEntity target, Operation operation) {
         ResonanceEffect handler = ModuleRuntime.get().defaultEffect();
         if (handler == null) {
             send(player, Component.translatable(MessageKeys.NO_DEFAULT_EFFECT));
-            return;
+            return false;
         }
         try {
             EffectResult result = handler.execute(player, target, operation);
             if (result != null && result.message() != null) {
                 send(player, result.message());
-                return;
+                return true;
             }
             if (result != null && result.success()) {
-                return;
+                return true;
             }
         } catch (RuntimeException exception) {
             LOGGER.error("Default resonance action failed", exception);
         }
         send(player, Component.translatable(MessageKeys.EFFECT_UNAVAILABLE));
+        return true;
     }
 
     private static boolean isDuplicateInteraction(ServerPlayer player, LivingEntity target) {
@@ -193,6 +230,15 @@ public final class DeviceInteraction {
         return previous != null
                 && previous.targetId() == target.getId()
                 && previous.gameTime() == gameTime;
+    }
+
+    /** Keeps the process-wide cooldown map bounded by dropping entries older than five minutes. */
+    private static void pruneCooldownState(long gameTime) {
+        if (LAST_EFFECT_USE.size() <= 512) {
+            return;
+        }
+        long cutoff = gameTime - 20L * 60L * 5L;
+        LAST_EFFECT_USE.entrySet().removeIf(entry -> entry.getValue() < cutoff);
     }
 
     private static void send(ServerPlayer player, Component message) {

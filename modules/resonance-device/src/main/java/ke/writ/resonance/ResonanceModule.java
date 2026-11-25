@@ -35,4 +35,18 @@ public final class ResonanceModule {
         Objects.requireNonNull(modEventBus, "modEventBus");
         ModuleRuntime.get().init(modEventBus, defaultEffect);
     }
+
+    /**
+     * Overrides the module-wide cooldown between two effective uses.
+     *
+     * <p>The module does not read configuration files: the host owns the configuration source and
+     * pushes the value here (for example from its own config file). {@code 0} disables the cooldown;
+     * the default is 100 ticks (5 seconds). The value is global so the vanilla item cooldown overlay
+     * and the server-side check always agree.</p>
+     *
+     * @param ticks the cooldown in ticks, must not be negative
+     */
+    public static void setDefaultCooldownTicks(int ticks) {
+        ModuleRuntime.get().setDefaultCooldownTicks(ticks);
+    }
 }

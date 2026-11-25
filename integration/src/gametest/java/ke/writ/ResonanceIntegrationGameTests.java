@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.ListTag;
@@ -13,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -28,7 +30,7 @@ public final class ResonanceIntegrationGameTests {
         return FakePlayerFactory.get(h.getLevel(), new GameProfile(UUID.randomUUID(), name));
     }
 
-    @GameTest(template = "empty")
+    @GameTest(template = "empty", timeoutTicks = ResonanceHostConfig.MAX_COOLDOWN_TICKS + 20)
     public static void emptyResonanceDeviceInvokesWritDefault(GameTestHelper h) {
         var player = player(h, "device-owner");
         var target = h.spawn(EntityType.CHICKEN, new BlockPos(1, 2, 1));
@@ -44,14 +46,33 @@ public final class ResonanceIntegrationGameTests {
             MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.EntityInteract(player, InteractionHand.MAIN_HAND, target));
             h.assertTrue(ContractExemption.isActive(target) && !stack.getTag().contains("effects"),
                     "the empty device did not invoke the host default");
-            h.runAfterDelay(1, () -> {
-                player.setShiftKeyDown(true);
+            int cooldown = ResonanceHostConfig.cooldownTicks();
+            player.setShiftKeyDown(true);
+            if (cooldown > 1) {
+                h.runAfterDelay(cooldown - 1, () -> {
+                    MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.EntityInteract(player, InteractionHand.MAIN_HAND, target));
+                    h.assertTrue(ContractExemption.isActive(target),
+                            "the host-configured cooldown should still block removal one tick before expiry");
+                });
+            }
+            h.runAfterDelay(Math.max(1, cooldown), () -> {
                 MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.EntityInteract(player, InteractionHand.MAIN_HAND, target));
                 h.assertTrue(!ContractExemption.isActive(target) && stack.getCount() == 1,
-                        "the owner's sneak-use should remove the effect without consuming the device");
+                        "sneak-use should remove the effect when the host cooldown ends, without consuming the device");
                 h.succeed();
             });
         });
+    }
+
+    @GameTest(template = "empty")
+    public static void resonanceDeviceAppearsInWritCreativeTab(GameTestHelper h) {
+        var tab = BuiltInRegistries.CREATIVE_MODE_TAB.get(WritIntegratedMod.WRIT_TAB);
+        var item = ForgeRegistries.ITEMS.getValue(WritIntegratedMod.RESONANCE_DEVICE);
+        h.assertTrue(tab != null && item != null, "the Writ tab and resonance device must be registered");
+        tab.buildContents(new CreativeModeTab.ItemDisplayParameters(
+                h.getLevel().enabledFeatures(), true, h.getLevel().registryAccess()));
+        h.assertTrue(tab.contains(new ItemStack(item)), "the device is missing from the Writ creative tab");
+        h.succeed();
     }
 
     @GameTest(template = "empty")

@@ -61,7 +61,7 @@ try {
         $legacyPaths = @($zip.Entries | Where-Object { $_.FullName.Contains($legacyNamespace) -or $_.FullName.Contains($legacyData) })
         if ($legacyPaths.Count -ne 0) { throw 'Legacy package or resource paths found in release JAR.' }
         foreach ($required in @('ke/writ/Writ.class', 'ke/writ/ConfigFile.class', 'ke/writ/WritIntegratedMod.class',
-            'ke/writ/resonance/ResonanceModule.class', 'assets/writ/models/item/resonance_device.json', 'assets/writ/models/item/trade_writ.json', 'assets/writ/models/item/chaos_writ.json', 'assets/writ/lang/en_us.json', 'assets/writ/lang/zh_cn.json', 'assets/writ/lang/fr_fr.json', 'data/writ/writs/presets/a_unlock.json',
+            'ke/writ/resonance/ResonanceModule.class', 'assets/writ/models/item/resonance_device.json', 'assets/writ/textures/item/resonance_device.png', 'assets/writ/models/item/trade_writ.json', 'assets/writ/models/item/chaos_writ.json', 'assets/writ/lang/en_us.json', 'assets/writ/lang/zh_cn.json', 'assets/writ/lang/fr_fr.json', 'data/writ/writs/presets/a_unlock.json',
             'ke/writ/HeroGifts.class', 'data/writ/loot_modifiers/hero_gifts.json', 'data/writ/recipes/random_writ.json',
             'data/writ/advancements/recipes/random_writ.json', 'assets/writ/models/item/random_writ.json',
             'assets/writ/textures/item/random_writ.png', 'assets/writ/textures/item/random_writ.png.mcmeta')) {
@@ -86,6 +86,13 @@ try {
                 if ($languageText -notmatch ('"' + [regex]::Escape($key) + '"\s*:')) {
                     throw "Missing language key '$key' in JAR entry $languagePath."
                 }
+            }
+            $defaultEffectKey = 'writ.resonance.tooltip.default_effect'
+            $hostFragment = Join-Path $root "integration/src/main/resources/$languagePath"
+            $expectedTooltip = ([System.IO.File]::ReadAllText($hostFragment) | ConvertFrom-Json).$defaultEffectKey
+            if ([string]::IsNullOrWhiteSpace($expectedTooltip) -or
+                ($languageText | ConvertFrom-Json).$defaultEffectKey -cne $expectedTooltip) {
+                throw "Missing Writ default-effect tooltip in $languagePath."
             }
         }
         $glmPath = 'data/forge/loot_modifiers/global_loot_modifiers.json'

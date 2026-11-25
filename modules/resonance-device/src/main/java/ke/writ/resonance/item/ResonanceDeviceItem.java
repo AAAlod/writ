@@ -17,10 +17,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 /**
- * The resonance device item: an unstackable item with a vanilla model and enchantment glint.
+ * The resonance focus item: an unstackable item with the module's own handheld model.
  *
- * <p>The item itself only forwards to the module interaction logic; the server is always
- * authoritative about binding and effects.</p>
+ * <p>The item renders without a forced enchantment glint; the only glow is the vanilla one that
+ * appears if the stack is actually enchanted. The item itself only forwards to the module
+ * interaction logic; the server is always authoritative about binding, cooldowns and effects.</p>
  */
 public class ResonanceDeviceItem extends Item {
 
@@ -33,12 +34,6 @@ public class ResonanceDeviceItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         InteractionResult result = DeviceInteraction.useOnAir(level, player, hand, stack);
         return new InteractionResultHolder<>(result, stack);
-    }
-
-    @Override
-    public boolean isFoil(ItemStack stack) {
-        // Vanilla enchantment glint, as required by the specification.
-        return true;
     }
 
     @Override

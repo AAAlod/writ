@@ -2,9 +2,16 @@
   "item.writ.resonance_device": "共鸣法器",
   "writ.resonance.tooltip.unbound": "未绑定 · 右键进行绑定",
   "writ.resonance.tooltip.bound": "频率 %s",
+  "writ.resonance.tooltip.effect": "%s %s · %s",
+  "writ.resonance.tooltip.duration_seconds": "%s 秒",
+  "writ.resonance.tooltip.duration_infinite": "永久",
+  "writ.resonance.tooltip.duration_instant": "瞬时",
+  "writ.resonance.tooltip.default_effect": "默认效果：由宿主提供",
+  "writ.resonance.tooltip.cooldown": "冷却 %s 秒",
   "writ.resonance.bound": "共鸣法器已绑定。频率 %s",
   "writ.resonance.unauthorized": "这件共鸣法器属于其他拥有者。",
   "writ.resonance.no_default_effect": "这件共鸣法器未配置默认效果。",
   "writ.resonance.config_error": "共鸣法器效果配置错误：%s",
-  "writ.resonance.effect_unavailable": "该效果无法作用于该目标。"
+  "writ.resonance.effect_unavailable": "该效果无法作用于该目标。",
+  "writ.resonance.cooldown": "共鸣法器冷却中：%s 秒"
 }

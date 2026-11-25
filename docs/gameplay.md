@@ -258,7 +258,11 @@ Each kill has a 30% chance to award a writ.
 
 ## Server settings
 
-Writ's settings live in `config/writ-common.toml` in the game folder (single player) or the server folder. One file applies to every world. Writ creates it with defaults on first start; the comments in the file describe each option.
+Writ's trade settings live in `config/writ-common.toml` in the game folder (single player) or the server folder. One file applies to every world. Writ creates it with defaults on first start; the comments in the file describe each option.
+
+### Resonance device
+
+The resonance device is in the Writ Creative tab. Its cooldown is configured per world in `<world>/serverconfig/writ-resonance-server.toml`. The `cooldown_ticks` setting defaults to 100 ticks (5 seconds), accepts 0 to 6000, and can be set to 0 to disable the cooldown. Stop the server or close the single-player world before editing, then reopen it to apply the change. To set a default for new worlds, place the file in `defaultconfigs/`.
 
 Writ reads the file only when the game or dedicated server process starts. `/reload` and switching worlds do not reread it, so **restart after editing**.
 

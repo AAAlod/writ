@@ -1,29 +1,31 @@
 {
   "modules": {
     "resonance-device": {
-      "commit": "c7f9f7d125bbf901ce29d0994596c0609fef8303",
+      "commit": "72fa9bf9471e63c079475cebd4ceac88b5bc364b",
       "files": {
         "src/main/java/ke/writ/resonance/EffectResult.java": "b0c963b04d09e41bcc4b5feab817a0e9752228416ab54aaf56fd0c1200c2d7cb",
         "src/main/java/ke/writ/resonance/Operation.java": "2f51968743e9754c4dc0ff00ce1744e5e894de6be3dd584cd4fefc6b89a21317",
         "src/main/java/ke/writ/resonance/ResonanceEffect.java": "87fcd2789eb0bd4300da54c184214682d608929285c9b13910b4b9e1d20c3b56",
-        "src/main/java/ke/writ/resonance/ResonanceModule.java": "6ab2fb9c6e2a913d07caa03d07f7ce03390a4e111575df5881f6a5ab3e4bd372",
+        "src/main/java/ke/writ/resonance/ResonanceModule.java": "9d5dbcf102c3499577acf98ead37e48f906e88a257d80cafd782fe81ce0b9159",
         "src/main/java/ke/writ/resonance/internal/DeviceData.java": "6fc687b836788c7a357d452781007a25751f196e39a8074319d2698b34fb4820",
-        "src/main/java/ke/writ/resonance/internal/DeviceInteraction.java": "2e0f57ea7e4188854f10abf04673fd5d7234299ff1729e6312d2caddb95fb839",
-        "src/main/java/ke/writ/resonance/internal/DeviceTooltip.java": "ff3036ea6455b8f748a2950b62772a674f3ce1b32465db6d1839f249045cc437",
+        "src/main/java/ke/writ/resonance/internal/DeviceInteraction.java": "5e598662a6f3458352c108cd65783a63ee223a51d8238c95c7888911ce41d9bc",
+        "src/main/java/ke/writ/resonance/internal/DeviceTooltip.java": "e3e31d01e2cfb9b1c747e09df3353ce931110574783a92f95255bf3d2a4ffb26",
+        "src/main/java/ke/writ/resonance/internal/EffectFormat.java": "77f1359d97a9e3af286141112f3588045c80c21e2fc369d621767ad01af88c8a",
         "src/main/java/ke/writ/resonance/internal/EffectSpec.java": "aaf37d1a4bd29ab345a8bcd405df0880aa893dd03d451fa6bd36b93c8a3956fa",
         "src/main/java/ke/writ/resonance/internal/EffectsParser.java": "3a4c20d83c8c04b31e92179dbd28352bd767eda2fb26a77fd3d9772dba3c5440",
         "src/main/java/ke/writ/resonance/internal/Frequency.java": "7ecfa1bbe5d72d63976ca56983e70b66b609396bb112a758a77c6270f95893a5",
-        "src/main/java/ke/writ/resonance/internal/MessageKeys.java": "3d672d63c0af6e2dec6df9bd2225285399f0f09aea4e02c488128750af3cfc17",
-        "src/main/java/ke/writ/resonance/internal/ModuleRuntime.java": "dfd434159de232c654fd9dcf99a12af5ec8d29446cd333e4e5c0782082bac54c",
+        "src/main/java/ke/writ/resonance/internal/MessageKeys.java": "104b46bb51b6a9bb9a709689c97005860b632a3b055b87f7fa9cdae2d6867682",
+        "src/main/java/ke/writ/resonance/internal/ModuleRuntime.java": "74c315ab3784da98036e6bb907ea8eb4d3359efb0070987ce3257e66db68f3e6",
         "src/main/java/ke/writ/resonance/internal/ParsedEffects.java": "06ab1ab16e36ca53863378bbe8f5d305ec0578a41761ea10fd6a35a1b1009030",
         "src/main/java/ke/writ/resonance/internal/ResonanceItems.java": "85642fcae969cab0659ceb79052a55b5b2ab858da163bbbc94b18acceb95758d",
-        "src/main/java/ke/writ/resonance/item/ResonanceDeviceItem.java": "24ddb9895a4c7a2e10eb779d4418c16dc6e1f869d5ef8ccd8265a0257ad53b49",
-        "src/main/resources/assets/writ/lang/en_us.json": "f944632e9de958bbfd07f2900c9bd4ee4f21004572c04541e5403b903e2ce4d0",
-        "src/main/resources/assets/writ/lang/fr_fr.json": "69bee9641b81700177d2b065836f2c6a71faaf4a753e3711f4001772c934ec1c",
-        "src/main/resources/assets/writ/lang/zh_cn.json": "debb45113dc44e3263cd62d7a6770500aa59b3bdf72cf8dd247da646d5973a35",
-        "src/main/resources/assets/writ/models/item/resonance_device.json": "768a23234cfdb619ca6c885eb8327ab82b560e5faa069760b0eaa6ebb52d6e24"
+        "src/main/java/ke/writ/resonance/item/ResonanceDeviceItem.java": "7d2b4c160800594e668285200f655fcdc3fdaafdefb0ad3e5fdbbd5e729b8a4f",
+        "src/main/resources/assets/writ/lang/en_us.json": "097c265d4c4c18a9fc06a1bc9841270256edd2a0ef5704b1585559f118c6a16f",
+        "src/main/resources/assets/writ/lang/fr_fr.json": "73711dc66f581c74a28c5885a8467e5abf89091d258d064aeb77419ddaae7324",
+        "src/main/resources/assets/writ/lang/zh_cn.json": "566bb1374371e4d840008b67a5f644e570539557ea477648a657da7f30b890a5",
+        "src/main/resources/assets/writ/models/item/resonance_device.json": "4f0a947f12644140339112e3f1ef32f587b7fe7347376252ffa9205fb1c3d32d",
+        "src/main/resources/assets/writ/textures/item/resonance_device.png": "a84bc20f36a2f40ea0fb5fbb414f06f803bbd9c3aaa379779f1a0d49f8e10a05"
       },
-      "tree": "39f14d3b0713c8c4dad9490052ffa868ddfd261d"
+      "tree": "e1a144592010fbc5c3edf6a2076dd91910cc3136"
     },
     "writ-core": {
       "commit": "2d6c15cfd932ee1021bad00cb4629831ec1597ae",
