@@ -315,7 +315,19 @@ Every one of these cases is reported in the game or server log.
 
 ### Resonance device
 
-The resonance device is in the Writ Creative tab. Its cooldown is configured per world in `<world>/serverconfig/writ-resonance-server.toml`. The `cooldown_ticks` setting defaults to 100 ticks (5 seconds), accepts 0 to 6000, and can be set to 0 to disable the cooldown. Stop the server or close the single-player world before editing, then reopen it to apply the change. To set a default for new worlds, place the file in `defaultconfigs/`.
+[French guide](resonance.fr-FR.md)
+
+Craft one Resonance Focus at a crafting table. Picking up an emerald unlocks the recipe in both acquisition modes. You can also find the focus in the Writ Creative tab.
+
+| Left | Center | Right |
+| --- | --- | --- |
+| Empty | Copper Ingot | Emerald |
+| Empty | Stick | Copper Ingot |
+| Leather | Empty | Empty |
+
+The first use binds the focus to you. Once bound, use it on a creature to apply Writ Exemption. Armor stands are unsupported. Exempt villagers refuse new writs and keep their existing trades. Sneak-use to remove an exemption you applied. If you lose the focus, bind a replacement and use it to remove your exemption. Server operators can clear any exemption with `/writ exemption clear <target>`.
+
+The cooldown is configured per world in `<world>/serverconfig/writ-resonance-server.toml`. The `cooldown_ticks` setting defaults to 100 ticks (5 seconds), accepts 0 to 6000, and can be set to 0 to disable the cooldown. Stop the server or close the single-player world before editing, then reopen it to apply the change. To set a default for new worlds, place the file in `defaultconfigs/`.
 
 If Forge reports that it cannot load `writ-resonance-server.toml`, fix the TOML syntax while the world is closed. To regenerate the file, move the damaged file out of `serverconfig/` and reopen the world. If you supplied a template in `defaultconfigs/`, check its syntax too.
 

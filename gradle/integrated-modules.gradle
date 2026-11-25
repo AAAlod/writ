@@ -47,7 +47,9 @@ tasks.named('processResources') {
     inputs.files(deviceLanguages, fileTree(hostLanguages) { include '*.json' })
     duplicatesStrategy = DuplicatesStrategy.FAIL
     from(deviceResources) { exclude 'assets/writ/lang/**' }
-    from('integration/src/main/resources') { include chaosConfigPath }
+    from('integration/src/main/resources') {
+        include chaosConfigPath, 'data/**/recipes/**/*.json', 'data/**/advancements/**/*.json'
+    }
     doLast {
         def parser = new JsonSlurper()
         deviceLanguages.files.sort { it.name }.each { fragment ->

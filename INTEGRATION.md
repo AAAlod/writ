@@ -27,12 +27,12 @@ python scripts/sync-modules.py --module resonance-device '<DEVICE_REPO>' <FULL_S
 
 已获集成授权时也可以在子库发起同步。例如在核心库根目录执行 `python ../writ-integration/scripts/sync-modules.py --module writ-core . (git rev-parse HEAD)`。总库先建好本次的 `sync/*` 分支。总库的正式分支提交、远端推送、标签和发布都按各自的审核流程执行。
 
-从总库运行 `./scripts/verify-release.ps1` 执行完整发布校验，默认最低要求为 103 项 GameTest。验证两种获取模式时，分别在 `run-gametest/config/writ-common.toml` 设置 `TRADE` 和 `CRAFT_9`。第二次可用 `-SkipBuild` 复用同一份已核实的 JAR。跳过构建或 GameTest 的运行只适用于局部复核，完整校验应从当前源码清理并重新构建。
+从总库运行 `./scripts/verify-release.ps1` 执行完整发布校验，默认最低要求为 105 项 GameTest。验证两种获取模式时，分别在 `run-gametest/config/writ-common.toml` 设置 `TRADE` 和 `CRAFT_9`。第二次可用 `-SkipBuild` 复用同一份已核实的 JAR。跳过构建或 GameTest 的运行只适用于局部复核，完整校验应从当前源码清理并重新构建。
 
 ## 宿主接线与联调
 
 - 子库负责行为、独立默认值和最小接入接口。总库负责面向玩家的入口。法器由总库读取服务端配置并调用 `ResonanceModule.setDefaultCooldownTicks`，通过 Forge 的 `BuildCreativeModeTabContentsEvent` 把已注册物品加入 `writ:writs`。核心库和法器库都可以单独构建。
-- 总库的数据包资源维护组合后的默认策略。当前总库提供的混沌配置排除共鸣法器，使用整合包数据包覆盖同一路径即可放行。核心独立构建继续使用自己的配置。
+- 总库的数据包资源维护组合后的默认策略。当前总库提供的混沌配置排除共鸣法器，使用整合包数据包覆盖同一路径即可放行。核心独立构建继续使用自己的配置。共鸣法器的配方与配方书进度由总库维护，放在 `integration/src/main/resources/data/writ/`。宿主配方、进度与模块资源发生路径冲突时，构建会失败。
 - 冷却由服务器执行，客户端提示使用 Forge 登录时同步的服务端配置。接入影响玩家提示的设置时，同时检查服务端实际行为和客户端所见。修改配置后重启存档或服务器。使用世界时间记录的交互和冷却状态由法器模块在服务器停止时清理，以免影响同一客户端接着打开的其他存档。
 - 交付新增生产资源时，同时列出快照导入路径与发布 JAR 预期条目。本轮法器纹理同时进入同步白名单与 JAR 校验。更新默认行为时检查总库原有的测试前置条件。本轮冷却测试从实际配置取值，检查到期前拦截和到期时放行。
 - 发布校验脚本可在 Windows PowerShell 5.1 或 PowerShell 7 运行。两个 Gradle 调用都先在 `cmd.exe` 中合并输出，避免 5.1 把 JVM 的启动提示当作终止错误。遇到环境差异时记录外壳版本、复现命令、临时处理和仓库内修复，方便下一位接手人复跑。

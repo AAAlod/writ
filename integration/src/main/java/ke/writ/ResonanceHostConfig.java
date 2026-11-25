@@ -9,7 +9,6 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 final class ResonanceHostConfig {
     private static final int DEFAULT_COOLDOWN_TICKS = 100;
-    // The module prunes its per-player history after five minutes.
     static final int MAX_COOLDOWN_TICKS = 20 * 60 * 5;
     private static final ForgeConfigSpec.IntValue COOLDOWN;
     private static final ForgeConfigSpec SPEC;

@@ -2,7 +2,7 @@ param(
     [switch]$SkipGameTest,
     [switch]$SkipBuild,
     # Keep in sync with the current required GameTest count.
-    [int]$MinGameTests = 103
+    [int]$MinGameTests = 105
 )
 
 $ErrorActionPreference = 'Stop'
@@ -67,6 +67,7 @@ try {
             'ke/writ/resonance/ResonanceModule.class', 'assets/writ/models/item/resonance_device.json', 'assets/writ/textures/item/resonance_device.png', 'assets/writ/models/item/trade_writ.json', 'assets/writ/models/item/chaos_writ.json', 'assets/writ/lang/en_us.json', 'assets/writ/lang/zh_cn.json', 'assets/writ/lang/fr_fr.json', 'data/writ/writs/presets/a_unlock.json',
             'ke/writ/HeroGifts.class', 'data/writ/loot_modifiers/hero_gifts.json', 'data/writ/recipes/random_writ.json',
             'data/writ/advancements/recipes/random_writ.json', 'assets/writ/models/item/random_writ.json',
+            'data/writ/recipes/resonance_device.json', 'data/writ/advancements/recipes/resonance_device.json',
             'assets/writ/textures/item/random_writ.png', 'assets/writ/textures/item/random_writ.png.mcmeta')) {
             if ($null -eq $zip.GetEntry($required)) { throw "Missing required JAR entry: $required" }
         }
