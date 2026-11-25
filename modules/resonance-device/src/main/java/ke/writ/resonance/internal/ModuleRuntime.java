@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import ke.writ.resonance.ResonanceEffect;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -68,6 +69,9 @@ public final class ModuleRuntime {
         initialized = true;
         ResonanceItems.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, DeviceInteraction::onEntityInteract);
+        MinecraftForge.EVENT_BUS.addListener(
+                (PlayerEvent.PlayerLoggedOutEvent event) ->
+                        DeviceInteraction.forgetInteractionHistory(event.getEntity().getUUID()));
         MinecraftForge.EVENT_BUS.addListener((ServerStoppedEvent event) -> DeviceInteraction.clearSession());
     }
 }

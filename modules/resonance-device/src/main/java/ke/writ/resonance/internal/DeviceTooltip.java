@@ -3,8 +3,6 @@ package ke.writ.resonance.internal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 import ke.writ.resonance.ResonanceEffect;
 import net.minecraft.ChatFormatting;
@@ -30,11 +28,15 @@ public final class DeviceTooltip {
     }
 
     public static void append(ItemStack stack, List<Component> tooltip) {
-        Optional<UUID> owner = DeviceData.getOwner(stack);
-        if (owner.isEmpty()) {
+        DeviceData.OwnerState owner = DeviceData.getOwnerState(stack);
+        if (owner instanceof DeviceData.OwnerState.Invalid) {
+            tooltip.add(Component.translatable(MessageKeys.TOOLTIP_OWNER_INVALID)
+                    .withStyle(ChatFormatting.RED));
+        } else if (owner instanceof DeviceData.OwnerState.Unbound) {
             tooltip.add(Component.translatable(MessageKeys.TOOLTIP_UNBOUND).withStyle(ChatFormatting.GRAY));
         } else {
-            tooltip.add(Component.translatable(MessageKeys.TOOLTIP_BOUND, Frequency.of(owner.get()))
+            tooltip.add(Component.translatable(MessageKeys.TOOLTIP_BOUND,
+                            Frequency.of(((DeviceData.OwnerState.Bound) owner).owner()))
                     .withStyle(ChatFormatting.AQUA));
         }
         appendEffects(stack, tooltip);

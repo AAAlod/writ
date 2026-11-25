@@ -26,11 +26,15 @@ public final class MessageKeys {
     public static final String TOOLTIP_DEFAULT_EFFECT = "writ.resonance.tooltip.default_effect";
     /** Tooltip line with the effective cooldown; one argument: the cooldown in seconds. */
     public static final String TOOLTIP_COOLDOWN = "writ.resonance.tooltip.cooldown";
+    /** Tooltip line shown when the stored owner tag is malformed; the device is unusable until repaired. */
+    public static final String TOOLTIP_OWNER_INVALID = "writ.resonance.tooltip.owner_invalid";
 
     /** Feedback after a successful first binding; one argument: the derived frequency label. */
     public static final String BOUND = "writ.resonance.bound";
     /** Feedback when somebody other than the owner tries to use or rebind the device. */
     public static final String UNAUTHORIZED = "writ.resonance.unauthorized";
+    /** Feedback when the stored owner tag is malformed; binding and use are refused. */
+    public static final String OWNER_INVALID = "writ.resonance.owner_invalid";
     /** Feedback when an empty device is used but the host configured no default effect. */
     public static final String NO_DEFAULT_EFFECT = "writ.resonance.no_default_effect";
     /** Feedback for malformed or unknown explicit effect configuration. */

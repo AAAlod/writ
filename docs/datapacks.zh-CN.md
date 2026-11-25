@@ -449,11 +449,11 @@ Minecraft 1.20.1 使用数据包格式 `15`：
 
 文件：`data/writ/writs/chaos/config.json`
 
-只读取 `writ` 命名空间中的这个路径。其他命名空间中的 `chaos/config.json` 会被忽略，并记录警告。要修改配置，请在数据包中覆盖这个文件。内置文件不排除任何物品：
+只读取 `writ` 命名空间中的这个路径。其他命名空间中的 `chaos/config.json` 会被忽略，并记录警告。要修改配置，请在数据包中覆盖这个文件。内置文件会从两个候选池中排除共鸣法器：
 
 ```json
 {
-  "exclude": []
+  "exclude": ["writ:resonance_device"]
 }
 ```
 

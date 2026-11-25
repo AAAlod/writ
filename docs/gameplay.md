@@ -260,11 +260,7 @@ Each kill has a 30% chance to award a writ.
 
 Writ's trade settings live in `config/writ-common.toml` in the game folder (single player) or the server folder. One file applies to every world. Writ creates it with defaults on first start; the comments in the file describe each option.
 
-### Resonance device
-
-The resonance device is in the Writ Creative tab. Its cooldown is configured per world in `<world>/serverconfig/writ-resonance-server.toml`. The `cooldown_ticks` setting defaults to 100 ticks (5 seconds), accepts 0 to 6000, and can be set to 0 to disable the cooldown. Stop the server or close the single-player world before editing, then reopen it to apply the change. To set a default for new worlds, place the file in `defaultconfigs/`.
-
-Writ reads the file only when the game or dedicated server process starts. `/reload` and switching worlds do not reread it, so **restart after editing**.
+Writ reads `writ-common.toml` only when the game or dedicated server process starts. `/reload` and switching worlds do not reread it. **Restart the game or server process after editing trade settings.**
 
 | Section | Option | Default | Range | Effect |
 |---|---|---|---|---|
@@ -317,6 +313,14 @@ Writ refuses to start when a config file or recovery file exists but cannot be u
 
 Every one of these cases is reported in the game or server log.
 
+### Resonance device
+
+The resonance device is in the Writ Creative tab. Its cooldown is configured per world in `<world>/serverconfig/writ-resonance-server.toml`. The `cooldown_ticks` setting defaults to 100 ticks (5 seconds), accepts 0 to 6000, and can be set to 0 to disable the cooldown. Stop the server or close the single-player world before editing, then reopen it to apply the change. To set a default for new worlds, place the file in `defaultconfigs/`.
+
+If Forge reports that it cannot load `writ-resonance-server.toml`, fix the TOML syntax while the world is closed. To regenerate the file, move the damaged file out of `serverconfig/` and reopen the world. If you supplied a template in `defaultconfigs/`, check its syntax too.
+
+Chaos writs exclude the device from both payment and result by default. Pack authors can change this in the [chaos configuration](datapacks.md#chaos-configuration).
+
 ## Common problems
 
 **"Trade with this villager once before offering a writ."**
@@ -359,7 +363,7 @@ Look at empty space beyond reach and check that the writ offers another choice o
 The server is in `TRADE` mode. Look for Chaos Writ Unlock writs in dungeons instead.
 
 **A chaos trade asks for something I can't get.**
-Chaos trades are drawn from every item in the game. Ask the server owner to exclude unobtainable items.
+Chaos trades can include unobtainable items. The server owner can exclude them in the chaos configuration.
 
 **The game or server refuses to start with a Writ config error.**
 See [Backups and recovery](#backups-and-recovery).
@@ -368,7 +372,7 @@ See [Backups and recovery](#backups-and-recovery).
 
 - Install the same Writ version on **both the server and every client**.
 - Only the vanilla villager accepts writs. Wandering traders and villager-like entities from other mods are not supported. Professions added by other mods are recognized, but the built-in trade writs only target vanilla professions.
-- Unless the server excludes them, chaos trades can draw items from any installed mod, including creative-only and technical items.
+- Chaos trades can draw eligible items from any installed mod, including creative-only and technical items.
 - Behavior with mods that reroll, reset or replace villager trades, or that change how structure chests generate loot (for example per-player loot mods), has not been verified.
 - What happens to added trades and writ counts when a villager is turned into a zombie villager and cured has not been verified.
 - All built-in drop chances, prices and limits are starting values and may be tuned in later versions.

@@ -20,11 +20,18 @@ import net.minecraft.resources.ResourceLocation;
  *   <li>every entry must be a compound with a string {@code id};</li>
  *   <li>the optional {@code duration_ticks} must be a positive int;</li>
  *   <li>the optional {@code amplifier} must be an int from 0 to 127;</li>
+ *   <li>an entry may only contain {@code id}, {@code duration_ticks} and {@code amplifier}; any
+ *       other key is a configuration error, so a misspelled key never silently falls back to a
+ *       default;</li>
  *   <li>duplicate ids and unparsable ids are configuration errors;</li>
  *   <li>the whole list is rejected if any entry is invalid.</li>
  * </ul>
  */
 public final class EffectsParser {
+
+    /** Keys accepted on one {@code effects} entry; anything else is an administrator typo. */
+    private static final Set<String> ALLOWED_ENTRY_KEYS = Set.of(
+            DeviceData.TAG_ID, DeviceData.TAG_DURATION_TICKS, DeviceData.TAG_AMPLIFIER);
 
     private EffectsParser() {
     }
@@ -95,6 +102,20 @@ public final class EffectsParser {
                 if (amplifier < 0 || amplifier > Byte.MAX_VALUE) {
                     return new ParsedEffects.Invalid("effects[" + index + "].amplifier must be between 0 and 127");
                 }
+            }
+            // RD-04: unknown keys inside an entry are rejected instead of ignored. Otherwise a
+            // misspelled duration_ticks becomes an infinite effect and a misspelled amplifier
+            // silently falls back to level I. The root item tag stays untouched for compatibility
+            // with vanilla and other mods' fields.
+            String unknownKey = null;
+            for (String key : entry.getAllKeys()) {
+                if (!ALLOWED_ENTRY_KEYS.contains(key)
+                        && (unknownKey == null || key.compareTo(unknownKey) < 0)) {
+                    unknownKey = key;
+                }
+            }
+            if (unknownKey != null) {
+                return new ParsedEffects.Invalid("effects[" + index + "] has unknown key: " + unknownKey);
             }
             specs.add(new EffectSpec(id, durationTicks, amplifier));
         }

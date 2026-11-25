@@ -449,11 +449,11 @@ Behavior:
 
 File: `data/writ/writs/chaos/config.json`
 
-Only this exact path in the `writ` namespace is read. Files at `chaos/config.json` in other namespaces are ignored with a warning. To change the configuration, override this file in your datapack. The built-in file excludes nothing:
+Only this exact path in the `writ` namespace is read. Files at `chaos/config.json` in other namespaces are ignored with a warning. To change the configuration, override this file in your datapack. The built-in file excludes the resonance device from both pools:
 
 ```json
 {
-  "exclude": []
+  "exclude": ["writ:resonance_device"]
 }
 ```
 

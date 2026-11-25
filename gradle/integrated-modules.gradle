@@ -11,6 +11,10 @@ def deviceResources = new File(device, 'src/main/resources')
 def deviceLanguages = fileTree(new File(deviceResources, 'assets/writ/lang')) { include '*.json' }
 def hostLanguages = file('integration/src/main/resources/assets/writ/lang')
 def hostDefaultEffectKey = 'writ.resonance.tooltip.default_effect'
+def chaosConfigPath = 'data/writ/writs/chaos/config.json'
+
+// The integrated pack owns the default for this shared registry pool.
+sourceSets.main.resources.exclude(chaosConfigPath)
 
 def verifyModules = tasks.register('verifyModuleSnapshots') {
     inputs.file(lockFile)
@@ -43,6 +47,7 @@ tasks.named('processResources') {
     inputs.files(deviceLanguages, fileTree(hostLanguages) { include '*.json' })
     duplicatesStrategy = DuplicatesStrategy.FAIL
     from(deviceResources) { exclude 'assets/writ/lang/**' }
+    from('integration/src/main/resources') { include chaosConfigPath }
     doLast {
         def parser = new JsonSlurper()
         deviceLanguages.files.sort { it.name }.each { fragment ->
