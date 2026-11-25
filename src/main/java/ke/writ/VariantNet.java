@@ -31,6 +31,7 @@ final class VariantNet {
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Writ.ID, "variants"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     private static final int CHUNK_BYTES = 256 * 1024;
+    private static final int CHUNK_HEADER_BYTES = 32;
     private static final int MAX_BYTES = 8 * 1024 * 1024;
     private static final int MAX_OPTIONS = 16384;
     private static final Map<ServerPlayer, Long> LAST = new WeakHashMap<>();
@@ -163,9 +164,20 @@ final class VariantNet {
 
     static Session prepare(ServerPlayer player, int slot, ItemStack stack, UUID villager) {
         var snapshot = Presets.INSTANCE.currentSnapshot();
-        var preset = Presets.selectionPreset(snapshot, stack);
+        var tag = stack.getTag();
+        if (!VariantRules.canRequest(stack.is(Writ.NORMAL.get()), tag, stack.getCount())) return null;
+        var id = ResourceLocation.tryParse(tag.getString("preset_id"));
+        var preset = id == null ? null : snapshot.presets().get(id);
         if (preset == null) {
-            message(player, "variant_invalid");
+            message(player, id == null || snapshot.invalidPresets().contains(id) ? "preset_invalid" : "preset_missing");
+            return null;
+        }
+        if (preset.dynamic() && preset.defaultId() == null) {
+            message(player, "variant.no_choices");
+            return null;
+        }
+        if (snapshot.selectorBlocked().contains(id)) {
+            message(player, "variant.too_large");
             return null;
         }
         String defaultId = preset.dynamic() ? preset.defaultId() : "";
@@ -238,19 +250,22 @@ final class VariantNet {
         if (player.connection != null) player.displayClientMessage(Component.translatable("writ.message." + key), true);
     }
 
-    private static List<OptionsPayload> encodeOptions(Session session) {
-        Presets.Preset preset = session.preset();
+    static void validateChoiceBudget(Presets.Preset preset) {
+        if (!preset.variants().isEmpty()) encodeChoices(preset, false);
+    }
+
+    private static String choiceId(Presets.Preset preset, Presets.Variant variant) {
+        return variant == null ? (preset.dynamic() ? preset.defaultId() : "") : variant.id();
+    }
+
+    private static List<byte[]> encodeChoices(Presets.Preset preset, boolean keepBytes) {
         int total = preset.variants().size() + 1;
-        if (total > MAX_OPTIONS) throw new IllegalArgumentException("Too many choices");
-        int selected = 0;
-        String currentId = VariantRules.selected(session.original().getTag());
-        List<byte[]> encoded = new ArrayList<>(total);
+        if (total > MAX_OPTIONS) throw new IllegalArgumentException("Too many choices (maximum " + MAX_OPTIONS + ")");
+        List<byte[]> encoded = keepBytes ? new ArrayList<>(total) : List.of();
         int totalBytes = 0;
         for (int i = 0; i < total; i++) {
             Presets.Variant variant = i == 0 ? null : preset.variants().get(i - 1);
-            String id = variant == null ? (preset.dynamic() ? preset.defaultId() : "") : variant.id();
-            if (id.equals(currentId)) selected = i;
-            var option = new Option(id, Presets.selectionName(preset, variant),
+            var option = new Option(choiceId(preset, variant), Presets.selectionName(preset, variant),
                     variant == null ? preset.costA() : variant.costA(),
                     variant == null ? preset.costB() : variant.costB(),
                     variant == null ? preset.result() : variant.result());
@@ -259,25 +274,43 @@ final class VariantNet {
                 option.encode(buf);
                 int size = buf.readableBytes();
                 totalBytes += size;
-                if (totalBytes > MAX_BYTES) throw new IllegalArgumentException("Choices exceed byte budget");
-                byte[] bytes = new byte[size];
-                buf.readBytes(bytes);
-                encoded.add(bytes);
+                if (size > CHUNK_BYTES - CHUNK_HEADER_BYTES) throw new IllegalArgumentException("Choice exceeds packet byte budget");
+                if (totalBytes > MAX_BYTES) throw new IllegalArgumentException("Choices exceed total byte budget (" + MAX_BYTES + " bytes)");
+                if (keepBytes) {
+                    byte[] bytes = new byte[size];
+                    buf.readBytes(bytes);
+                    encoded.add(bytes);
+                }
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalArgumentException("Choice exceeds packet byte budget", ex);
             } finally {
                 buf.release();
             }
         }
+        return encoded;
+    }
+
+    private static List<OptionsPayload> encodeOptions(Session session) {
+        Presets.Preset preset = session.preset();
+        List<byte[]> encoded = encodeChoices(preset, true);
+        int total = encoded.size();
+        String currentId = VariantRules.selected(session.original().getTag());
+        int selected = 0;
+        for (int i = 1; i < total; i++) {
+            if (choiceId(preset, preset.variants().get(i - 1)).equals(currentId)) {
+                selected = i;
+                break;
+            }
+        }
         List<OptionsPayload> packets = new ArrayList<>();
         for (int offset = 0; offset < total; ) {
             int end = offset;
-            int bytes = 32;
+            int bytes = CHUNK_HEADER_BYTES;
             while (end < total && bytes + encoded.get(end).length <= CHUNK_BYTES) {
                 bytes += encoded.get(end++).length;
             }
             if (end == offset) throw new IllegalArgumentException("Choice exceeds packet byte budget");
-            byte[] batch = new byte[bytes - 32];
+            byte[] batch = new byte[bytes - CHUNK_HEADER_BYTES];
             int cursor = 0;
             for (int i = offset; i < end; i++) {
                 byte[] choice = encoded.get(i);

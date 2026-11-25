@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.2.1
+
+### Bug fixes
+
+- Added choice names to trade-row tooltips so players can distinguish offers with identical item icons.
+- Added missing trade selector translations and clarified why a writ cannot be reopened when its preset or choices are unavailable.
+- Datapack reloads now diagnose presets whose choices exceed the selector's capacity and keep them out of natural acquisition. Existing writs can still sign with a currently valid choice.
+
 ## 1.1.2
 
 ### Gameplay

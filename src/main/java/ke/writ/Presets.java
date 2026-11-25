@@ -34,10 +34,10 @@ final class Presets {
         }
     }
     record Snapshot(Map<ResourceLocation, Preset> presets, Set<ResourceLocation> invalidPresets, Map<String, PoolData.Pool> pools,
-                    Map<String, LootRules.Source> sources, Map<String, LootRules.Source> bosses, List<LootRules.Candidate> candidates, ChaosSampler chaos) {
+                    Map<String, LootRules.Source> sources, Map<String, LootRules.Source> bosses, List<LootRules.Candidate> candidates, ChaosSampler chaos, Set<ResourceLocation> selectorBlocked) {
         Map<String, Integer> rarities() { return poolWeights(pools); }
     }
-    private volatile Snapshot snapshot = new Snapshot(Map.of(), Set.of(), Map.of(), Map.of(), Map.of(), List.of(), new ChaosSampler(List.of()));
+    private volatile Snapshot snapshot = new Snapshot(Map.of(), Set.of(), Map.of(), Map.of(), Map.of(), List.of(), new ChaosSampler(List.of()), Set.of());
     private ObtainMode mode = ObtainMode.TRADE;
     private boolean modeReady, resourcesReady;
     private Presets() { }
@@ -53,7 +53,7 @@ final class Presets {
         Map<String, PoolData.Pool> pools = PoolData.load(objects, globalErrors);
         Map<String, Integer> rarities = poolWeights(pools);
         Map<ResourceLocation, Preset> loaded = new TreeMap<>();
-        Set<ResourceLocation> invalidPresets = new HashSet<>();
+        Set<ResourceLocation> invalidPresets = new HashSet<>(), selectorBlocked = new HashSet<>();
         List<LootRules.Source> sources = new ArrayList<>(), bosses = new ArrayList<>();
         List<String> bossErrors = new ArrayList<>();
         Set<String> knownTables = new HashSet<>();
@@ -68,6 +68,12 @@ final class Presets {
                     var unknownFields = PresetChecks.unknownFields(json);
                     if (!unknownFields.isEmpty()) presetWarnings.add(id + ": unrecognized fields (ignored): " + unknownFields);
                     Preset p = dynamicPreset(parse(json), json, reloadContext);
+                    try {
+                        VariantNet.validateChoiceBudget(p);
+                    } catch (IllegalArgumentException | io.netty.handler.codec.EncoderException e) {
+                        selectorBlocked.add(id);
+                        presetWarnings.add(id + ": selector unavailable; excluded from natural acquisition (" + e.getMessage() + ")");
+                    }
                     loaded.put(id, p);
                     if (!validRarities.isEmpty() && !validRarities.containsKey(p.rarity())) presetWarnings.add(id + ": unknown pool " + p.rarity() + "; excluded from natural loot");
                     if (p.modes().isEmpty()) presetWarnings.add(id + ": empty loot_modes; excluded from natural loot");
@@ -112,13 +118,13 @@ final class Presets {
         sourceErrors.addAll(validated.errors());
         LootRules.Sources validatedBosses = LootRules.validateBosses(bosses, rarities.keySet(), knownEntities);
         bossErrors.addAll(validatedBosses.errors());
-        List<LootRules.Candidate> candidates = candidates(loaded, pools, mode);
+        List<LootRules.Candidate> candidates = candidates(loaded, pools, mode, selectorBlocked);
         Map<String, LootRules.Source> enabled = !pools.isEmpty() ? validated.enabled() : Map.of();
         Map<String, LootRules.Source> enabledBosses = !pools.isEmpty() ? validatedBosses.enabled() : Map.of();
         var chaosWarnings = new ArrayList<String>();
         objects.keySet().stream().filter(id -> id.getPath().equals("chaos/config") && !id.getNamespace().equals(Writ.ID)).sorted().forEach(id -> chaosWarnings.add("ignored foreign config " + id));
         ChaosSampler chaos = buildChaos(objects.get(CHAOS_CONFIG), chaosWarnings, reloadContext);
-        snapshot = new Snapshot(Map.copyOf(loaded), Set.copyOf(invalidPresets), Map.copyOf(pools), enabled, enabledBosses, candidates, chaos);
+        snapshot = new Snapshot(Map.copyOf(loaded), Set.copyOf(invalidPresets), Map.copyOf(pools), enabled, enabledBosses, candidates, chaos, Set.copyOf(selectorBlocked));
         resourcesReady = true;
         if (!globalErrors.isEmpty()) Writ.LOG.warn("Contract pool diagnostics: {}", globalErrors);
         if (pools.isEmpty()) Writ.LOG.error("Natural contract loot disabled: no valid pools");
@@ -149,7 +155,7 @@ final class Presets {
         modeReady = true;
         if (resourcesReady) {
             Snapshot old = snapshot;
-            snapshot = new Snapshot(old.presets(), old.invalidPresets(), old.pools(), old.sources(), old.bosses(), candidates(old.presets(), old.pools(), mode), old.chaos());
+            snapshot = new Snapshot(old.presets(), old.invalidPresets(), old.pools(), old.sources(), old.bosses(), candidates(old.presets(), old.pools(), mode, old.selectorBlocked()), old.chaos(), old.selectorBlocked());
             logModeAndReachability(snapshot);
         }
     }
@@ -187,8 +193,9 @@ final class Presets {
         }
         return values;
     }
-    private static List<LootRules.Candidate> candidates(Map<ResourceLocation, Preset> presets, Map<String, PoolData.Pool> pools, ObtainMode mode) {
-        return presets.entrySet().stream().filter(e -> pools.containsKey(e.getValue().rarity()) && !pools.get(e.getValue().rarity()).disabled() && e.getValue().weight() > 0 &&
+    private static List<LootRules.Candidate> candidates(Map<ResourceLocation, Preset> presets, Map<String, PoolData.Pool> pools, ObtainMode mode,
+                                                        Set<ResourceLocation> selectorBlocked) {
+        return presets.entrySet().stream().filter(e -> !selectorBlocked.contains(e.getKey()) && pools.containsKey(e.getValue().rarity()) && !pools.get(e.getValue().rarity()).disabled() && e.getValue().weight() > 0 &&
                 (!e.getValue().dynamic() || e.getValue().defaultId() != null) && LootRules.naturallyEligible(mode, e.getValue().modes(), hasChaosResult(e.getValue())))
                 .map(e -> new LootRules.Candidate(e.getKey().toString(), e.getValue().rarity(), e.getValue().weight(), e.getValue().sources())).toList();
     }
@@ -289,6 +296,7 @@ final class Presets {
         if (p == null) return new OfferResult(null, current.invalidPresets().contains(id) ? "preset_invalid" : "preset_missing");
         ResourceLocation profession = BuiltInRegistries.VILLAGER_PROFESSION.getKey(villager.getVillagerData().getProfession());
         if (!p.professions().isEmpty() && !p.professions().contains(profession)) return new OfferResult(null, "profession_mismatch");
+        if (p.dynamic() && p.defaultId() == null) return new OfferResult(null, "variant.no_choices");
         int selection = selection(p, tag);
         if (selection < 0) return new OfferResult(null, "variant_invalid");
         Variant v = selection == 0 ? null : p.variants().get(selection - 1);
@@ -384,14 +392,6 @@ final class Presets {
         Preset p = id == null ? null : snapshot.presets().get(id);
         return p == null ? List.of() : p.professions().stream().sorted().toList();
     }
-    static Preset selectionPreset(Snapshot current, ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (!VariantRules.canRequest(stack.is(Writ.NORMAL.get()), tag, stack.getCount())) return null;
-        ResourceLocation id = ResourceLocation.tryParse(tag.getString("preset_id"));
-        Preset preset = id == null ? null : current.presets().get(id);
-        return preset == null || (preset.dynamic() && preset.defaultId() == null) ? null : preset;
-    }
-
     static boolean selectVariant(Snapshot current, Preset preset, ItemStack stack, String id) {
         int index;
         if (id.equals(preset.dynamic() ? preset.defaultId() : "")) {

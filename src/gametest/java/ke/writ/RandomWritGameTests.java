@@ -381,16 +381,16 @@ public final class RandomWritGameTests {
         var p = preset(Set.of(), Set.of(), Items.DIAMOND, List.of(variant(Items.EMERALD), variant(Items.GOLD_INGOT), variant(Items.IRON_INGOT)), rarity);
         var pool = new PoolData.Pool(rarity, 1, "rarity", "R", "writ.rarity.r");
         var candidates = List.of(new LootRules.Candidate(presetId.toString(), rarity, 1));
-        var snapshot = new Presets.Snapshot(Map.of(presetId, p), Set.of(), Map.of(rarity, pool), Map.of(), Map.of(), candidates, new ChaosSampler(List.of()));
+        var snapshot = new Presets.Snapshot(Map.of(presetId, p), Set.of(), Map.of(rarity, pool), Map.of(), Map.of(), candidates, new ChaosSampler(List.of()), Set.of());
         var random = RandomSource.create(987654L);
         for (int i = 0; i < 4000; i++) {
             var selected = Presets.INSTANCE.randomPreset(snapshot, id("minecraft:farmer"), random);
             h.assertTrue(selected.isPresent() && selected.get().equals(presetId.toString()), "preset must be drawn once regardless of its options");
         }
-        var empty = new Presets.Snapshot(Map.of(), Set.of(), Map.of(), Map.of(), Map.of(), List.of(), new ChaosSampler(List.of()));
+        var empty = new Presets.Snapshot(Map.of(), Set.of(), Map.of(), Map.of(), Map.of(), List.of(), new ChaosSampler(List.of()), Set.of());
         h.assertTrue(Presets.INSTANCE.randomPreset(empty, id("minecraft:farmer"), random).isEmpty(), "empty snapshot must return empty offer");
         var restricted = preset(Set.of(), Set.of(id("minecraft:farmer")), Items.DIAMOND, List.of(), rarity);
-        var restrictedSnapshot = new Presets.Snapshot(Map.of(presetId, restricted), Set.of(), Map.of(rarity, pool), Map.of(), Map.of(), candidates, new ChaosSampler(List.of()));
+        var restrictedSnapshot = new Presets.Snapshot(Map.of(presetId, restricted), Set.of(), Map.of(rarity, pool), Map.of(), Map.of(), candidates, new ChaosSampler(List.of()), Set.of());
         h.assertTrue(Presets.INSTANCE.randomPreset(restrictedSnapshot, id("minecraft:mason"), random).isEmpty(), "mismatched profession must return empty offer");
         h.succeed();
     }
@@ -425,7 +425,7 @@ public final class RandomWritGameTests {
         var candidates = new ArrayList<LootRules.Candidate>();
         presets.forEach((key, p) -> candidates.add(new LootRules.Candidate(key.toString(), p.rarity(), p.weight(), p.sources())));
         candidates.add(new LootRules.Candidate("test:missing_preset", rarity, 1));
-        var snapshot = new Presets.Snapshot(Map.copyOf(presets), Set.of(), pools, sources, Map.of("boss", boss), candidates, new ChaosSampler(List.of()));
+        var snapshot = new Presets.Snapshot(Map.copyOf(presets), Set.of(), pools, sources, Map.of("boss", boss), candidates, new ChaosSampler(List.of()), Set.of());
         var actual = ids(Presets.randomCandidates(snapshot, farmer));
         h.assertTrue(actual.equals(Set.of("test:reachable", "test:boss_good", "test:unrestricted")), "unexpected farmer candidates: " + actual);
         h.assertTrue(Presets.hasAnyUsableRandomCandidate(snapshot), "valid candidate should exist");
@@ -437,9 +437,9 @@ public final class RandomWritGameTests {
         try { valid.clear(); h.fail("professions must be immutable"); return; }
         catch (UnsupportedOperationException expectedException) { }
         var invalidOnly = new Presets.Snapshot(snapshot.presets(), Set.of(), pools, sources, Map.of(),
-            candidates.stream().filter(c -> c.id().equals("test:invalid_profession")).toList(), new ChaosSampler(List.of()));
+            candidates.stream().filter(c -> c.id().equals("test:invalid_profession")).toList(), new ChaosSampler(List.of()), Set.of());
         h.assertFalse(Presets.hasAnyUsableRandomCandidate(invalidOnly), "unregistered profession must not be usable");
-        var empty = new Presets.Snapshot(Map.of(), Set.of(), Map.of(), Map.of(), Map.of(), List.of(), new ChaosSampler(List.of()));
+        var empty = new Presets.Snapshot(Map.of(), Set.of(), Map.of(), Map.of(), Map.of(), List.of(), new ChaosSampler(List.of()), Set.of());
         h.assertTrue(Presets.randomCandidates(empty, farmer).isEmpty(), "empty snapshot must return empty list");
         h.assertFalse(Presets.hasAnyUsableRandomCandidate(empty), "empty snapshot must not be usable");
         h.succeed();

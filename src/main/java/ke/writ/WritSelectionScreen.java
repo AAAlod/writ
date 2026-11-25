@@ -138,6 +138,7 @@ final class WritSelectionScreen extends Screen {
         super.render(g, mouseX, mouseY, partialTick);
 
         ItemStack hovered = ItemStack.EMPTY;
+        Component hoveredChoice = null;
         int rowX = left + LIST_X;
         for (int row = 0; row < ROW_COUNT; row++) {
             rows[row].visible = scroll + row < matches.size();
@@ -153,12 +154,24 @@ final class WritSelectionScreen extends Screen {
             }
 
             drawTrade(g, option, rowX + 3, y + 2, 20, 51, 0xffdfbf95);
-            if (overRow) hovered = hoveredStack(option, mouseX - rowX - 3, mouseY - y - 2, 20, 51);
+            if (overRow) {
+                hoveredChoice = option.name();
+                hovered = hoveredStack(option, mouseX - rowX - 3, mouseY - y - 2, 20, 51);
+            }
         }
-        if (hovered.isEmpty()) {
+        if (hoveredChoice != null) {
+            List<Component> tooltip = new ArrayList<>();
+            tooltip.add(hoveredChoice);
+            if (!hovered.isEmpty()) {
+                List<Component> itemLines = getTooltipFromItem(minecraft, hovered);
+                int start = !itemLines.isEmpty() && itemLines.get(0).getString().equals(hoveredChoice.getString()) ? 1 : 0;
+                tooltip.addAll(itemLines.subList(start, itemLines.size()));
+            }
+            g.renderTooltip(font, tooltip, hovered.getTooltipImage(), hovered, mouseX, mouseY);
+        } else {
             hovered = hoveredStack(selected, mouseX - left - 131, mouseY - top - 117, 21, 61);
+            if (!hovered.isEmpty()) g.renderTooltip(font, hovered, mouseX, mouseY);
         }
-        if (!hovered.isEmpty()) g.renderTooltip(font, hovered, mouseX, mouseY);
     }
 
     private void drawTrade(GuiGraphics g, VariantNet.Option option, int x, int y,

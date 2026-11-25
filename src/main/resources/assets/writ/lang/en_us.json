@@ -22,6 +22,7 @@
   "writ.message.variant.saved": "Choice saved",
   "writ.message.variant.stale": "The writ or its options changed. Open it again.",
   "writ.message.variant.too_large": "This writ has too much choice data to display.",
+  "writ.message.variant.no_choices": "This writ has no available choices on this server.",
   "writ.message.variant.sign_later": "Choice saved. Sign the writ with an eligible villager.",
   "writ.tooltip.blank": "Blank: this writ carries no trade",
   "writ.tooltip.no_preview": "No preview available for this trade",

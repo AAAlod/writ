@@ -73,6 +73,22 @@ class LangCoverageTest {
         }
     }
 
+    @Test void selectorMessagesExistInEveryShippedLanguage() {
+        var english = lang.get("en_us");
+        var keys = english.keySet().stream()
+                .filter(key -> key.startsWith("writ.gui.") || key.startsWith("writ.message.variant."))
+                .toList();
+        for (Path file : files(LANG, ".json")) {
+            var translations = read(file);
+            for (String key : keys) {
+                assertTrue(translations.has(key), file + ": missing " + key);
+                String text = translations.get(key).getAsString();
+                assertFalse(text.isBlank(), file + ": blank " + key);
+                assertEquals(arguments(english.get(key)), arguments(text), file + ": arguments of " + key);
+            }
+        }
+    }
+
     @Test void noLanguageIsLeftUntranslated() {
         // Format-only keys and proper nouns are legitimately identical; everything else must differ from English.
         Set<String> shared = Set.of("writ.trade.count", "writ.trade.plus", "writ.trade.arrow", "writ.trade.list_separator");

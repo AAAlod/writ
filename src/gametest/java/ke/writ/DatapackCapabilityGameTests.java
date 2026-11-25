@@ -80,6 +80,51 @@ public final class DatapackCapabilityGameTests {
         h.succeed();
     }
 
+    @GameTest(template = "empty", timeoutTicks = 600, batch = "isolated_selectorBudget")
+    public static void oversizedSelectorPresetsStayManualOnly(GameTestHelper h) {
+        h.runAfterDelay(20, () -> {
+            var server = h.getLevel().getServer();
+            var id = new ResourceLocation("probe", "selector_budget");
+            var file = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.ROOT)
+                    .resolve("datapacks/baseline-tests/data/probe/writs/presets/selector_budget.json");
+            try {
+                String text = "x".repeat(45 * 1024);
+                String nbt = "\"nbt\":{\"budget_test\":\"" + text + "\"}";
+                String variants = java.util.stream.IntStream.range(0, 64)
+                        .mapToObj(i -> "{\"id\":\"choice_" + i + "\"}")
+                        .collect(java.util.stream.Collectors.joining(","));
+                String preset = """
+                        {"pool":"n","weight":1,"general_loot":true,"loot_modes":["TRADE","CRAFT_9"],
+                         "trade":{"cost_a":{"item":"minecraft:emerald","count":1,%1$s},
+                         "cost_b":{"item":"minecraft:bone_meal","count":1,%1$s},
+                         "result":{"item":"minecraft:iron_ingot","count":1,%1$s},
+                         "max_uses":4,"villager_xp":0,"price_multiplier":0.05},
+                         "variants":[%2$s]}
+                        """.formatted(nbt, variants);
+                java.nio.file.Files.writeString(file, preset);
+                server.reloadResources(server.getPackRepository().getSelectedIds()).whenComplete((unused, failure) -> server.execute(() -> {
+                    try {
+                        if (failure != null) throw new IllegalStateException(failure);
+                        var snapshot = Presets.INSTANCE.currentSnapshot();
+                        var writ = Presets.INSTANCE.contractFor(snapshot, id.toString());
+                        h.assertTrue(snapshot.selectorBlocked().contains(id), "oversized preview was not detected on reload");
+                        h.assertFalse(snapshot.candidates().stream().anyMatch(candidate -> candidate.id().equals(id.toString())),
+                                "oversized preview was eligible for natural acquisition");
+                        h.assertFalse(writ.isEmpty(), "oversized preview must not invalidate the preset");
+                        var villager = h.spawn(net.minecraft.world.entity.EntityType.VILLAGER, new net.minecraft.core.BlockPos(1, 1, 1));
+                        h.assertTrue(Presets.INSTANCE.resolveOffer(writ, villager).offer() != null, "valid current trade cannot be signed");
+                        TestRestore.finish(h, () -> java.nio.file.Files.deleteIfExists(file),
+                                () -> h.assertFalse(Presets.INSTANCE.currentSnapshot().selectorBlocked().contains(id), "removed preset still marked oversized"), null);
+                    } catch (Throwable e) {
+                        TestRestore.finish(h, () -> java.nio.file.Files.deleteIfExists(file), () -> {}, e);
+                    }
+                }));
+            } catch (Throwable e) {
+                TestRestore.finish(h, () -> java.nio.file.Files.deleteIfExists(file), () -> {}, e);
+            }
+        });
+    }
+
     @GameTest(template = "empty", timeoutTicks = 600, batch = "isolated_capabilityReload")
     public static void publicExclusionAndChaosEligibilityReload(GameTestHelper h) {
         h.runAfterDelay(20, () -> {

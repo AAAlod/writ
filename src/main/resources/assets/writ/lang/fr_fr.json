@@ -22,6 +22,7 @@
   "writ.message.variant.saved": "Choix enregistré",
   "writ.message.variant.stale": "Le contrat ou ses options ont changé. Ouvrez-le à nouveau.",
   "writ.message.variant.too_large": "Les données des options de ce contrat sont trop volumineuses.",
+  "writ.message.variant.no_choices": "Ce contrat ne propose aucun choix sur ce serveur.",
   "writ.message.variant.sign_later": "Choix enregistré. Signez le contrat avec un villageois admissible.",
   "writ.tooltip.blank": "Vierge : ce contrat ne contient aucun échange",
   "writ.tooltip.no_preview": "Aucun aperçu disponible pour cet échange",

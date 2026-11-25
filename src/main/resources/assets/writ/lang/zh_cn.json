@@ -22,6 +22,7 @@
   "writ.message.variant.saved": "已保存交易选项",
   "writ.message.variant.stale": "契约或选项已变化，请重新打开。",
   "writ.message.variant.too_large": "这份契约的选项数据过大，无法显示。",
+  "writ.message.variant.no_choices": "此契约在服务器上没有可用选项。",
   "writ.message.variant.sign_later": "已保存选项，请找符合条件的村民签约。",
   "writ.tooltip.blank": "空白契约：未记载任何交易",
   "writ.tooltip.no_preview": "无法预览此交易",

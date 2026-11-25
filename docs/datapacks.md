@@ -275,6 +275,7 @@ Variants turn one preset into an ordered list of choices. Players browse and con
 Other rules:
 
 - A preset can have at most 64 variant entries, disabled ones included.
+- The selector supports up to 16,384 available choices and 8 MiB of encoded preview data per preset. When a preset exceeds the selector budget, reload logs its ID and excludes it from natural drops and random draws. Writs with a valid current choice can still be signed.
 - Any field not listed above is an error, both in the variant and in its `trade` object.
 - Item stacks inside a variant must state `count` explicitly as an integer.
 - A preset whose result is `writ:chaos_writ` cannot have variants.
