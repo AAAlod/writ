@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "이 주민은 계약 면제 상태입니다",
+  "writ.command.exemption.invalid_target": "살아 있는 개체를 선택하세요",
+  "writ.command.exemption.not_found": "이 개체에는 계약 면제가 없습니다",
+  "writ.command.exemption.cleared": "%s의 계약 면제를 해제했습니다",
   "item.writ.trade_writ": "거래 계약서",
   "item.writ.trade_writ.named": "거래 계약서: %s",
   "item.writ.chaos_writ": "혼돈의 계약서",

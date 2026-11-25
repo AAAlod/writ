@@ -3,6 +3,7 @@ group = 'ke.writ'
 version = '1.1.2.1'
 base { archivesName = 'writ' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+apply from: 'gradle/resonance-module.gradle'
 sourceSets {
     gametest {
         java.srcDirs = ['src/gametest/java']

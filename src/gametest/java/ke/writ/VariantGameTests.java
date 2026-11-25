@@ -154,6 +154,39 @@ public final class VariantGameTests {
     }
 
     @GameTest(template = "empty")
+    public static void protectionAddedDuringSelectionKeepsChosenWrit(GameTestHelper h) {
+        var villager = h.spawn(EntityType.VILLAGER, new BlockPos(1, 2, 1));
+        villager.setVillagerData(villager.getVillagerData().setProfession(VillagerProfession.MASON));
+        villager.setVillagerXp(1);
+        var player = serverPlayer(h);
+        player.setPos(villager.getX(), villager.getY(), villager.getZ() + 1);
+        int slot = 10;
+        var contract = Presets.INSTANCE.contractFor(Presets.INSTANCE.currentSnapshot(), "writ:terracotta");
+        player.getInventory().setItem(slot, contract);
+        int initial = villager.getOffers().size();
+        var session = VariantNet.prepare(player, slot, contract, villager.getUUID());
+        h.assertTrue(session != null && !ContractExemption.isActive(villager), "could not open an eligible choice");
+        h.assertTrue(ContractExemption.apply(player, villager, java.util.OptionalInt.empty()) == ContractExemption.Result.APPLIED,
+                "could not protect the original villager");
+        h.assertTrue(VariantNet.apply(player, session, "white"), "could not confirm the choice");
+        h.assertTrue(player.getInventory().getItem(slot) == contract && contract.getCount() == 1
+                && contract.getTag().getString("selected_variant").equals("white"),
+                "choice was lost when auto-sign was refused");
+        h.assertTrue(villager.getOffers().size() == initial && !villager.getPersistentData().contains(Writ.ID),
+                "auto-sign added a trade or changed quota despite protection");
+
+        var other = h.spawn(EntityType.VILLAGER, new BlockPos(2, 2, 1));
+        other.setVillagerData(other.getVillagerData().setProfession(VillagerProfession.MASON));
+        other.setVillagerXp(1);
+        int otherInitial = other.getOffers().size();
+        Writ.sign(player, other, contract, null);
+        h.assertTrue(other.getOffers().size() == otherInitial + 1 && contract.isEmpty()
+                && other.getOffers().get(otherInitial).getResult().is(Items.WHITE_TERRACOTTA),
+                "saved choice could not sign with another villager");
+        h.succeed();
+    }
+
+    @GameTest(template = "empty")
     public static void selectorTransmitsItemCountsAndFullTags(GameTestHelper h) {
         var result = new net.minecraft.world.item.ItemStack(Items.ENCHANTED_BOOK);
         var enchantments = new net.minecraft.nbt.ListTag();

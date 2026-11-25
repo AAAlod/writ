@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "Este aldeano está exento de contratos",
+  "writ.command.exemption.invalid_target": "Selecciona una entidad viva",
+  "writ.command.exemption.not_found": "Esa entidad no tiene una exención de contratos",
+  "writ.command.exemption.cleared": "Se quitó la exención de contratos de %s",
   "item.writ.trade_writ": "Contrato de comercio",
   "item.writ.trade_writ.named": "Contrato de comercio: %s",
   "item.writ.chaos_writ": "Contrato del caos",

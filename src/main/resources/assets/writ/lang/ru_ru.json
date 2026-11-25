@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "Этот крестьянин освобождён от договоров",
+  "writ.command.exemption.invalid_target": "Выберите живую сущность",
+  "writ.command.exemption.not_found": "У этой сущности нет освобождения от договоров",
+  "writ.command.exemption.cleared": "Освобождение от договоров для %s снято",
   "item.writ.trade_writ": "Торговый договор",
   "item.writ.trade_writ.named": "Торговый договор: %s",
   "item.writ.chaos_writ": "Договор хаоса",

@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "この村人は契約の適用を免除されています",
+  "writ.command.exemption.invalid_target": "生きているエンティティを選択してください",
+  "writ.command.exemption.not_found": "このエンティティに契約免除はありません",
+  "writ.command.exemption.cleared": "%s の契約免除を解除しました",
   "item.writ.trade_writ": "取引契約書",
   "item.writ.trade_writ.named": "取引契約書：%s",
   "item.writ.chaos_writ": "混沌の契約書",

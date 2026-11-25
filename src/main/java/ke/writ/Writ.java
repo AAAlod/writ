@@ -3,6 +3,7 @@ package ke.writ;
 import com.mojang.logging.LogUtils;
 import java.nio.file.Path;
 import java.util.Optional;
+import ke.writ.resonance.ResonanceModule;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -139,7 +140,9 @@ public final class Writ {
         VariantNet.register();
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(bus); TABS.register(bus); LOOT_MODIFIERS.register(bus);
+        ResonanceModule.init(bus, ContractExemption::useDefaultDeviceEffect);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.addListener(ContractExemption::registerCommands);
         MinecraftForge.EVENT_BUS.register(new BossDrops());
         MinecraftForge.EVENT_BUS.register(new ContainerPayments());
     }
@@ -199,6 +202,10 @@ public final class Writ {
 
     static void sign(Player player, Villager v, ItemStack stack, InteractionHand hand) {
         if (player.isSpectator()) return;
+        if (ContractExemption.isActive(v)) {
+            refuse(player, v, Component.translatable("writ.message.contract_exempt"));
+            return;
+        }
         boolean normal = stack.is(NORMAL.get()), random = stack.is(RANDOM.get());
         boolean usesNormalQuota = normal || random;
         // Same eligibility rule as before; each cause gets its own wording so the player knows what to fix.

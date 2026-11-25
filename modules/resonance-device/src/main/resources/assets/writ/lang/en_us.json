@@ -1,0 +1,10 @@
+{
+  "item.writ.resonance_device": "Resonance Device",
+  "writ.resonance.tooltip.unbound": "Unbound — right-click to bind",
+  "writ.resonance.tooltip.bound": "Frequency %s",
+  "writ.resonance.bound": "Resonance Device bound. Frequency %s",
+  "writ.resonance.unauthorized": "This Resonance Device belongs to another owner.",
+  "writ.resonance.no_default_effect": "No default effect is configured for this Resonance Device.",
+  "writ.resonance.config_error": "Resonance Device effects are misconfigured: %s",
+  "writ.resonance.effect_unavailable": "The effect cannot be applied to this target."
+}

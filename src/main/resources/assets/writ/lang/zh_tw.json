@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "該村民享有契約豁免",
+  "writ.command.exemption.invalid_target": "請選擇一個活體實體",
+  "writ.command.exemption.not_found": "該實體沒有契約豁免紀錄",
+  "writ.command.exemption.cleared": "已解除 %s 的契約豁免",
   "item.writ.trade_writ": "交易契約",
   "item.writ.trade_writ.named": "交易契約：%s",
   "item.writ.chaos_writ": "混沌契約",

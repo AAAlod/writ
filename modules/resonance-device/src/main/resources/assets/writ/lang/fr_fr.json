@@ -1,0 +1,10 @@
+{
+  "item.writ.resonance_device": "Appareil de Résonance",
+  "writ.resonance.tooltip.unbound": "Non lié — clic droit pour lier",
+  "writ.resonance.tooltip.bound": "Fréquence %s",
+  "writ.resonance.bound": "Appareil de Résonance lié. Fréquence %s",
+  "writ.resonance.unauthorized": "Cet Appareil de Résonance appartient à un autre propriétaire.",
+  "writ.resonance.no_default_effect": "Aucun effet par défaut n'est configuré pour cet Appareil de Résonance.",
+  "writ.resonance.config_error": "Les effets de l'Appareil de Résonance sont mal configurés : %s",
+  "writ.resonance.effect_unavailable": "L'effet ne peut pas être appliqué à cette cible."
+}

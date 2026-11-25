@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "Ten osadnik jest zwolniony z umów",
+  "writ.command.exemption.invalid_target": "Wybierz żywą istotę",
+  "writ.command.exemption.not_found": "Ta istota nie jest zwolniona z umów",
+  "writ.command.exemption.cleared": "Usunięto zwolnienie z umów dla %s",
   "item.writ.trade_writ": "Umowa handlowa",
   "item.writ.trade_writ.named": "Umowa handlowa: %s",
   "item.writ.chaos_writ": "Umowa chaosu",

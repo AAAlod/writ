@@ -1,5 +1,7 @@
 package ke.writ;
 
+import java.util.List;
+import java.util.OptionalInt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
@@ -82,6 +85,30 @@ public final class TradeGameTests {
         int rejectedBefore = rejected.getOffers().size();
         verify(helper, rejected, badVersion, interact(badVersion, rejected), rejectedBefore, 0, 0, 2);
         helper.succeed();
+    }
+    @GameTest(template = "empty")
+    public static void exemptionBlocksEveryWritWithoutSpendingIt(GameTestHelper h) {
+        var v = villager(h);
+        var p = player(h, "writ:example");
+        var owner = FakePlayerFactory.getMinecraft(h.getLevel());
+        int before = v.getOffers().size();
+        counters(v, 1, 1);
+        h.assertTrue(ContractExemption.apply(owner, v, OptionalInt.empty()) == ContractExemption.Result.APPLIED,
+                "could not protect villager");
+        var data = v.getPersistentData().getCompound(Writ.ID).copy();
+        var normal = p.getMainHandItem();
+        for (var stack : List.of(normal, new ItemStack(Writ.RANDOM.get(), 2), new ItemStack(Writ.CHAOS.get(), 2))) {
+            p.setItemInHand(InteractionHand.MAIN_HAND, stack);
+            var original = stack.copy();
+            verify(h, v, p, interact(p, v), before, 1, 1, 2);
+            h.assertTrue(ItemStack.matches(p.getMainHandItem(), original) && p.getInventory().getFreeSlot() == 1,
+                    "blocked writ changed the inventory");
+            h.assertTrue(data.equals(v.getPersistentData().getCompound(Writ.ID)), "blocked writ changed contract data");
+        }
+        h.assertTrue(ContractExemption.remove(owner, v) == ContractExemption.Result.REMOVED, "owner could not clear exemption");
+        p.setItemInHand(InteractionHand.MAIN_HAND, normal);
+        verify(h, v, p, interact(p, v), before + 1, 2, 1, 1);
+        h.succeed();
     }
     @GameTest(template = "empty")
     public static void zeroXpIsRejected(GameTestHelper helper) {

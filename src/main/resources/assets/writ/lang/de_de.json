@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "Dieser Dorfbewohner ist von Verträgen befreit",
+  "writ.command.exemption.invalid_target": "Wähle ein Lebewesen aus",
+  "writ.command.exemption.not_found": "Dieses Lebewesen hat keine Vertragsbefreiung",
+  "writ.command.exemption.cleared": "Vertragsbefreiung für %s aufgehoben",
   "item.writ.trade_writ": "Handelsurkunde",
   "item.writ.trade_writ.named": "Handelsurkunde: %s",
   "item.writ.chaos_writ": "Chaosurkunde",

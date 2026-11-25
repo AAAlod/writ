@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "Questo villico è esente dai contratti",
+  "writ.command.exemption.invalid_target": "Seleziona un'entità vivente",
+  "writ.command.exemption.not_found": "Questa entità non ha alcuna esenzione dai contratti",
+  "writ.command.exemption.cleared": "Esenzione dai contratti rimossa per %s",
   "item.writ.trade_writ": "Contratto di scambio",
   "item.writ.trade_writ.named": "Contratto di scambio: %s",
   "item.writ.chaos_writ": "Contratto del caos",

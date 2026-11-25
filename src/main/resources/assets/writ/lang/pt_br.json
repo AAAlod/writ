@@ -1,4 +1,8 @@
 {
+  "writ.message.contract_exempt": "Este aldeão está isento de contratos",
+  "writ.command.exemption.invalid_target": "Selecione uma entidade viva",
+  "writ.command.exemption.not_found": "Essa entidade não tem isenção de contratos",
+  "writ.command.exemption.cleared": "A isenção de contratos de %s foi removida",
   "item.writ.trade_writ": "Contrato de Troca",
   "item.writ.trade_writ.named": "Contrato de Troca: %s",
   "item.writ.chaos_writ": "Contrato do Caos",
